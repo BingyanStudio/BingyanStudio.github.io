@@ -2,7 +2,6 @@
     display: grid;
     grid-template-columns: minmax(128px, 10%) 1fr;
     padding: 14px 30px;
-    margin-top: 60px;
 
     img {
         margin: auto;
@@ -90,7 +89,7 @@
 
 .card-grid {
     max-width: 1000px;
-    margin: auto;
+    margin: 32px auto;
     padding: 0 16px;
 }
 
@@ -111,7 +110,6 @@
     overflow: hidden;
     border-radius: 16px;
     background-color: var(--card-bg);
-    margin-bottom: 21px;
     transition: all 200ms ease;
     box-shadow: 0 10px 15px -5px rgb(0 0 0 / .05);
 }

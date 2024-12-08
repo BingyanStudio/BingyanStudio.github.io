@@ -3,7 +3,7 @@ body {
 }
 
 .post {
-  max-width: 960px;
+  max-width: 800px;
   margin: 128px auto;
 }
 
@@ -79,7 +79,6 @@ hr,
 .content>mjx-container,
 .content>.katex,
 .about {
-  max-width: 800px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -173,7 +172,6 @@ hr,
   overflow-y: hidden;
   background-color: var(--card-bg);
   border-radius: 15px;
-  max-width: calc(800px - 16px * 2);
 }
 
 @media screen and (max-width: 800px) {
@@ -205,11 +203,9 @@ hr,
 .content ol {
   padding: 0 16px;
   padding-left: 32px;
-  max-width: calc(800px - 16px * 2);
 }
 
 .content blockquote {
-  max-width: calc(800px - 16px * 2);
   padding: 0 8px;
 }
 
@@ -327,7 +323,6 @@ body[data-color-scheme="dark"] .tags .icon {
 .content>h1 {
   margin-block: 32px;
   font-size: 24px;
-  max-width: calc(800px - 20px* 2);
   border-left: 4px solid #ee9211a1;
   padding: 0 16px;
   line-height: 1;
