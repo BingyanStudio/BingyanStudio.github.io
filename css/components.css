@@ -1,0 +1,54 @@
+.block-large {
+    max-width: 1000px;
+    margin: auto;
+}
+
+.badge {
+    --color: var(--link);
+    font-size: 16px;
+    border: 2px solid var(--color);
+    color: var(--color);
+    padding: 0 8px;
+    margin: 0 6px;
+    border-radius: 24px;
+}
+
+.badge.warning {
+    --color: #fdc008;
+}
+
+.badge.secondary {
+    --color: #6c7781;
+}
+
+.badge.success {
+    --color: #31b14e;
+}
+
+.no-select {
+    user-select: none;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-uppercase {
+    text-transform: uppercase;
+}
+
+.text-lowercase {
+    text-transform: lowercase;
+}
+
+.text-capitalize {
+    text-transform: capitalize;
+}

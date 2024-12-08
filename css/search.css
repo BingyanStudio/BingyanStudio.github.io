@@ -1,0 +1,31 @@
+#searchbox {
+  margin: 60px 0 0 0;
+  display: block;
+  outline: none;
+  width: calc(100% - 16px* 2);
+  background-color: var(--white);
+  color: var(--black-2);
+  border: 1px solid var(--border-color);
+  padding: 12px 24px;
+  font-size: 16px;
+  border-radius: 36px;
+}
+
+#searchbox:hover,
+#searchbox:focus-visible {
+  background-color: var(--white-1);
+  color: var(--black);
+}
+
+#searchbox::placeholder {
+  color: var(--grey);
+}
+
+#search-results {
+  margin-bottom: 128px;
+}
+
+#search-results .no-results {
+  color: var(--grey);
+  text-align: center;
+}

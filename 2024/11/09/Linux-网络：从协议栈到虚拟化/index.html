@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>Linux 网络：从协议栈到虚拟化 - Hexo</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="Linux 网络：从协议栈到虚拟化 - Hexo" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://bingyanstudio.github.io/2024/11/09/Linux-%E7%BD%91%E7%BB%9C%EF%BC%9A%E4%BB%8E%E5%8D%8F%E8%AE%AE%E6%A0%88%E5%88%B0%E8%99%9A%E6%8B%9F%E5%8C%96/index.html" />
+  
+  <meta property="og:image" content="/img/1.jpeg" />
+  
+  <meta property="og:article:published_time" content="2024-11-09T09:43:43.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/后端/"><span data-group="后端">后端</span></a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>November</span>
+            <span>9,</span>
+            <span>2024</span>
+        </div>
+        
+
+        <h1 class="title">Linux 网络：从协议栈到虚拟化</h1>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <blockquote>
+<p>本次分享有不少概念和名词。如果你看完还不太懂，没关系，可以先学点前置知识；如果你没看就懂完了，没问题，下次分享就你了</p>
+</blockquote>
+<h2 id="神秘的网络"><a href="#神秘的网络" class="headerlink" title="神秘的网络"></a>神秘的网络</h2><p>提到计算机网络，我们可能马上会想到什么 OSI 七层模型，三次握手四次挥手，在浏览器输入 URL 之后发生了什么之类的知识。考虑到我们既不需要像搞通信设备的那帮人天天研究网卡和交换机，也不需要像搞基础架构的那帮人天天研究协议和路由算法，我们的网络知识似乎已经够用了……吗？以下是我在实践中遇到过的与网络相关的问题：</p>
+<ul>
+<li>开启 Clash For Windows 里的 TUN mode，我获得了全局代理的能力，但是为什么 DNS 解析结果都变成了 198.18.x.x？</li>
+<li>Wireguard&#x2F;Zerotier&#x2F;Tailscale 真神奇，轻轻松松组建大内网，但是怎么合在一起用就爆炸了？</li>
+<li>我的国内小鸡也想看看太平洋彼岸的世界，有没有简单快速一劳永逸还不影响服务器正常访问也不影响 Docker 甚至 K8s 的方法？</li>
+<li>有公网 IP 但是还是连不通，到底是配置的问题，还是防火墙发力了？如何进行排查？</li>
+</ul>
+<p>了解一些 Linux 网络相关的知识，虽然不能完全帮助我们解决上面的问题，但也能提供点思考和分析的方向，还是很值得学习的。</p>
+<h2 id="网络协议栈"><a href="#网络协议栈" class="headerlink" title="网络协议栈"></a>网络协议栈</h2><p>首先我们还是从基础的网络通信开开始，了解数据是如何从程序发出，经过网络设备，传输，最后被另一个程序接收。好消息是，这个过程和我们所熟知的分层模型基本上是对应的，数据流动的路径大致如下：</p>
+<p><img src="/static/FeQFbgX31oavByxKuMPcxCt8npR.jpg"></p>
+<ul>
+<li>Socket：应用层的各种网络通信基本上都是通过 Socket 编程接口来和内核的网络协议栈进行通信的。外加 Linux 一切皆文件的设计哲学，对 Socket 的操作就和对文件的读写一样</li>
+<li>TCP&#x2F;UDP&#x2F;IP：传输层和网络层，前者负责报文的封装以提供可靠的&#x2F;不可靠的数据传输服务，后者负责给数据加上 IP 地址等路由信息，这和我们在计算机网络里学到的基本上是一样的</li>
+<li>Device&#x2F;Driver：在 Linux 的设计中，数据链路层被分为了面向系统的 Device 和面向硬件的 Driver。Device 作为一种抽象接口，其背后的实现可能是真实的物理设备也就是 Driver，也有可能是某个程序，甚至是本地访问的回环设备（Loopback Device）。而面向硬件的 Driver 也就是驱动程序，功能包括初始化和配置硬件设备等。一般来说，Device 会准备好实际需要发送的数据，如 MAC 地址等，再调用 Driver 中具体的网络设备函数</li>
+</ul>
+<p>经过上面的过程，我们得到了一个完整的数据包：</p>
+<p><img src="/static/Co8hbdCOFoLie2xjBqKclmvNnnh.png"></p>
+<p>接收方的处理大概就是上面的过程反过来，这就不细说了</p>
+<p>由于这个过程中有比较明显的逐层调用，逐层封装，再后进先出处理的特点，与我们熟知的栈这种数据结构很类似，因此它也被称为 Linux 网络协议栈。</p>
+<h2 id="管理网络数据包"><a href="#管理网络数据包" class="headerlink" title="管理网络数据包"></a>管理网络数据包</h2><p>在前面的网络协议栈中，我们会发现除了应用层，剩下的都在系统内核空间里了。这样的设计在数据安全与隔离上确实很好，大黑客没法直接窃听或者伪造网络通信了，但我们自己想要管理和控制，似乎也不简单。还好，Linux 内核还给我们提供了一套通用、可编程的网络数据包管理框架：Netfilter</p>
+<p>这套框架在数据包处理的过程中埋下了五个钩子（Hooks），应用程序先在这注册回调函数，每当有数据经过时就会触发调用，最终实现干预网络通信的功能。这五个钩子是：</p>
+<ul>
+<li>PREROUTING：进入 IP 路由之前触发，只要接收到的数据包无论是否发往本机都会触发</li>
+<li>INPUT：经过 IP 路由之后，确定发往本机的就会触发</li>
+<li>FORWARD：经过 IP 路由之后，确定不是发往本机的就会触发</li>
+<li>OUTPUT：本机发出的数据包，经过 IP 路由之前触发</li>
+<li>POSTROUTING：本机发出的数据包，经过 IP 路由之后触发，包括本机程序发送和转发的数据包</li>
+</ul>
+<p>有了这套框架，网络的玩法就变多了。比如被称为 Linux 自带防火墙的 iptables，比 iptables 更新更快的 nftables，kubernetes 中实现 Service 访问的 kube-proxy 等等，很强很灵活。</p>
+<p><img src="/static/TWrUbrW7Wouw7Sx0WfSc5g8ynUx.png"></p>
+<p>其他方法比如 proxychains 通过拦截库函数调用，在进入内核前修改，wireguard 通过虚拟网络设备捕获 IP 数据包并完成加密传输，还有最新最热的 ebpf 在内核中拦截，这里就不细说了</p>
+<h2 id="虚拟网络"><a href="#虚拟网络" class="headerlink" title="虚拟网络"></a>虚拟网络</h2><p>前面提到的网络能力已经非常丰富了，但物理的网络毕竟还是有基础设施的限制，随着对灵活性、安全隔离、运维管理和云计算的需要，网络的虚拟化也变得重要起来。在物理网络的世界里，我们有网卡、交换机、路由器，而在虚拟网络中，我们也同样拥有：</p>
+<ul>
+<li>虚拟网卡：TUN，TAP，VETH<ul>
+<li>TUN 作为一种虚拟网络设备，工作在第三层，可以接收和发送 IP 数据包</li>
+<li>TAP 作为另一种虚拟网络设备，工作在第二层，可以接收和发送以太网帧</li>
+<li>VETH 是另一种虚拟网卡的方案，成对出现，用于连通不同命名空间的网络</li>
+</ul>
+</li>
+</ul>
+<p>我们可以用 TAP&#x2F;TUN 设备实现一个简单的 VPN：</p>
+<p><img src="/static/OJ5db7eEtoIsDQxPtZ5clopMnNb.png"></p>
+<p>我们也可以用 VETH 简单的连接两个容器：</p>
+<p><img src="/static/JAvcbGbJOoNiwUxFt1NccONFn9d.png"></p>
+<ul>
+<li>虚拟交换机：Bridge<ul>
+<li>工作在二层，根据 MAC 地址转发数据包</li>
+</ul>
+</li>
+</ul>
+<p>虽然他叫 Bridge 直译过来是网桥，但从功能上我们完全可以把它当交换机来用，另外 Linux 内核其实也带有路由功能，看做个自带的虚拟交换机好像也没啥问题</p>
+<p>利用 Bridge，现在我们可以把多个网络连接到一起了（docker 的默认网络模式就是这样做的）：</p>
+<p><img src="/static/I9MlbJfMIogLQ2xMTROcR4xfnHb.png"></p>
+<p>但是，虚拟网络的大网还少了点东西… 是的，他目前只能在本机完成。为了使我们的虚拟网络跨越不同的物理主机，简单来说，我们可以：</p>
+<ul>
+<li>VLAN，早期的虚拟局域网技术，在二层中添加 VLAN Tag 实现，但其存在子网数量有限、容易引起广播风暴、配置复杂等不少问题</li>
+</ul>
+<p><img src="/static/SSR4bfOLAoep9Fxd49Scdmv1nWf.png"></p>
+<ul>
+<li>VXLAN，使用 L2 over L4 的方法，将二层的以太网帧放到四层的 UDP 协议报文中，简单易用，三层可达就能传输（flannel 的默认模式就是这样做的）</li>
+</ul>
+<p><img src="/static/GwP8beCXmofMFsxdSYUcXoPWnmb.jpg"></p>
+<p>至此，我们的虚拟网络算是用比较现代的技术搭建起来了。当然，近些年云原生分布式大火，虚拟网络也成为热门研究领域，实现方式除了 vxlan 还有很多，感兴趣的话可以看看那些热门的 k8s 网络插件。</p>
+<h2 id="附：你可能不知道的校园网小知识"><a href="#附：你可能不知道的校园网小知识" class="headerlink" title="附：你可能不知道的校园网小知识"></a>附：你可能不知道的校园网小知识</h2><ul>
+<li>认证的时候在学号后面加上 <code>@hust</code>，可以在断网&#x2F;欠费的时候获得 1 次 10 分钟，每月最多 3 次的连接</li>
+<li>某些地方的网口插上是有公网 ip 的，但是还得要校园网才能访问</li>
+<li>DNS 协议的 53 端口没认证也可以正常通信，这意味着你可以在校内某台有网的设备&#x2F;云服务器上用 53 端口搞个 wireguard 之类的，来实现不间断的校园网访问（武大的网络也可以这样干</li>
+<li>认证时密码是加密后再提交的，但这个加密算法（RSA？）和时间无关，这意味着你可以把登录请求截获下来 curl 发一下就可以自动认证了</li>
+<li>某些运营商推出的校园套餐可以直连校园网</li>
+<li>成为学生网管可以享受不断网的免费校园网！</li>
+</ul>
+
+    </div>
+
+    
+    <div class="about">
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/Linux/" class="tag">#Linux</a><a href="/tags/网络/" class="tag">#网络</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2024/11/20/%E9%80%82%E8%80%81%E5%8C%96%E7%95%8C%E9%9D%A2%E8%AE%BE%E8%AE%A1/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">适老化界面设计</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2024/10/31/%E5%BD%93%E4%B8%80%E4%B8%AA%E8%BF%90%E8%90%A5%E5%BC%80%E5%A7%8B%E8%B5%B7%E6%A0%87%E9%A2%98/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">当一个运营开始起标题</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2024 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

@@ -1,0 +1,69 @@
+.hero {
+    background-image: linear-gradient(to bottom,
+            rgba(255, 255, 255, 0) 0%,
+            var(--body-bg) 100%),
+        url(/theme-img/logo.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 70vh;
+    height: 92vh;
+    display: grid;
+    place-items: center;
+}
+
+@supports (animation-timeline: scroll()) {
+    .hero {
+        will-change: filter, margin-top, margin-bottom, opacity, scale;
+        animation-name: hero-exit;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: scroll();
+        animation-range: 0 50svh;
+    }
+    @keyframes hero-exit {
+        from {
+          margin-top: 56px;
+        }
+        to {
+          opacity: 0;
+          margin-top: calc(50svh + 56px);
+          margin-bottom: -50svh;
+          scale: 0.9;
+        }
+      }
+}
+
+.hero .group {
+    width: 100%;
+}
+
+.hero .sub {
+    text-transform: uppercase;
+    font-size: 24px;
+    color: var(--black-4);
+    font-weight: 100;
+    margin: 0;
+    transition: font-size 0.5s;
+}
+
+.hero .large {
+    font-size: 128px;
+    color: var(--black-2);
+    margin: 0;
+    transition: font-size 0.5s;
+}
+
+@media screen and (max-width: 800px) {
+    .hero {
+        background-size: 56vh;
+        height: 95vh;
+    }
+
+    .hero .sub {
+        font-size: 16px;
+    }
+
+    .hero .large {
+        font-size: 84px;
+    }
+}
