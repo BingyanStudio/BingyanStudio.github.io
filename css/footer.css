@@ -42,25 +42,26 @@ footer .inner {
 }
 
 footer .group {
+    font-size: 14px;
     margin: 0;
     margin-bottom: 16px;
 }
 
 footer .title {
-    font-size: 17px;
+    font-size: 15px;
     margin: 0;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
 }
 
 footer .item {
     color: var(--footer-link-grey);
     display: block;
-    line-height: 1.7;
+    line-height: 1.6;
 }
 
 footer .footer-extra-description {
     color: var(--footer-link-grey);
-    font-size: 14px;
+    font-size: 12px;
     display: block;
     margin-top: 6px;
     margin-bottom: -12px;
