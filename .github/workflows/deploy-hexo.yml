@@ -1,0 +1,55 @@
+name: deploy-source-docs
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - source
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: source
+          submodules: recursive
+          fetch-depth: 0
+          path: blog
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: "16"
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./blog
+
+      - name: Install Hexo CLI
+        run: npm install -g hexo-cli
+        working-directory: ./blog
+
+      - name: Generate static pages
+        run: hexo generate
+        working-directory: ./blog
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          keep_files: true
+          personal_token: ${{ secrets.ACCESS_TOKEN }}
+          publish_dir: ./blog/public
+          publish_branch: gh-pages
+          user_name: 'BingyanStudio'
+          user_email: 'account@bingyan.net'
