@@ -1,0 +1,1 @@
+hexo.extend.injector.register('head_end', '<script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script>');
