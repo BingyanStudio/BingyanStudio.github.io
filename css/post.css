@@ -35,7 +35,7 @@ body {
   }
 
   .post {
-    margin: 18px;
+    margin: 28px;
   }
 
   .content>h1 {
@@ -203,7 +203,6 @@ hr,
 .content ul,
 .content ol {
   padding: 0 16px;
-  padding-left: 32px;
 }
 
 .content blockquote {
