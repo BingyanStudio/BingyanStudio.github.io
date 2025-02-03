@@ -3,8 +3,7 @@ body {
 }
 
 .post {
-  max-width: 800px;
-  margin: 56px auto;
+  margin: 128px 0;
 }
 
 .meta .categories {
@@ -14,7 +13,7 @@ body {
 }
 
 .meta .categories a {
-  font-size: 15px;
+  font-size: 13px;
   margin-right: 6px;
   text-decoration: none;
 }
@@ -25,32 +24,14 @@ body {
 }
 
 .meta .title {
-  font-size: 40px;
+  font-size: 48px;
   margin-top: 16px;
 }
 
-@media screen and (max-width: 800px) {
-  .meta .title {
-    font-size: 28px;
-  }
-
-  .post {
-    margin: 28px;
-  }
-
-  .content>h1 {
-    font-size: 20px;
-  }
-
-  .post-prev-next .title {
-    font-size: 18px;
-  }
-}
-
 .content {
-  font-size: 16px;
-  line-height: 1.8;
-  font-weight: normal;
+  font-size: 19px;
+  line-height: 1.4211;
+  font-weight: 400;
   letter-spacing: 0.012em;
 }
 
@@ -76,32 +57,18 @@ hr,
 .content video,
 .content ul,
 .content ol,
-.content>mjx-container,
-.content>.katex,
+.content > mjx-container,
+.content > .katex,
 .about {
+  max-width: 800px;
   margin-left: auto;
   margin-right: auto;
-  word-wrap: break-word;
-}
-
-.content h1,
-.content h2,
-.content h3,
-.content h4,
-.content h5,
-.content h6,
-.title {
-  font-weight: 600;
+  padding: 0 16px;
 }
 
 .content p img,
 .content .block-large img {
-  object-fit: contain;
-  max-height: 50vh;
-  max-width: 90%;
-  margin: 32px auto;
-  display: block;
-  filter: drop-shadow(rgb(0 0 0 / .05) 0px 5px 6px);
+  border-radius: 10px;
 }
 
 .content table,
@@ -152,7 +119,6 @@ hr,
 }
 
 @media screen and (max-width: 800px) {
-
   .content table,
   .content table thead tr th:first-child,
   .content table thead tr th:last-child,
@@ -168,17 +134,17 @@ hr,
 }
 
 .content .highlight,
-.content>pre {
+.content > pre {
   overflow-x: auto;
   overflow-y: hidden;
   background-color: var(--card-bg);
   border-radius: 15px;
+  max-width: calc(800px - 16px * 2);
 }
 
 @media screen and (max-width: 800px) {
-
   .content .highlight,
-  .content>pre {
+  .content > pre {
     border-radius: 0;
   }
 }
@@ -191,27 +157,32 @@ hr,
   padding-right: 16px;
 }
 
-.content>pre {
+.content > pre {
   max-width: calc(800px - 24px * 2);
   padding: 20px 24px;
 }
 
-.content>pre>code {
+.content > pre > code {
   background-color: transparent;
 }
 
 .content ul,
 .content ol {
   padding: 0 16px;
+  padding-left: 32px;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  max-width: calc(800px - 16px * 2);
 }
 
 .content blockquote {
+  max-width: calc(800px - 16px * 2);
   padding: 0 8px;
 }
 
 /* for [hexo-math](https://github.com/hexojs/hexo-math): */
-.content>mjx-container,
-.content>.katex {
+.content > mjx-container,
+.content > .katex {
   display: block;
   text-align: center;
 }
@@ -229,15 +200,7 @@ hr,
   display: block;
   width: var(--size);
   height: var(--size);
-  margin-right: 10px;
-}
-
-a.tag {
-  align-content: center;
-}
-
-body[data-color-scheme="light"] .tags .icon {
-  background-image: url(/theme-img/tags-dark.svg);
+  margin-right: 6px;
 }
 
 body[data-color-scheme="auto"] .tags .icon {
@@ -255,17 +218,18 @@ body[data-color-scheme="dark"] .tags .icon {
 }
 
 .tags .tag {
-  font-size: 16px;
+  font-size: 14px;
   display: block;
   height: 14px;
-  margin-right: 8px;
+  margin-right: 4px;
 }
 
 .about {
   border-radius: 7px;
-  max-width: calc(820px - 16px * 2);
+  background-color: var(--card-bg);
+  max-width: calc(800px - 16px * 2);
   padding: 16px;
-  margin: 24px auto;
+  margin: 64px auto;
 }
 
 @media screen and (max-width: 800px) {
@@ -286,14 +250,14 @@ body[data-color-scheme="dark"] .tags .icon {
   margin: 6px 0;
 }
 
-.content h1>.headerlink,
-.content h2>.headerlink,
-.content h3>.headerlink,
-.content h4>.headerlink,
-.content h5>.headerlink,
-.content h6>.headerlink {
+.content h1 > .headerlink,
+.content h2 > .headerlink,
+.content h3 > .headerlink,
+.content h4 > .headerlink,
+.content h5 > .headerlink,
+.content h6 > .headerlink {
   opacity: 0;
-  color: var(--white-2);
+  color: var(--grey);
   font-weight: normal;
   position: absolute;
   padding-right: 6px;
@@ -301,53 +265,47 @@ body[data-color-scheme="dark"] .tags .icon {
   transition: opacity 0.2s;
 }
 
-.content h1:hover>.headerlink,
-.content h2:hover>.headerlink,
-.content h3:hover>.headerlink,
-.content h4:hover>.headerlink,
-.content h5:hover>.headerlink,
-.content h6:hover>.headerlink {
+.content h1:hover > .headerlink,
+.content h2:hover > .headerlink,
+.content h3:hover > .headerlink,
+.content h4:hover > .headerlink,
+.content h5:hover > .headerlink,
+.content h6:hover > .headerlink {
   opacity: 1;
   text-decoration: none;
 }
 
-.content h1>.headerlink::before,
-.content h2>.headerlink::before,
-.content h3>.headerlink::before,
-.content h4>.headerlink::before,
-.content h5>.headerlink::before,
-.content h6>.headerlink::before {
+.content h1 > .headerlink::before,
+.content h2 > .headerlink::before,
+.content h3 > .headerlink::before,
+.content h4 > .headerlink::before,
+.content h5 > .headerlink::before,
+.content h6 > .headerlink::before {
   content: "#";
 }
 
-.content>h1 {
-  margin-block: 32px;
-  font-size: 24px;
-  border-left: 4px solid #ee9211a1;
-  padding: 0 16px;
-  line-height: 1;
+.content > h1 {
+  font-size: 36px;
 }
 
-.content h1>.headerlink::before {
-  margin-left: -40px;
+.content > h2 {
+  font-size: 30px;
 }
 
-.content>h2 {
-  margin-block: 24px;
-  font-size: 22px;
-  text-decoration-line: underline;
-  text-underline-offset: -2px;
-  text-decoration-thickness: 8px;
-  text-decoration-color: #ee921185;
-  text-decoration-skip-ink: none;
+.content > h3 {
+  font-size: 26px;
 }
 
-.content>h3,
-.content>h4,
-.content>h5,
-.content>h6 {
-  font-size: 18px;
-  margin-block: 18px;
+.content > h4 {
+  font-size: 20px;
+}
+
+.content > h5 {
+  font-size: 16px;
+}
+
+.content > h6 {
+  font-size: 14px;
 }
 
 .post-prev-next {
@@ -355,17 +313,17 @@ body[data-color-scheme="dark"] .tags .icon {
   justify-content: space-between;
 }
 
-.post-prev-next>a {
+.post-prev-next > a {
   width: 50%;
   color: var(--black-4);
   text-decoration: none;
 }
 
-.post-prev-next>a:hover {
+.post-prev-next > a:hover {
   color: var(--black-2);
 }
 
-.post-prev-next>a>div {
+.post-prev-next > a > div {
   display: flex;
 }
 
@@ -374,7 +332,7 @@ body[data-color-scheme="dark"] .tags .icon {
   flex-direction: column;
 }
 
-.post-prev-next .prev>div {
+.post-prev-next .prev > div {
   justify-content: flex-end;
   text-align: right;
 }

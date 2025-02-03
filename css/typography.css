@@ -1,12 +1,11 @@
-hr {
+.divider, hr {
     border: none;
     border-top: 1px solid var(--white-1);
     margin: 32px auto;
 }
 
 .divider {
-    border: none;
-    margin: 32px auto;
+    margin: 64px auto;
 }
 
 img {
@@ -18,7 +17,7 @@ img {
 }
 
 blockquote {
-    border-left: 4px solid var(--white-1);
+    border-left: 4px solid var(--white-2);
 }
 
 pre, code {

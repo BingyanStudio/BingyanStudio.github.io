@@ -1,14 +1,13 @@
 #searchbox {
-  margin: 96px auto;
   display: block;
   outline: none;
-  width: 80%;
+  width: calc(100% - 16px * 2);
   background-color: var(--white);
   color: var(--black-2);
   border: 1px solid var(--border-color);
-  padding: 12px 24px;
-  font-size: 16px;
-  border-radius: 36px;
+  padding: 12px 16px;
+  font-size: 20px;
+  border-radius: 12px;
 }
 
 #searchbox:hover,

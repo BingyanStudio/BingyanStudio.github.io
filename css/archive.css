@@ -1,9 +1,5 @@
-.meta:nth-child(1) {
-  margin-top: 72px;
-}
-
 .meta {
-  margin-top: 64px;
+  margin-top: 128px;
 }
 
 .meta .type {
@@ -13,15 +9,4 @@
   margin-left: auto;
   margin-right: auto;
   padding: 0 16px;
-}
-
-@media screen and (max-width: 800px) {
-  .meta:nth-child(1) {
-    margin-top: 0;
-  }
-
-  .meta {
-    margin-top: 48px;
-  }
-
 }
