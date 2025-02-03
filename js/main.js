@@ -5,7 +5,7 @@
             if (navEl.classList.contains('open')) {
                 navEl.style.height = ''
             } else {
-                navEl.style.height = 48 + document.querySelector('#theme-nav .nav-items').clientHeight + 'px'
+                navEl.style.height = 64 + document.querySelector('#theme-nav .nav-items').clientHeight + 'px'
             }
             navEl.classList.toggle('open')
         } else {

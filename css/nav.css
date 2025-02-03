@@ -12,10 +12,14 @@ nav {
     transition: height 0.8s cubic-bezier(0.86, 0, 0.07, 1);
 }
 
+nav a:hover {
+    color: var(--blue) !important;
+}
+
 nav>.inner {
     max-width: 980px;
     margin: auto;
-    padding: 0 16px;
+    padding: 0 24px;
 }
 
 nav>*>* {
@@ -35,6 +39,12 @@ nav .title {
     color: var(--black-2)!important;
 }
 
+nav .title img {
+    max-height: 25px;
+    max-width: 83px;
+    vertical-align: sub;
+}
+
 nav .nav-arrow {
     display: none;
 }
@@ -52,7 +62,7 @@ nav .nav-item {
     height: 48px;
     line-height: 48px;
     padding: 0 16px;
-    transition: padding 0.2s, color 0.5s;
+    transition: padding 0.2s, color 0.3s;
 }
 
 nav .nav-item:hover, nav .nav-item:focus {
@@ -81,7 +91,7 @@ nav .nav-item-icon {
     background-position: center;
     background-size: 24px 24px;
     background-repeat: no-repeat;
-    padding: 0;
+    padding: 0 8px;
 }
 
 nav .nav-item-search {
@@ -164,7 +174,8 @@ body[data-color-scheme="dark"] nav .nav-item-search {
     }
     nav .title {
         pointer-events: none;
-        display: inline-block;
+        display: block;
+        float: left;
         transition: all 0.2s;
         transition-delay: 0.6s;
     }
@@ -173,7 +184,6 @@ body[data-color-scheme="dark"] nav .nav-item-search {
         margin-top: 8px;
         width: 40px;
         height: 30px;
-        float: right;
     }
     nav .nav-arrow::before, nav .nav-arrow::after {
         content: '';

@@ -1,12 +1,27 @@
+.meta:nth-child(1) {
+  margin-top: 72px;
+}
+
 .meta {
-  margin-top: 128px;
+  margin-top: 64px;
 }
 
 .meta .type {
   color: var(--grey);
   font-weight: 600;
-  max-width: 800px;
+  max-width: 900px;
   margin-left: auto;
   margin-right: auto;
   padding: 0 16px;
+}
+
+@media screen and (max-width: 900px) {
+  .meta:nth-child(1) {
+    margin-top: 0;
+  }
+
+  .meta {
+    margin-top: 48px;
+  }
+
 }

@@ -1,13 +1,15 @@
+@import url("/fonts/SourceHanSansCN-VF/result.css");
+
 * {
     transition: color 0.2s, background-color 0.2s;
 }
 
 body {
     margin: 0;
-    margin-top: 56px;
+    padding-top: 56px;
     color: var(--black-2);
     background-color: var(--body-bg);
-    font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", "Source Han Sans CN", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 a:link {
@@ -17,6 +19,7 @@ a:link {
 
 a:hover {
     text-decoration: underline;
+    text-underline-offset: 4px;
 }
 
 a:active {
@@ -29,9 +32,16 @@ a:visited {
 }
 
 .container {
-    max-width: 980px;
+    max-width: 940px;
     margin: auto;
-    padding: 0 16px;
+    padding: 0 16px 32px 16px;
+}
+
+.search-container,
+.archive-container,
+.about-container,
+.categories-container {
+    max-width: 800px;
 }
 
 .section-title {
@@ -39,8 +49,24 @@ a:visited {
     line-height: 1.125;
     font-weight: 700;
     letter-spacing: .004em;
-    margin-bottom: 24px;
+    margin: 48px 0;
     color: var(--card-title);
+    text-decoration-line: underline;
+    text-underline-offset: -3px;
+    text-decoration-thickness: 8px;
+    text-decoration-color: #ee921185;
+    text-decoration-skip-ink: none;
+}
+
+@media screen and (max-width: 900px) {
+    .section-title {
+        margin: 28px 12px;
+        font-size: 26px;
+    }
+
+    .container {
+        padding: 24px;
+    }
 }
 
 .theme-command {

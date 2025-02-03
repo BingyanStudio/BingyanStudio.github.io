@@ -16,39 +16,54 @@ footer .links {
     grid-template-columns: 1fr 1fr 1fr;
 }
 
+footer .item:hover {
+    text-decoration: none;
+    color: var(--blue);
+}
+
+footer .inner {
+    padding: 32px 32px 64px 32px;
+}
+
 @media screen and (max-width: 600px) {
     footer .links {
         grid-template-columns: 1fr 1fr;
     }
+
+    footer .inner{
+        padding: 32px;
+    }
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 300px) {
     footer .links {
         grid-template-columns: 1fr;
     }
 }
 
 footer .group {
+    font-size: 14px;
     margin: 0;
     margin-bottom: 16px;
 }
 
 footer .title {
-    font-size: 17px;
+    font-size: 15px;
     margin: 0;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
 }
 
 footer .item {
     color: var(--footer-link-grey);
     display: block;
+    line-height: 1.6;
 }
 
 footer .footer-extra-description {
     color: var(--footer-link-grey);
-    font-size: 14px;
+    font-size: 12px;
     display: block;
-    margin-top: 12px;
+    margin-top: 6px;
     margin-bottom: -12px;
 }
 

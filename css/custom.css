@@ -24,8 +24,8 @@
     padding: 0 30px;
 }
 
-@media screen and (max-width: 800px) {
-    .card{
+@media screen and (max-width: 900px) {
+    .card {
         margin: 4px 0;
         padding: 24px 32px 20px 32px;
     }
@@ -44,24 +44,24 @@
         width: 50px;
     }
 
-    .card .actions{
+    .card .actions {
         display: inline-block !important;
     }
 
-    .about-info{
+    .about-info {
         padding: 0;
     }
 
-    .member-card{
+    .member-card {
         margin: 8px;
         padding: 12px !important;
     }
 
-    .card .title{
+    .card .title {
         font-size: 18px;
     }
 
-    .card .description{
+    .card .description {
         font-size: 16px !important;
     }
 }
@@ -99,7 +99,7 @@
     }
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 900px) {
     .card-grid {
         grid-template-columns: 1fr 1fr;
         padding: 0;

@@ -3,7 +3,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   max-width: 980px;
-  margin: auto;
+  margin-top: 36px;
 }
 
 @media screen and (max-width: 600px) {
@@ -17,8 +17,9 @@
   overflow: hidden;
   border-radius: 16px;
   background-color: var(--card-bg);
-  margin-bottom: 21px;
+  margin-bottom: 24px;
   transition: all 200ms ease;
+  box-shadow: 0 10px 15px -5px rgb(0 0 0 / .05);
 }
 
 .post-list-item:nth-child(2n-1) {
@@ -38,11 +39,10 @@
 
 .post-list-item .cover-img {
   overflow: hidden;
-  height: 266px;
 }
 
 .post-list-item .cover-img img {
-  width: 100%;
+  width: 101%;
   height: 100%;
   object-fit: cover;
   filter: brightness(1);
@@ -51,7 +51,7 @@
 }
 
 .post-list-item:hover .cover-img img,
-.post-list-item > a:focus .cover-img img {
+.post-list-item>a:focus .cover-img img {
   transform: scale(1.03);
   filter: brightness(0.85);
 }
@@ -64,10 +64,11 @@
   max-height: 7em;
   color: var(--card-title);
   overflow: hidden;
+  font-weight: 600;
 }
 
 .post-list-item .content {
-  padding: 32px;
+  padding: 0 32px 32px 32px;
 }
 
 .post-list-item a,
@@ -89,9 +90,37 @@
 }
 
 .post-list-item .categories span {
-  font-size: 11px;
+  font-size: 13px;
   margin-right: 6px;
   text-decoration: none;
+}
+
+.categories [data-group="产品"] {
+  color: #527da8;
+}
+
+.categories [data-group="运营"] {
+  color: #428485;
+}
+
+.categories [data-group="设计"] {
+  color: #614f9c;
+}
+
+.categories [data-group="游戏"] {
+  color: #b9218e;
+}
+
+.categories [data-group="前端"] {
+  color: rgb(222, 106, 106);
+}
+
+.categories [data-group="移动"] {
+  color: rgb(230, 130, 80);
+}
+
+.categories [data-group="后端"] {
+  color: rgb(166, 189, 74);
 }
 
 .post-list-item .excerpt {
@@ -99,7 +128,7 @@
   color: var(--black-1);
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 900px) {
   .post-list-item .content {
     font-size: 12px;
   }
@@ -137,16 +166,20 @@
 .post-list.archives {
   display: block;
   max-width: 980px;
-  margin: auto;
+  margin: 50px auto;
 }
 
 .post-list.archives .post-list-item {
-  border-radius: 0;
-  background-color: initial;
-  padding: 21px 0;
-  margin: 0;
-  border-bottom: 1px solid var(--border-color);
+  border-radius: 20px;
+  background-color: var(--card-bg);
+  padding: 10px;
+  margin: 30px;
+  /* border-bottom: 1px solid var(--border-color); */
   transition: all 200ms ease;
+}
+
+.post-list.archives .post-list-item .content {
+  padding-top: 32px;
 }
 
 .post-list.archives .post-list-item:nth-child(n) {
@@ -164,8 +197,33 @@
 
 .post-list.archives .post-list-item .cover-img {
   height: initial;
-  min-width: 180px;
-  width: 20vw;
+  width: 40%;
   border-radius: 16px;
   flex-shrink: 0;
+}
+
+@media screen and (max-width: 900px) {
+  .post-list-item .title {
+    font-size: 20px;
+  }
+
+  .post-list.archives .post-list-item .cover-img {
+    width: 0;
+  }
+
+  .post-list.archives .post-list-item .content {
+    padding: 18px 12px;
+  }
+
+  .post-list.archives .post-list-item {
+    margin: 0;
+    box-shadow: none;
+    background-color: transparent;
+    border-radius: 0;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .post-list.archives {
+    margin: 0 auto 20px auto;
+  }
 }
