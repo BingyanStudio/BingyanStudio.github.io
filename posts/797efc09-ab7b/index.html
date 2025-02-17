@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>Golang Project Layout - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="Golang Project Layout - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/797efc09-ab7b/index.html" />
+  
+  <meta property="og:image" content="https://image-public.bingyan.net/blog/img/9bcd32f5-fc71-4ff7-a07a-eeda13da19d6.jpeg" />
+  
+  <meta property="og:article:published_time" content="2025-02-17T09:33:00.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/后端/"><span data-group="后端">后端</span></a>
+        
+        </div>
+        
+
+        <h1 class="title">Golang Project Layout</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">尹欣恬</span>
+            
+            <span>February</span>
+            <span>17,</span>
+            <span>2025</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <p>先来看看冰岩内部大部分项目的通用结构</p>
+<p><strong><a target="_blank" rel="noopener" href="https://git.bingyan.net/lyt99/generator-bingyan-golang">https://git.bingyan.net/lyt99/generator-bingyan-golang</a></strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">├── docker-compose.yml</span><br><span class="line"> ├── Dockerfile</span><br><span class="line"> ├── <span class="built_in">env</span></span><br><span class="line"> │   └── config</span><br><span class="line"> ├── README.md</span><br><span class="line"> └── src</span><br><span class="line">     ├── config</span><br><span class="line">     │   └── config.go</span><br><span class="line">     ├── controller</span><br><span class="line">     ├── job</span><br><span class="line">     ├── main.go</span><br><span class="line">     ├── middleware</span><br><span class="line">     ├── model</span><br><span class="line">     ├── router</span><br><span class="line">     └── util</span><br><span class="line">         ├── <span class="built_in">log</span></span><br><span class="line">         ├── context</span><br><span class="line">         ├── jwt.go</span><br><span class="line">         └── ......</span><br></pre></td></tr></table></figure>
+
+<p>也没有什么不好.jpg</p>
+<h2 id="golang-standards-project-layout"><a href="#golang-standards-project-layout" class="headerlink" title="golang-standards&#x2F;project-layout"></a><strong>golang-standards&#x2F;project-layout</strong></h2><p><strong><a target="_blank" rel="noopener" href="https://github.com/golang-standards/project-layout">https://github.com/golang-standards/project-layout</a></strong></p>
+<p>想来分享一下 <code>golang-standards/project-layout</code>，它不是 Go 官方标准，然而，它是 Go 生态系统中一组常见的老项目和新项目的布局模式。</p>
+<h3 id="cmd"><a href="#cmd" class="headerlink" title="&#x2F;cmd"></a><strong>&#x2F;cmd</strong></h3><p>每个应用程序的目录名应该与你想要的可执行文件的名称相匹配(例如，<code>/cmd/myapp</code>)。</p>
+<p>作为整个项目程序的入口，通常有一个小的 <code>main</code> 函数，从 <code>/internal</code> 和 <code>/pkg</code> 目录导入和调用代码，除此之外没有别的东西。大块的逻辑代码不应该出现在 <code>cmd</code> 中。</p>
+<h3 id="internal"><a href="#internal" class="headerlink" title="&#x2F;internal"></a><strong>&#x2F;internal</strong></h3><p>存放私有项目代码，web 项目中大部分业务逻辑代码都可放在该目录下。例如 mvc 架构中的 <code>controller</code>, <code>jobs</code>, <code>middleware</code>, <code>model</code>, <code>router</code> 等。</p>
+<ul>
+<li>Go 本身确保了 <code>internal</code> 目录不可被第三方项目导入</li>
+<li>在项目树的任何级别上都可以有多个 <code>internal</code> 目录</li>
+</ul>
+<h3 id="pkg"><a href="#pkg" class="headerlink" title="&#x2F;pkg"></a><strong>&#x2F;pkg</strong></h3><p>外部应用程序可以使用的库代码。<code>pkg</code> 意味着第三方项目可以导入这些库，所以在这里放东西之前要三思:-)</p>
+<p>如果应用程序项目规模较小，并且额外的嵌套并不能增加多少价值，那就不要使用它。当它变得足够大时，你的根目录会变得非常繁琐时 (尤其是当你有很多非 Go 应用组件时)，请考虑一下。</p>
+<h3 id="vendor"><a href="#vendor" class="headerlink" title="&#x2F;vendor"></a><strong>&#x2F;vendor</strong></h3><p>应用程序依赖项</p>
+<p>vendor 目录是 Golang 从 1.5 版本开始引入的，为项目开发提供了一种离线保存第三方依赖包的方法。但是到了 Golang 1.11 之后，由于引入了 Module 功能，在运行 go build 时，优先引用的是 Module 依赖包的逻辑，所以当下较少使用 vendor 目录了</p>
+<p>当然，你依然可以使用 <code>go mod vendor</code> 构建 vendor, 依赖项将先从 vendor 目录进行扫描。</p>
+<h3 id="configs"><a href="#configs" class="headerlink" title="&#x2F;configs"></a><strong>&#x2F;configs</strong></h3><p>配置文件模板或默认配置。</p>
+<h3 id="scripts"><a href="#scripts" class="headerlink" title="&#x2F;scripts"></a><strong>&#x2F;scripts</strong></h3><p>放置脚本。</p>
+<h3 id="build"><a href="#build" class="headerlink" title="&#x2F;build"></a><strong>&#x2F;build</strong></h3><p>打包和持续集成。</p>
+<p><code>/build/package</code>: 放置 dockerfile、操作系统( deb、rpm、pkg )包配置等</p>
+<p><code>/build/ci</code>：放置 ci 文件，如 <code>.drone.yml</code></p>
+<h3 id="deploy"><a href="#deploy" class="headerlink" title="&#x2F;deploy"></a><strong>&#x2F;deploy</strong></h3><p>docker-compose、kubernetes&#x2F;helm、mesos、terraform、bosh 等</p>
+<h3 id="test"><a href="#test" class="headerlink" title="&#x2F;test"></a><strong>&#x2F;test</strong></h3><p>额外的外部测试应用程序和测试数据。</p>
+<h3 id="docs"><a href="#docs" class="headerlink" title="&#x2F;docs"></a><strong>&#x2F;docs</strong></h3><p>设计和用户文档(除了 godoc 生成的文档之外)。</p>
+<p>有关示例，请参阅 <strong>&#x2F;docs</strong> 目录。</p>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a><strong>其他</strong></h3><p>除此之外，还包括</p>
+<ul>
+<li><code>/api</code></li>
+</ul>
+<p>OpenAPI&#x2F;Swagger 规范，JSON 模式文件，协议定义文件。</p>
+<ul>
+<li><code>/web</code></li>
+</ul>
+<p>特定于 Web 应用程序的组件:静态 Web 资产、服务器端模板和 SPAs。</p>
+<ul>
+<li><code>/examples</code></li>
+</ul>
+<p>你的应用程序和&#x2F;或公共库的示例。</p>
+<ul>
+<li><code>/third_party</code></li>
+</ul>
+<p>外部辅助工具，分叉代码和其他第三方工具(例如 Swagger UI)。</p>
+<ul>
+<li><code>/githooks</code></li>
+</ul>
+<p>Git hooks。</p>
+<ul>
+<li><code>/assets</code></li>
+</ul>
+<p>与存储库一起使用的其他资产(图像、徽标等)。</p>
+<p>等</p>
+<h2 id="不应该拥有-src？"><a href="#不应该拥有-src？" class="headerlink" title="不应该拥有 &#x2F;src？"></a><strong>不应该拥有 &#x2F;src？</strong></h2><p>来自 golang-standards&#x2F;project-layout 的解释：</p>
+<p>有些 Go 项目确实有一个 <code>src</code> 文件夹，但这通常发生在开发人员有 Java 背景，在那里它是一种常见的模式。如果可以的话，尽量不要采用这种 Java 模式。你真的不希望你的 Go 代码或 Go 项目看起来像 Java:-)</p>
+<p>不要将项目级别 <code>src</code> 目录与 Go 用于其工作空间的 <code>src</code> 目录(如 <strong>How to Write Go Code</strong> 中所述)混淆。<code>$GOPATH</code> 环境变量指向你的(当前)工作空间(默认情况下，它指向非 windows 系统上的 <code>$HOME/go</code>)。这个工作空间包括顶层 <code>/pkg</code>, <code>/bin</code> 和 <code>/src</code> 目录。你的实际项目最终是 <code>/src</code> 下的一个子目录，因此，如果你的项目中有 <code>/src</code> 目录，那么项目路径将是这样的: <code>/some/path/to/workspace/src/your_project/src/your_code.go</code>。注意，在 Go 1.11 中，可以将项目放在 <code>GOPATH</code> 之外，但这并不意味着使用这种布局模式是一个好主意。</p>
+<h2 id="以-k8s-项目架构为例"><a href="#以-k8s-项目架构为例" class="headerlink" title="以 k8s 项目架构为例"></a><strong>以 k8s 项目架构为例</strong></h2><p><strong><a target="_blank" rel="noopener" href="https://github.com/kubernetes/kubernetes">https://github.com/kubernetes/kubernetes</a></strong></p>
+<h2 id="按照-golang-standards-project-layout-重构后的-sso"><a href="#按照-golang-standards-project-layout-重构后的-sso" class="headerlink" title="按照 golang-standards&#x2F;project-layout 重构后的 sso"></a><strong>按照 golang-standards&#x2F;project-layout 重构后的 sso</strong></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">├── build</span><br><span class="line"> │   ├── ci</span><br><span class="line"> │   │   └── .drone.yml</span><br><span class="line"> │   └── package</span><br><span class="line"> │       ├── Dockerfile</span><br><span class="line"> │       └── Dockerfile-dev</span><br><span class="line"> ├── cmd</span><br><span class="line"> │   └── sso</span><br><span class="line"> │       └── sso.go</span><br><span class="line"> ├── configs</span><br><span class="line"> │   ├── configfile</span><br><span class="line"> │   └── rsa-key</span><br><span class="line"> ├── deploy</span><br><span class="line"> │   ├── docker-compose.yml</span><br><span class="line"> │   └── <span class="built_in">log</span></span><br><span class="line"> │       ├── <span class="built_in">log</span> -&gt; <span class="built_in">log</span>/log-2023-03-24</span><br><span class="line"> │       ├── log-2023-03-19</span><br><span class="line"> │       └── log-2023-03-24</span><br><span class="line"> ├── docs</span><br><span class="line"> ├── internal</span><br><span class="line"> │   ├── conf</span><br><span class="line"> │   ├── controller</span><br><span class="line"> │   ├── <span class="built_in">jobs</span></span><br><span class="line"> │   ├── middleware</span><br><span class="line"> │   ├── model</span><br><span class="line"> │   └── router</span><br><span class="line"> ├── pkg</span><br><span class="line"> │   ├── jwt</span><br><span class="line"> │   ├── oauthcli</span><br><span class="line"> │   ├── oidc</span><br><span class="line"> │   └── util</span><br><span class="line"> ├── go.mod</span><br><span class="line"> ├── README.md</span><br><span class="line"> ├── scripts</span><br><span class="line"> │   └── compose.sh</span><br><span class="line"> └── web</span><br><span class="line">     └── email_template.html</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        <a class="next"></a>
+        
+        <a href="/posts/4a0dbbd9-1fbb/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">你怎么知道我找到妹子了？</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>
