@@ -1,16 +1,16 @@
 ---
 title: ARG分享
-cover_image: https://image-public.bingyan.net/blog/img/28c01fcc-72e4-46ea-a64e-24055f1e96c6.jpeg
-date: 2025-02-23 19:09
-categories: 产品
-author: 多杰
-abbrlink: 336810f8-a5a2
+cover_image: https://image-public.bingyan.net/blog/img/1303998a-fdba-49f8-b8a1-afdc27a2f6a4.jpeg
+date: 2025-02-23 19:38
+categories: 后端
+author: 尹欣恬
+abbrlink: f1a4f826-812e
 ---
 
 
 2020 年 10 月，我刚刚加入冰岩，成为了冰岩前辈和烛芯团队共同完成的 ARG 作品《iKnowGhost》的菜鸟玩家。
 
-![](https://image-public.bingyan.net/blog/img/https://image-public.bingyan.net/blog/img/https://image-public.bingyan.net/blog/img/WtsFbJvJXor4CWxolPacPRKbnJh.jpeg.jpeg.jpeg)
+![](https://image-public.bingyan.net/blog/img/WtsFbJvJXor4CWxolPacPRKbnJh.jpeg)
 
 在体会到这款游戏带来的独特体验之后，我们在 2022 年 4 月尝试设计了一款面向华科的 ARG《Ronin》。这款在毕业季发布的校园 ARG 吸引了 200+ 玩家的参与，最终在 14 小时内被完整通关。
 
@@ -28,7 +28,7 @@ ARG 常用作电影、游戏等的宣发手段，更多地采用故事先行的�
 
 整体看来，我们的设计思路大概是这样的：从故事出发，根据故事进程来设计对应的谜题，中间通过地点要素来实现线上线下结合和故事的推进，之后给每个关卡嵌套增加难度的外壳，最后将彩蛋置于游戏进程中的细节。
 
-![](https://image-public.bingyan.net/blog/img/https://image-public.bingyan.net/blog/img/https://image-public.bingyan.net/blog/img/WF8MbZ8FQoBCZCx1o8mcE9Djned.jpeg.jpeg.jpeg)
+![](https://image-public.bingyan.net/blog/img/WF8MbZ8FQoBCZCx1o8mcE9Djned.jpeg)
 
 《Ronin》的剧本出发于毕业季前夕，大学生普遍存在的关于毕业、升学、找工作的焦虑。我们虚构了 Ronin（名字来源于“浪人，流浪武士”的英文解释）的人物形象，让他成为整个游戏的主人公和线索，带着玩家们探索故事和我们希望传达的价值观。
 
@@ -36,11 +36,11 @@ ARG 常用作电影、游戏等的宣发手段，更多地采用故事先行的�
 
 在初版的剧本设计完成后，我们在其中的一些节点设计了关卡和谜题，来分割几个故事阶段，通过内容平台和地点的切换来存放解谜线索和串联情节。
 
-![](https://image-public.bingyan.net/blog/img/https://image-public.bingyan.net/blog/img/https://image-public.bingyan.net/blog/img/RXNxbpiRkoDTSjxL7lLcIWaVnpd.jpeg.jpeg.jpeg)
+![](https://image-public.bingyan.net/blog/img/RXNxbpiRkoDTSjxL7lLcIWaVnpd.jpeg)
 
 这些谜题有的来自与群主的互动，有的来自空间视频某帧，有的来自 BBHust 中 Ronin 发布的内容，或来自如公众号、GitHub、百度网盘、网站控制台、线下等各种场景。具体可以参考玩家在 QQ 群中最终完成的解谜文档：[https://docs.qq.com/doc/DQUJZd2t2SnhwalVi?dver](https://docs.qq.com/doc/DQUJZd2t2SnhwalVi?dver)=
 
-![](https://image-public.bingyan.net/blog/img/https://image-public.bingyan.net/blog/img/https://image-public.bingyan.net/blog/img/KCKwbJra1olTacxrqbpcdGTunSg.jpeg.jpeg.jpeg)
+![](https://image-public.bingyan.net/blog/img/KCKwbJra1olTacxrqbpcdGTunSg.jpeg)
 
 # 核心要素
 
@@ -52,7 +52,7 @@ ARG 常用作电影、游戏等的宣发手段，更多地采用故事先行的�
 
 在《Ronin》的设计中，我们将游戏主人公 Ronin 设定为 H 大学游戏编程与设计专业的大四学生，有着自己的社交帐号、学号和生活场景，也有着自己的好友、导师等社交关系。Ronin 的性格取材于临近毕业的大四学生，焦虑、迷茫、需要肯定。在这样的人物设定下，我们为他编写的故事就更加具有真实性，其中发生的矛盾冲突也更能使玩家代入其中。
 
-![](https://image-public.bingyan.net/blog/img/https://image-public.bingyan.net/blog/img/https://image-public.bingyan.net/blog/img/HHlcbRIhToldPxxeJAGcIDKPn5g.jpeg.jpeg.jpeg)
+![](https://image-public.bingyan.net/blog/img/HHlcbRIhToldPxxeJAGcIDKPn5g.jpeg)
 
 这样的设计存在的问题是容易让玩家猜到剧情的走向。这还需要我们在设计故事时再多强调一些戏剧性。
 
@@ -62,7 +62,7 @@ ARG 常用作电影、游戏等的宣发手段，更多地采用故事先行的�
 
 《Ronin》的悬疑色彩起于室友的失踪，落脚于室友和 Ronin 是同一个人。游戏进程中的游戏 demo、视频等内容中也存在悬疑元素。AB 面人设对游戏策划来说也是一个大工程，两面人设之间有交叉和转换，且都承担了内容主体的责任，这非常考验策划的逻辑性。或许避免让同一组策划同时完成两面人设的设定，会更好地避免混淆的问题。
 
-![](https://image-public.bingyan.net/blog/img/https://image-public.bingyan.net/blog/img/https://image-public.bingyan.net/blog/img/RCtSbsP6qoO8sVxwfovcVQulnNc.jpeg.jpeg.jpeg)
+![](https://image-public.bingyan.net/blog/img/RCtSbsP6qoO8sVxwfovcVQulnNc.jpeg)
 
 ## 谜题和线索
 
@@ -70,7 +70,7 @@ ARG 常用作电影、游戏等的宣发手段，更多地采用故事先行的�
 
 《Ronin》主要采用了线性谜题设计。我们将谜题收入一个网页（[http://bysj.hust.online](http://bysj.hust.online)），一方面是为了让玩家有阶段性的参与感，不至于在完整解谜之前一团雾水，另一方面是为了将网页也作为一个信息载体，在控制台和解谜结束后的网页主体中也存放一些涉及故事和线索的信息。在解谜的过程中，我们努力让线索随解谜进程而出现，但一些突发状况的出现使得更多线索被提前解锁了，玩家拿到的可能是大于当前关卡解谜需要的线索。
 
-![](https://image-public.bingyan.net/blog/img/https://image-public.bingyan.net/blog/img/https://image-public.bingyan.net/blog/img/L18qbNNQboqF2XxKiTfcUHAInQc.jpeg.jpeg.jpeg)
+![](https://image-public.bingyan.net/blog/img/L18qbNNQboqF2XxKiTfcUHAInQc.jpeg)
 
 线性有线性的思路，开放世界也有开放世界的玩法。线性意味着我们要主动控制线索的曝光，开放世界则更多地需要玩家组织思路来解谜。在实际操作的过程中，也可以将这两者结合（例如标签性的谜题提示来绑定线索和谜题。这是我们摸索出的能够尽可能兼顾线性的破局思路和开放世界的丰富体验的方案）。
 
@@ -80,11 +80,11 @@ ARG 常用作电影、游戏等的宣发手段，更多地采用故事先行的�
 
 在我们的设定里，Ronin 是个热爱游戏、不爱交际的男生，平时的行踪也不容易被其他人得知。我们将 Ronin 定位于西区宿舍，在校园内的活动轨迹需要通过买水果捞、坐校车这样的行为串联起来。而西边生活区改建为他能够来到绝望坡提供了契机。
 
-![](https://image-public.bingyan.net/blog/img/https://image-public.bingyan.net/blog/img/https://image-public.bingyan.net/blog/img/LLGdbA0TfoperDxf0gVcLVthnAh.jpeg.jpeg.jpeg)
+![](https://image-public.bingyan.net/blog/img/LLGdbA0TfoperDxf0gVcLVthnAh.jpeg)
 
 类似地，我们通过 Ronin 的 BBHust 社交帐号将线索留在冰岩作坊的门上。通过这样的方式，我们尝试让东边的同学也能参与到线下的互动中来。
 
-![](https://image-public.bingyan.net/blog/img/https://image-public.bingyan.net/blog/img/https://image-public.bingyan.net/blog/img/RdzSb8S9UoFoinxAUp8cgaPenPf.jpeg.jpeg.jpeg)
+![](https://image-public.bingyan.net/blog/img/RdzSb8S9UoFoinxAUp8cgaPenPf.jpeg)
 
 # 设计难点
 
@@ -114,9 +114,9 @@ ARG 的故事需要有很多载体，如头像、图片、文字、视频、音�
 
 我们在尝试设计这款 ARG 前，体验了一些市面上的 ARG。由于其题材的特殊性，大多解谜都涉及密码、网络、数字、音视频处理等知识。复盘过程中，我们发现了和《iKnowGhost》存在的类似问题，即文科生在解谜过程中的参与感不足。解谜的形式用过于硬核的方式呈现，很大程度上会限制参与者的发挥。
 
-![](https://image-public.bingyan.net/blog/img/https://image-public.bingyan.net/blog/img/https://image-public.bingyan.net/blog/img/J6aAbG5lso7gSnxso7tcMADdnDd.jpeg.jpeg.jpeg)
+![](https://image-public.bingyan.net/blog/img/J6aAbG5lso7gSnxso7tcMADdnDd.jpeg)
 
-![](https://image-public.bingyan.net/blog/img/https://image-public.bingyan.net/blog/img/https://image-public.bingyan.net/blog/img/LvPkboFeEoLtPnxWEUQcYsHNnBg.jpeg.jpeg.jpeg)
+![](https://image-public.bingyan.net/blog/img/LvPkboFeEoLtPnxWEUQcYsHNnBg.jpeg)
 
 在体验了更多类型的解谜游戏之后，我们也找到了一些能够让更多不同学科视角的同学参与进来的方法（如文字、诗词、图形、音乐等）。设计出这样的谜题，当然也需要策划组本身有来自不同学科不同专业的同学参与。
 
