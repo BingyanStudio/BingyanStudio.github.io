@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>从初学者角度的二次解读文章 - 《自己实现黑白图片自动上色AI》 - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="从初学者角度的二次解读文章 - 《自己实现黑白图片自动上色AI》 - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/b77a45a0/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2022-10-29T06:36:22.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">从初学者角度的二次解读文章 - 《自己实现黑白图片自动上色AI》</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>October</span>
+            <span>29,</span>
+            <span>2022</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <p>前言## </p>
+<p>本文是对文章《自己实现黑白图片自动上色 AI》的一些个人阅读后的困惑与解答的整理。强烈建议阅读原文后再阅读本文。</p>
+<p>原文链接 自己实现黑白图片自动上色AI - 金天</p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/30493746">https://zhuanlan.zhihu.com/p/30493746</a></p>
+<p>这篇文章是我第一次接触 AI 所阅读的文章，原文其实已经十分详实了，但是对于初学者（我）来说还是有很多当时并不理解的地方，而且原文没有任何拓展阅读以及参考文献，导致整个学习过程异常艰难，只能自己去问身边的大佬或者找 paper 来看。下面对该篇文章从初学者的角度对一些内容作一些我认为必要的注释。</p>
+<p>所有代码我已上传到 Github：ThankRain&#x2F;image_render: 🎨黑白图片上色 (github.com)  <a target="_blank" rel="noopener" href="https://github.com/ThankRain/image_render/tree/dev">https://github.com/ThankRain/image_render/tree/dev</a></p>
+<blockquote>
+<p>本文指的初学者为从未接触过 AI 相关内容但有 Python 基本的语法基础</p>
+<blockquote>
+<p>简单提要：本文涉及到的内容有：Python、TensorFlow、U-Net 模型</p>
+</blockquote>
+<blockquote>
+<p>强烈建议安装 Anaconda 用于 Python 的版本管理</p>
+</blockquote>
+<p>为了更好地训练模型，建议有 NVIDIA 显卡的同学先学习如何</p>
+<p>在 TensorFlow 中使用 GPU </p>
+<p><a target="_blank" rel="noopener" href="https://tensorflow.google.cn/install/gpu?hl=zh-cn">https://tensorflow.google.cn/install/gpu?hl=zh-cn</a></p>
+<h2 id="关于模型"><a href="#关于模型" class="headerlink" title="关于模型"></a>关于模型</h2></blockquote>
+<p>文章定义了以下模型：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">def build_model():    model = Sequential()    model.<span class="built_in">add</span>(InputLayer(input_shape=(None, None, 1)))    model.<span class="built_in">add</span>(Conv2D(8, (3, 3), <span class="attribute">activation</span>=<span class="string">&#x27;relu&#x27;</span>, <span class="attribute">padding</span>=<span class="string">&#x27;same&#x27;</span>, <span class="attribute">strides</span>=2))    model.<span class="built_in">add</span>(Conv2D(8, (3, 3), <span class="attribute">activation</span>=<span class="string">&#x27;relu&#x27;</span>, <span class="attribute">padding</span>=<span class="string">&#x27;same&#x27;</span>))    model.<span class="built_in">add</span>(Conv2D(16, (3, 3), <span class="attribute">activation</span>=<span class="string">&#x27;relu&#x27;</span>, <span class="attribute">padding</span>=<span class="string">&#x27;same&#x27;</span>))    model.<span class="built_in">add</span>(Conv2D(16, (3, 3), <span class="attribute">activation</span>=<span class="string">&#x27;relu&#x27;</span>, <span class="attribute">padding</span>=<span class="string">&#x27;same&#x27;</span>, <span class="attribute">strides</span>=2))    model.<span class="built_in">add</span>(Conv2D(32, (3, 3), <span class="attribute">activation</span>=<span class="string">&#x27;relu&#x27;</span>, <span class="attribute">padding</span>=<span class="string">&#x27;same&#x27;</span>))    model.<span class="built_in">add</span>(Conv2D(32, (3, 3), <span class="attribute">activation</span>=<span class="string">&#x27;relu&#x27;</span>, <span class="attribute">padding</span>=<span class="string">&#x27;same&#x27;</span>, <span class="attribute">strides</span>=2))    model.<span class="built_in">add</span>(UpSampling2D((2, 2)))    model.<span class="built_in">add</span>(Conv2D(32, (3, 3), <span class="attribute">activation</span>=<span class="string">&#x27;relu&#x27;</span>, <span class="attribute">padding</span>=<span class="string">&#x27;same&#x27;</span>))    model.<span class="built_in">add</span>(UpSampling2D((2, 2)))    model.<span class="built_in">add</span>(Conv2D(16, (3, 3), <span class="attribute">activation</span>=<span class="string">&#x27;relu&#x27;</span>, <span class="attribute">padding</span>=<span class="string">&#x27;same&#x27;</span>))    model.<span class="built_in">add</span>(UpSampling2D((2, 2)))    model.<span class="built_in">add</span>(Conv2D(2, (3, 3), <span class="attribute">activation</span>=<span class="string">&#x27;tanh&#x27;</span>, <span class="attribute">padding</span>=<span class="string">&#x27;same&#x27;</span>))    model.compile(<span class="attribute">optimizer</span>=<span class="string">&#x27;rmsprop&#x27;</span>, <span class="attribute">loss</span>=<span class="string">&#x27;mse&#x27;</span>)    return model</span><br></pre></td></tr></table></figure>
+<p>文章并未对其进行解释，只有一句：</p>
+<blockquote>
+<p>整个过程非常简单，也不愧是我们的simple版本，相信你应该一目了然。如果你觉得过于简单，那么后面会有更加复杂的版本。我们训练6000次，同时把模型保存一下，后面再预测的时候会load整个模型。</p>
+<p>当时我看到这句话的表情是这样的：</p>
+</blockquote>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/rxLIic6e5g8TiaxqjLh5EGkdJ2XaEKAkrjEoRibwfDV6pibbClpmFBN8d77RexaoBXKicjAQo5qXNGT0Kibq9QpZGDyQ/640?wx_fmt=jpeg"> 一目了然？谁一目了然？一目了然什么？首先，我尝试从代码的角度来理解这个模型：通过多次逐渐增加卷积深度的卷积，随后进行反向的上采样和反向卷积，最后设置一下优化器和损失函数。模型的大概意思就是这样，具体可以去搜搜 Conv2D 和 UpSampling2D，这里不做过多解释。但问题是，为什么要这么干？我不明白，原作者说了：一目了然</p>
+<h2 id="问题1：什么是卷积"><a href="#问题1：什么是卷积" class="headerlink" title="问题1：什么是卷积"></a>问题1：什么是卷积</h2><p>不明白，首先得去找，虽然我知道卷积函数是什么，但是我完全无法与这里的卷积联系起来，那就先去把卷积搞明白。这个视频基本上能够解决我的第一个问题</p>
+<p>从“卷积”、到“图像卷积操作”、再到“卷积神经网络”，“卷积”意义的3次改变 -(哔哩哔哩)</p>
+<p>简单来说，神经网络里的卷积就是一个提取特征的工具，但是Conv2D函数中只定义了卷积核的大小而没有定义卷积核的具体值，在我的理解中，卷积核的具体值便是模型需要去学习的内容，通过不断改变卷积核来提取图像的不同特征，最终达到我们所需求的图像特征。</p>
+<h2 id="问题2：模型算法"><a href="#问题2：模型算法" class="headerlink" title="问题2：模型算法"></a>问题2：模型算法</h2><p>虽然简单知道了卷积的原理，但是我仍旧不明白为什么模型要这么写。终于，在我翻阅多篇博客和Paper以后，终于在这篇Paper中（[2]Unpaired Image-to-Image Translation using Cycle-Consistent Adversarial Networks）找到了这个模型的名字：U-Net（U型网）</p>
+<p>更多具体的细节可以去搜一下别的大佬写的文章，以及最初提出U-Net的Paper ([3] U-Net: Convolutional Networks for Biomedical Image Segmentation)，不过U - Net工作原理目前我也不是特别清晰，就暂不进行解读了，有兴趣的UU可以自行研究。</p>
+<h2 id="问题3：多图片数据集如何训练"><a href="#问题3：多图片数据集如何训练" class="headerlink" title="问题3：多图片数据集如何训练"></a>问题3：多图片数据集如何训练</h2><p>原文的训练集只有一张图片，导致最终训练出来的模型只能预测该图片，当我想要喂多张图片给模型的时候遇到了很多困难（初学对框架和模型的工作原理都不清晰，只能慢慢尝试）</p>
+<p>首先就是该模型限制了图片的尺寸，不同尺寸的图片无法投喂，因此我在获取训练集的代码上加入了获取文件夹下所有图片&amp;重新 Resize 图片为指定尺寸：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">import</span> osimport numpy as npfrom keras.layers import Conv2D, UpSampling2D, InputLayerfrom keras.models import Sequentialfrom keras.utils import img_to_array, load_imgfrom matplotlib import pyplotfrom skimage.color import rgb2gray, rgb2lab, lab2rgbfrom skimage.io import imsaveh = <span class="number">272</span>#训练数据集图片高度w = <span class="number">184</span>#训练数据集图片高度oh = h#上色测试图片高度ow = w#上色测试图片宽度，尽量与训练尺寸保持一致，否则上色效果会很差from skimage.transform import resize# 获取训练用图片数据集def get_trains():    path = <span class="string">&quot;data/Train&quot;</span>  # 文件夹目录    files = os.listdir(path)  # 得到文件夹下的所有文件名称    xx = np.empty((file_count(), w, h, <span class="number">1</span>))    yy = np.empty((file_count(), w, h, <span class="number">2</span>))    i = <span class="number">0</span>    for file in files:  # 遍历文件夹        if not os.path.isdir(file):  # 判断是否是文件夹，不是文件夹才打开            # img            print(path + <span class="string">&quot;/&quot;</span> + file)  # 打印结果            image = img_to_array(load_img(path + <span class="string">&quot;/&quot;</span> + file))            dst_size = (w, h)            image = resize(image, dst_size)            image_shape = image.shape            x = rgb2lab(<span class="number">1</span>.<span class="number">0</span> / <span class="number">255</span> * image)[:, :, <span class="number">0</span>]            y = rgb2lab(<span class="number">1</span>.<span class="number">0</span> / <span class="number">255</span> * image)[:, :, <span class="number">1</span>:]            y /= <span class="number">128</span>            x = x.reshape(image_shape[<span class="number">0</span>], image_shape[<span class="number">1</span>], <span class="number">1</span>)            y = y.reshape(image_shape[<span class="number">0</span>], image_shape[<span class="number">1</span>], <span class="number">2</span>)            xx[i] = x            yy[i] = y            i += <span class="number">1</span>    return xx, yy</span><br></pre></td></tr></table></figure>
+<p>获取验证数据集（这里的验证数据集与训练数据集相同，未单独使用不同的测试数据集）：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">def</span> get_trains_origin():    path = <span class="string">&quot;data/Train&quot;</span>  # 文件夹目录    files = os.listdir(path)  # 得到文件夹下的所有文件名称    xx = np.empty((file_count(), ow, oh, <span class="number">1</span>))    yy = np.empty((file_count(), ow, oh, <span class="number">2</span>))    i = <span class="number">0</span>    for file in files:  # 遍历文件夹        if not os.path.isdir(file):  # 判断是否是文件夹，不是文件夹才打开            # img            print(path + <span class="string">&quot;/&quot;</span> + file)  # 打印结果            image = img_to_array(load_img(path + <span class="string">&quot;/&quot;</span> + file))            dst_size = (ow, oh)            image = resize(image, dst_size)            image_shape = image.shape            x = rgb2lab(<span class="number">1</span>.<span class="number">0</span> / <span class="number">255</span> * image)[:, :, <span class="number">0</span>]            y = rgb2lab(<span class="number">1</span>.<span class="number">0</span> / <span class="number">255</span> * image)[:, :, <span class="number">1</span>:]            y /= <span class="number">128</span>            x = x.reshape(image_shape[<span class="number">0</span>], image_shape[<span class="number">1</span>], <span class="number">1</span>)            y = y.reshape(image_shape[<span class="number">0</span>], image_shape[<span class="number">1</span>], <span class="number">2</span>)            xx[i] = x            yy[i] = y            i += <span class="number">1</span>    return xx, yy</span><br></pre></td></tr></table></figure>
+<p>模型函数基本未作修改，只加入了宽高限制（也可以用 None ，但懒得修改）</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">def build_model(hh,ww):    model = Sequential()    model.<span class="built_in">add</span>(InputLayer(input_shape=(ww, hh, 1)))    model.<span class="built_in">add</span>(Conv2D(8, (3, 3), <span class="attribute">activation</span>=<span class="string">&#x27;relu&#x27;</span>, <span class="attribute">padding</span>=<span class="string">&#x27;same&#x27;</span>, <span class="attribute">strides</span>=2))    model.<span class="built_in">add</span>(Conv2D(8, (3, 3), <span class="attribute">activation</span>=<span class="string">&#x27;relu&#x27;</span>, <span class="attribute">padding</span>=<span class="string">&#x27;same&#x27;</span>))    model.<span class="built_in">add</span>(Conv2D(16, (3, 3), <span class="attribute">activation</span>=<span class="string">&#x27;relu&#x27;</span>, <span class="attribute">padding</span>=<span class="string">&#x27;same&#x27;</span>))    model.<span class="built_in">add</span>(Conv2D(16, (3, 3), <span class="attribute">activation</span>=<span class="string">&#x27;relu&#x27;</span>, <span class="attribute">padding</span>=<span class="string">&#x27;same&#x27;</span>, <span class="attribute">strides</span>=2))    model.<span class="built_in">add</span>(Conv2D(32, (3, 3), <span class="attribute">activation</span>=<span class="string">&#x27;relu&#x27;</span>, <span class="attribute">padding</span>=<span class="string">&#x27;same&#x27;</span>))    model.<span class="built_in">add</span>(Conv2D(32, (3, 3), <span class="attribute">activation</span>=<span class="string">&#x27;relu&#x27;</span>, <span class="attribute">padding</span>=<span class="string">&#x27;same&#x27;</span>, <span class="attribute">strides</span>=2))    model.<span class="built_in">add</span>(UpSampling2D((2, 2)))    model.<span class="built_in">add</span>(Conv2D(32, (3, 3), <span class="attribute">activation</span>=<span class="string">&#x27;relu&#x27;</span>, <span class="attribute">padding</span>=<span class="string">&#x27;same&#x27;</span>))    model.<span class="built_in">add</span>(UpSampling2D((2, 2)))    model.<span class="built_in">add</span>(Conv2D(16, (3, 3), <span class="attribute">activation</span>=<span class="string">&#x27;relu&#x27;</span>, <span class="attribute">padding</span>=<span class="string">&#x27;same&#x27;</span>))    model.<span class="built_in">add</span>(UpSampling2D((2, 2)))    model.<span class="built_in">add</span>(Conv2D(2, (3, 3), <span class="attribute">activation</span>=<span class="string">&#x27;tanh&#x27;</span>, <span class="attribute">padding</span>=<span class="string">&#x27;same&#x27;</span>))    model.compile(<span class="attribute">optimizer</span>=<span class="string">&#x27;rmsprop&#x27;</span>, <span class="attribute">loss</span>=<span class="string">&#x27;mse&#x27;</span>)    return model</span><br></pre></td></tr></table></figure>
+<p>训练函数修改为：</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">def <span class="built_in">train</span>():    xx, yy = <span class="built_in">get_trains</span>()    model0 = <span class="built_in">build_model</span>(h,w)    num_epochs = <span class="number">6000</span>    batch_size = <span class="number">6</span>    model_file = <span class="string">&#x27;simple_model.h5&#x27;</span>    model0.<span class="built_in">load_weights</span>(model_file)    <span class="built_in">print</span>(xx.shape,yy.shape)    <span class="built_in">print</span>(h,w)    model0.<span class="built_in">fit</span>(xx, yy, batch_size=<span class="built_in">file_count</span>(), epochs=<span class="number">10000</span>)    model0.<span class="built_in">save</span>(model_file)</span><br></pre></td></tr></table></figure>
+<p>上色函数：</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">def <span class="built_in">colorize</span>():    x, y = <span class="built_in">get_trains_origin</span>()    model = <span class="built_in">build_model</span>(oh,ow)    model.<span class="built_in">load_weights</span>(<span class="string">&#x27;simple_model.h5&#x27;</span>)    output = model.<span class="built_in">predict</span>(x)    <span class="built_in">print</span>(output.shape, x.shape, y.shape)    output *= <span class="number">128</span>    for i in <span class="built_in">range</span>(<span class="built_in">file_count</span>()) :        tmp = np.<span class="built_in">zeros</span>((ow, oh, <span class="number">3</span>))        tmp[:, :, <span class="number">0</span>] = x[i, :, :, <span class="number">0</span>]        tmp[:, :, <span class="number">1</span>:] = output[i,:, :, :]        <span class="built_in">imsave</span>(<span class="string">&quot;test_image_result.png&quot;</span>, <span class="built_in">lab2rgb</span>(tmp))        <span class="built_in">imsave</span>(<span class="string">&quot;test_image_gray.png&quot;</span>, <span class="built_in">rgb2gray</span>(<span class="built_in">lab2rgb</span>(tmp)))        pyplot.<span class="built_in">imshow</span>(<span class="built_in">lab2rgb</span>(tmp))        pyplot.<span class="built_in">show</span>()</span><br></pre></td></tr></table></figure>
+<p>最终训练效果图（请自行脑补灰度图）：</p>
+<p>这里只简单摘了几张图片。由于算力因素，训练的图片大小不能太大，看着比较模糊，但整体效果不错。</p>
+<p>完整代码：</p>
+<p>ThankRain&#x2F;image_render: 🎨黑白图片上色  <a target="_blank" rel="noopener" href="https://github.com/ThankRain/image_render">https://github.com/ThankRain/image_render</a></p>
+<p>在 Colab 中打开（由于里面包含有24张上色结果图片导致文件较大，加载可能会比较慢）</p>
+<p>index.ipynb - Colaboratory (google.com)</p>
+<p><a target="_blank" rel="noopener" href="https://colab.research.google.com/github/ThankRain/image_render/blob/38e155937805b7269d05655cf204a624e8ac943b/index.ipynb">https://colab.research.google.com/github/ThankRain/image_render/blob/38e155937805b7269d05655cf204a624e8ac943b/index.ipynb</a></p>
+<h2 id="参考内容"><a href="#参考内容" class="headerlink" title="参考内容"></a>参考内容</h2><ol>
+<li><p>自己实现黑白图片自动上色AI（一） - 知乎    <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/30493746">https://zhuanlan.zhihu.com/p/30493746</a></p>
+</li>
+<li><p>[1703.10593] Unpaired Image-to-Image Translation using Cycle-Consistent Adversarial Networks <a target="_blank" rel="noopener" href="https://arxiv.org/abs/1703.10593">https://arxiv.org/abs/1703.10593</a></p>
+</li>
+<li><p>[1505.04597] U-Net: Convolutional Networks for Biomedical Image Segmentation <a target="_blank" rel="noopener" href="https://arxiv.org/abs/1505.04597">https://arxiv.org/abs/1505.04597</a></p>
+</li>
+<li><p>junyanz&#x2F;pytorch-CycleGAN-and-pix2pix: Image-to-Image Translation in PyTorch  <a target="_blank" rel="noopener" href="https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix">https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix</a></p>
+</li>
+<li><p>从“卷积”、到“图像卷积操作”、再到“卷积神经网络”，“卷积”意义的3次改变  <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1VV411478E">https://www.bilibili.com/video/BV1VV411478E</a></p>
+</li>
+</ol>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/225b7680/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">Hook模型</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/30335de7/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">何为“代入感”</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

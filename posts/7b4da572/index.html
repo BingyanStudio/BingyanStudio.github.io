@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>CSS 实践方式 - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="CSS 实践方式 - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/7b4da572/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2022-04-01T07:37:57.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">CSS 实践方式</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>April</span>
+            <span>1,</span>
+            <span>2022</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <p>Tailwind CSS，一个功能类优先的 CSS 框架。</p>
+<p>基于 Tailwind CSS 的核心概念，了解 CSS 中的一些设计理念。</p>
+<p>在面向对象的程序设计中，我们普遍遵循高内聚、低耦合的原则。一个程序或项目往往由多个模块组成，高内聚指一个模块中各个元素之间联系较为紧密，从而意味着更高效的功能实现；低耦合指每个模块之间联系的紧密程度较低，意味着单个模块独立性更强，可重用性与可移植性更高，便于后续的维护。</p>
+<p>简单来说，HTML 负责结构和内容，CSS 负责样式。理想情况下，它们之间应该分工明确，互不干扰，显然这是不切实际的。</p>
+<p>随着技术的发展，为了使项目结构更加清晰，逻辑更加合理，可维护性更高，产生了各种各样的实践方式。</p>
+<h3 id="HTML-与-CSS-间的实践方式"><a href="#HTML-与-CSS-间的实践方式" class="headerlink" title="HTML 与 CSS 间的实践方式"></a>HTML 与 CSS 间的实践方式</h3><h4 id="不提倡的方式"><a href="#不提倡的方式" class="headerlink" title="不提倡的方式"></a>不提倡的方式</h4><h5 id="内联样式"><a href="#内联样式" class="headerlink" title="内联样式"></a>内联样式</h5><p>内联样式，将样式写入 HTML 标签中，一方面来说其较高的优先级使得样式间的继承关系变得更为复杂，另一方面来说在耦合性较高的同时，与 内部样式 或 外联样式 相比，并没有鲜明的优势，维护起来更加困难，且无法使用伪类或伪元素，灵活性较差。</p>
+<h5 id="CSS-结构化命名"><a href="#CSS-结构化命名" class="headerlink" title="CSS 结构化命名"></a>CSS 结构化命名</h5><p>结构化命名，根据页面中模块的位置命名。</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="keyword">div</span> <span class="built_in">class</span>=<span class="string">&quot;content-left&quot;</span>&gt;  &lt;<span class="keyword">div</span> <span class="built_in">class</span>=<span class="string">&quot;text-center&quot;</span>&gt;<span class="keyword">div</span>&gt;<span class="keyword">div</span>&gt;&lt;<span class="keyword">div</span> <span class="built_in">class</span>=<span class="string">&quot;sidebar&quot;</span>&gt;<span class="keyword">div</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>该例中，当希望将 sidebar 移到左侧时，需要同时修改选择器的名字，否则就会与实际情况产生矛盾，特别是在页面结构相对灵活和复杂时，情况更加难以琢磨。</p>
+<h4 id="关注点分离-与-CSS-语义化命名"><a href="#关注点分离-与-CSS-语义化命名" class="headerlink" title="关注点分离 与 CSS 语义化命名"></a>关注点分离 与 CSS 语义化命名</h4><p>语义化命名，根据模块的功能命名，从而 HTML 只包含关于内容的信息，所有关于样式的决定都在 CSS 中进行，这意味着只需要更换样式表，就可以重新设计一个网站。</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="keyword">div</span> <span class="built_in">class</span>=<span class="string">&quot;main&quot;</span>&gt;<span class="keyword">div</span>&gt;&lt;<span class="keyword">div</span> <span class="built_in">class</span>=<span class="string">&quot;sidebar&quot;</span>&gt;<span class="keyword">div</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>这是一个相对宽泛的概念，不加以约束时，存在以下几个问题：</p>
+<ul>
+<li><p>命名冲突。</p>
+</li>
+<li><p>使用子代选择器时，HTML 与 CSS 间仍然有很强的耦合性，嵌套的 CSS 映射了 HTML 的结构。</p>
+</li>
+</ul>
+<p>HTML 并不关心样式决定，但 CSS 却非常关心 HTML 结构。</p>
+<ul>
+<li>适合的名字很难起，特别是英语水平欠佳的时候（或许可以有效提升英语水平）。</li>
+</ul>
+<h4 id="BEM"><a href="#BEM" class="headerlink" title="BEM"></a>BEM</h4><p>Block Elenment Modifier，简称 BEM，是一种 CSS 命名规范。</p>
+<p>BEM的命名规则：block-name__element-name–modifier-name，模块名 + 元素名 + 修饰器名。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;form <span class="attribute">class</span>=<span class="string">&quot;search-form&quot;</span>&gt;        &lt;input <span class="attribute">class</span>=<span class="string">&quot;search-form__input&quot;</span>&gt;         &lt;button <span class="attribute">class</span>=<span class="string">&quot;search-form__button&quot;</span>&gt;搜索按钮button&gt;form&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div <span class="attribute">class</span>=<span class="string">&quot;banner__btn&quot;</span>&gt;  &lt;button <span class="attribute">class</span>=<span class="string">&quot;.button .banner__btn--red&quot;</span>&gt;button&gt;    &lt;button <span class="attribute">class</span>=<span class="string">&quot;.button .banner__btn--green&quot;</span>&gt;button&gt;div&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">.</span><span class="comment">banner__btn</span><span class="literal">--</span><span class="comment">red </span><span class="string">.</span><span class="comment">banner__btn</span><span class="literal">--</span><span class="comment">green </span></span><br></pre></td></tr></table></figure>
+<h5 id="解决的问题一-命名冲突"><a href="#解决的问题一-命名冲突" class="headerlink" title="解决的问题一 命名冲突"></a>解决的问题一 命名冲突</h5><p>CSS 是全局化生效的，单独开发组件时，如果不在编译时进行处理，如使用 Webpack 的 css-loader，容易产生命名冲突，从而导致样式冲突。</p>
+<p>理想情况下，在一套组件的开发过程中，我们只需考虑组件内的命名情况，而不必担心是否和组件外产生冲突。</p>
+<p>解决思路，在同一个项目中，每个组件都有其独特的命名，从而在为组件内部元素命名时加上组件名，组件内的样式就不会与组件外的样式冲突。</p>
+<h5 id="解决的问题二-子代选择器-CSS-对-HTML-结构上的依赖"><a href="#解决的问题二-子代选择器-CSS-对-HTML-结构上的依赖" class="headerlink" title="解决的问题二 子代选择器 CSS 对 HTML 结构上的依赖"></a>解决的问题二 子代选择器 CSS 对 HTML 结构上的依赖</h5><p>使用子代选择器时，用层次关系结构来定位元素，可能会因为需求改变而大面积重写。同一个元素样式零散分布在文件的不同地方，定位该元素的选择器也可能各不相同。</p>
+<p>后期维护时，需要一边检查该元素的 DOM 结构，一边对照 CSS 文件，找到对应样式，再进行更改。</p>
+<p>权重问题，在响应式布局中，通过覆盖之前的元素样式来达成效果，此时需要不断确认该元素之前的选择器写法来计算它的权重，同时以相同或更高的权重来覆盖，甚至需要通过添加额外的类名或标签名。</p>
+<p>解决思路，BEM 禁止使用子代选择器，在命名过程中，它是不考虑结构的，父元素名、模块构造或是元素之间层级关系互相变动，都不会影响元素的名字，一个元素总是一个模块的一部分，而不是另一个元素的一部分。此时，组件内所有元素的权值都是统一清晰的，便于响应式中覆盖样式。</p>
+<h5 id="开放封闭原则"><a href="#开放封闭原则" class="headerlink" title="开放封闭原则"></a>开放封闭原则</h5><p>对扩展是开放的，对修改是封闭的。在 BEM 中，我们可以理解为，应该使用 modifier 去拓展样式，而不应该去修改 block 或 element 的基础样式。</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="keyword">div</span>&gt;    &lt;button <span class="built_in">class</span>=<span class="string">&quot;btn btn--green&quot;</span>&gt;正确button&gt;    &lt;button <span class="built_in">class</span>=<span class="string">&quot;btn btn--red&quot;</span>&gt;错误button&gt;<span class="keyword">div</span>&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">.btn</span> <span class="string">.btn--green</span> <span class="string">.btn--red</span> </span><br></pre></td></tr></table></figure>
+<h5 id="SEM-与-BIO"><a href="#SEM-与-BIO" class="headerlink" title="SEM 与 BIO"></a>SEM 与 BIO</h5><p>Scalable Extensible Maintainable，可伸缩的 可扩展的 可维护的</p>
+<p>BEM ITCSS OOCSS</p>
+<p>此时，CSS 与 HTML 结构不再耦合。</p>
+<h4 id="新的问题-处理类似的组件"><a href="#新的问题-处理类似的组件" class="headerlink" title="新的问题 处理类似的组件"></a>新的问题 处理类似的组件</h4><p>这里有一张介绍宠物类型的卡片：</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="keyword">div</span> <span class="built_in">class</span>=<span class="string">&quot;pet-introduction&quot;</span>&gt;  &lt;img <span class="built_in">class</span>=<span class="string">&quot;pet-introduction__image&quot;</span> src=<span class="string">&quot;https://tse1-mm.cn.bing.net/th/id/R-C.ba505e59ca3243fb4027fdf29eae9cea?rik=oQTn%2fbheyUTQOA&amp;riu=http%3a%2f%2fpicture.ik123.com%2fuploads%2fallimg%2f191129%2f12-191129143024.jpg&amp;ehk=YrFqIM1jz%2fzt9a4M7CuO5TKex1YbAMZ9Zujl5sDV5PE%3d&amp;risl=&amp;pid=ImgRaw&quot;</span> alt=<span class="string">&quot;&quot;</span>&gt;  &lt;<span class="keyword">div</span> <span class="built_in">class</span>=<span class="string">&quot;pet-introduction__content&quot;</span>&gt;    &lt;h2 <span class="built_in">class</span>=<span class="string">&quot;pet-introduction__name&quot;</span>&gt;Rabbith2&gt;    &lt;p <span class="built_in">class</span>=<span class="string">&quot;pet-introduction__body&quot;</span>&gt;      Rabbits are small mammals <span class="keyword">in</span> <span class="keyword">the</span> family Leporidae (along <span class="keyword">with</span> <span class="keyword">the</span> hare) <span class="keyword">of</span> <span class="keyword">the</span> order Lagomorpha (along <span class="keyword">with</span> <span class="keyword">the</span> pika). Oryctolagus cuniculus includes <span class="keyword">the</span> European rabbit species <span class="keyword">and</span> <span class="keyword">its</span> descendants, <span class="keyword">the</span> world&#x27;s <span class="number">305</span> breeds[<span class="number">1</span>] <span class="keyword">of</span> domestic rabbit.    p&gt;  <span class="keyword">div</span>&gt;<span class="keyword">div</span>&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.pet-<span class="built_in">int</span>roduction .pet-<span class="built_in">int</span>roduction__image .pet-<span class="built_in">int</span>roduction__content .pet-<span class="built_in">int</span>roduction__name .pet-<span class="built_in">int</span>roduction__body </span><br></pre></td></tr></table></figure>
+<p>现在我们有一个新的需求，需要将文章预览以卡片的形式展现。</p>
+<p>我们不能将 .pet-introduction 直接应用到新的卡片中，这样不符合语义，.article-preview 应该是独立的组件。</p>
+<h5 id="处理方案一-复制样式"><a href="#处理方案一-复制样式" class="headerlink" title="处理方案一 复制样式"></a>处理方案一 复制样式</h5><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="keyword">div</span> <span class="built_in">class</span>=<span class="string">&quot;article-preview&quot;</span>&gt;  &lt;img <span class="built_in">class</span>=<span class="string">&quot;article-preview__image&quot;</span> src=<span class="string">&quot;https://upload.wikimedia.org/wikipedia/commons/a/ad/BolexH16.jpg&quot;</span> alt=<span class="string">&quot;&quot;</span>&gt;  &lt;<span class="keyword">div</span> <span class="built_in">class</span>=<span class="string">&quot;article-preview__content&quot;</span>&gt;    &lt;h2 <span class="built_in">class</span>=<span class="string">&quot;article-preview__name&quot;</span>&gt;The History <span class="keyword">of</span> Filmh2&gt;    &lt;p <span class="built_in">class</span>=<span class="string">&quot;article-preview__body&quot;</span>&gt;      A film, also called a movie, motion picture <span class="keyword">or</span> moving picture, <span class="keyword">is</span> a work <span class="keyword">of</span> visual art used <span class="keyword">to</span> simulate experiences <span class="keyword">that</span> communicate ideas, stories, perceptions, feelings, beauty, <span class="keyword">or</span> atmosphere <span class="keyword">through</span> <span class="keyword">the</span> use <span class="keyword">of</span> moving images.    p&gt;  <span class="keyword">div</span>&gt;<span class="keyword">div</span>&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">.article-preview</span> <span class="string">.article-preview__image</span> <span class="string">.article-preview__content</span> <span class="string">.article-preview__name</span> <span class="string">.article-preview__body</span> </span><br></pre></td></tr></table></figure>
+<h5 id="处理方案二-extend"><a href="#处理方案二-extend" class="headerlink" title="处理方案二 @extend"></a>处理方案二 @extend</h5><p>使用预处理器的 @extend 功能，进行复用，一般不建议这样使用</p>
+<h5 id="处理方案三-抽出一个与内容无关的组件"><a href="#处理方案三-抽出一个与内容无关的组件" class="headerlink" title="处理方案三 抽出一个与内容无关的组件"></a>处理方案三 抽出一个与内容无关的组件</h5><p>从设计角度看，这两个组件有很多共同点，但从语义角度看，这两个组件的功能各不相同。</p>
+<p>从而我们可以抽出一个覆盖它们共同点的新组件，称为 .media-card。</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">.media-card</span> <span class="string">.media-card__image</span> <span class="string">.media-card__content</span> <span class="string">.media-card__name</span> <span class="string">.media-card__body</span> </span><br></pre></td></tr></table></figure>
+<p>这样我们的 HTML 就可以改写为：</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="keyword">div</span> <span class="built_in">class</span>=<span class="string">&quot;media-card&quot;</span>&gt;  &lt;img <span class="built_in">class</span>=<span class="string">&quot;media-card__image&quot;</span> src=<span class="string">&quot;https://tse1-mm.cn.bing.net/th/id/R-C.ba505e59ca3243fb4027fdf29eae9cea?rik=oQTn%2fbheyUTQOA&amp;riu=http%3a%2f%2fpicture.ik123.com%2fuploads%2fallimg%2f191129%2f12-191129143024.jpg&amp;ehk=YrFqIM1jz%2fzt9a4M7CuO5TKex1YbAMZ9Zujl5sDV5PE%3d&amp;risl=&amp;pid=ImgRaw&quot;</span> alt=<span class="string">&quot;&quot;</span>&gt;  &lt;<span class="keyword">div</span> <span class="built_in">class</span>=<span class="string">&quot;media-card__content&quot;</span>&gt;    &lt;h2 <span class="built_in">class</span>=<span class="string">&quot;media-card__name&quot;</span>&gt;Rabbith2&gt;    &lt;p <span class="built_in">class</span>=<span class="string">&quot;media-card__body&quot;</span>&gt;      Rabbits are small mammals <span class="keyword">in</span> <span class="keyword">the</span> family Leporidae (along <span class="keyword">with</span> <span class="keyword">the</span> hare) <span class="keyword">of</span> <span class="keyword">the</span> order Lagomorpha (along <span class="keyword">with</span> <span class="keyword">the</span> pika). Oryctolagus cuniculus includes <span class="keyword">the</span> European rabbit species <span class="keyword">and</span> <span class="keyword">its</span> descendants, <span class="keyword">the</span> world&#x27;s <span class="number">305</span> breeds[<span class="number">1</span>] <span class="keyword">of</span> domestic rabbit.    p&gt;  <span class="keyword">div</span>&gt;<span class="keyword">div</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>这种方式消除了 CSS 中的重复，但是又将 HTML 与样式关联了起来，此时如果想单独给其中的一种卡片定制样式，就需要到 HTML 中再进行修改，修改方式可以考虑上文提到的开放封闭原则。</p>
+<h4 id="并不存在真正的-关注点分离"><a href="#并不存在真正的-关注点分离" class="headerlink" title="并不存在真正的 关注点分离"></a>并不存在真正的 关注点分离</h4><p>由上文可得，并不存在真正的关注点分离，只是依赖的方向不同，我们有两种方式来处理 CSS 与 HTML 的关系。</p>
+<h5 id="依赖于-CSS-的-HTML"><a href="#依赖于-CSS-的-HTML" class="headerlink" title="依赖于 CSS 的 HTML"></a>依赖于 CSS 的 HTML</h5><p>HTML 是独立的，它只负责提供需要 CSS 操作的功能块，CSS 针对这些功能块设计样式。</p>
+<p>意味着可重塑的 HTML。</p>
+<h5 id="依赖于-HTML-的-CSS"><a href="#依赖于-HTML-的-CSS" class="headerlink" title="依赖于 HTML 的 CSS"></a>依赖于 HTML 的 CSS</h5><p>使类的命名与内容无关，而是与重复样式有关，CSS是独立的，它只负责提供 HTML 需要的样式，由 HTML 去进行组合，实现所需要的设计。</p>
+<p>意味着可重用的 CSS。</p>
+<p>根据自己的需要作出选择：可重塑的 HTML，还是可重用的 CSS？</p>
+<blockquote>
+<p>CSS功能类与关注点分离 | TailwindCSS 中文网 (tailwindchina.com)</p>
+<h4 id="功能类优先的-CSS"><a href="#功能类优先的-CSS" class="headerlink" title="功能类优先的 CSS"></a>功能类优先的 CSS</h4></blockquote>
+<p>这里以 Tailwind CSS 为例。</p>
+<p>将可重用的 CSS 细粒化，比起重复，我们更喜欢组合。</p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="keyword">div</span> <span class="keyword">class</span>=<span class="string">&quot;p-6 max-w-sm mx-auto bg-white rounded-xl shadow-md flex items-center space-x-4&quot;</span>&gt;  &lt;<span class="keyword">div</span> <span class="keyword">class</span>=<span class="string">&quot;flex-shrink-0&quot;</span>&gt;    &lt;img <span class="keyword">class</span>=<span class="string">&quot;h-12 w-12&quot;</span> src=<span class="string">&quot;/img/logo.svg&quot;</span> alt=<span class="string">&quot;ChitChat Logo&quot;</span>&gt;  <span class="keyword">div</span>&gt;  &lt;<span class="keyword">div</span>&gt;    &lt;<span class="keyword">div</span> <span class="keyword">class</span>=<span class="string">&quot;text-xl font-medium text-black&quot;</span>&gt;ChitChatdiv&gt;    &lt;p <span class="keyword">class</span>=<span class="string">&quot;text-gray-500&quot;</span>&gt;You have a <span class="keyword">new</span> message!p&gt;  <span class="keyword">div</span>&gt;<span class="keyword">div</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>功能类优先的 CSS 乍一看与 内联样式 十分相似，然而它有着 内联样式 遥不可及的优势。</p>
+<h5 id="强制一致性"><a href="#强制一致性" class="headerlink" title="强制一致性"></a>强制一致性</h5><p>使用小型、可组合的功能类时，同一团队的开发人员总是从一组固定的选项中进行选择，免于出现同样是灰色的文本，其实是五彩斑斓的情况（假如没有设计），有效限制了 CSS 的规模随着项目的大小而线性增长。</p>
+<p>一个新的 CSS 块是一张空白的画布，自由而危险。</p>
+<h5 id="仍然可以提取组件"><a href="#仍然可以提取组件" class="headerlink" title="仍然可以提取组件"></a>仍然可以提取组件</h5><p>提升可维护性，解决 CSS 中的重复性问题。</p>
+<h5 id="响应式设计与状态处理"><a href="#响应式设计与状态处理" class="headerlink" title="响应式设计与状态处理"></a>响应式设计与状态处理</h5><p>或许可以看作是一种 CSS in HTML 的模式，维护功能优先的 CSS 项目比维护大型 CSS 代码库更加容易。</p>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/c058d42a/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">分享图片</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/5d4cb524/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">What the f**king PM is doing every day?</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

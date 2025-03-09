@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>Go 1.19 引入新型排序算法 pdqsort - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="Go 1.19 引入新型排序算法 pdqsort - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/8f95714c/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2023-04-02T19:46:22.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">Go 1.19 引入新型排序算法 pdqsort</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>April</span>
+            <span>2,</span>
+            <span>2023</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <p>经典排序算法</p>
+<p>Insertion Sort 插入排序</p>
+<p>Time complexity</p>
+<p>| Best | Avg | Worst |<br>| O(n) | O(n^2) | O(n^2) |</p>
+<p>优点</p>
+<p>最好情况时间复杂度为 O(n)</p>
+<p>缺点</p>
+<p>平均和最坏情况时间复杂度高达O(n^2)</p>
+<p>Quick Sort 快速排序</p>
+<p>•选定一个 pivot•使用 pivot 分割序列，分成元素比 pivot 大和元素比 pivot 小两个序列，不断重复Time complexity</p>
+<p>| Best | Avg | Worst |<br>| O(nlogn) | O(nlogn) | O(n^2) |</p>
+<blockquote>
+<p>最好情况： pivot 为中位数</p>
+<p>最坏情况： pivot 为最大&#x2F;小值</p>
+<p>优点</p>
+</blockquote>
+<p>平均情况时间复杂度为 O(nlogn)</p>
+<p>缺点</p>
+<p>最坏情况时间复杂度 O(n^2)</p>
+<p>Heap Sort 堆排序</p>
+<p>• 构造一个大顶堆• 将根节点（最大元素）交换到最后一个位置，使堆大小 -1，调整整个堆，如此反复Time complexity</p>
+<p>| Best | Avg | Worst |<br>| O(nlogn) | O(nlogn) | O(nlogn) |</p>
+<p>优点</p>
+<p>最坏情况时间复杂度为 O(nlogn)</p>
+<p>缺点</p>
+<p>最好情况时间复杂度为 O(nlogn)</p>
+<p>实际场景 Benchmark</p>
+<p>|  | Best | Avg | Worst |<br>| Insertion Sort | O(n) | O(n^2) | O(n^2) |<br>| Quick Sort | O(nlogn) | O(nlogn) | O(n^2) |<br>| Heap Sort | O(nlogn) | O(nlogn) | O(nlogn) |</p>
+<p>• 插入排序平均和最坏情况都是 O(n^2)，性能不好• 快速排序整体性能处于中间• 堆排序性能比较稳定，各种情况均稳定为 O(nlogn)序列元素排列情况</p>
+<p>• 完全随机 (random)• 有序&#x2F;逆序 (sorted&#x2F;reverse)• 元素重复度较高 (mod8)在此基础上，还需要根据序列长度划分(16&#x2F;128&#x2F;1024)</p>
+<p>random</p>
+<p>• 插入排序在短序列中速度最快• 快速排序在其他情况中速度最快• 堆排序速度与最快算法差距不大sorted</p>
+<p>• 插入排序在序列已经有序的情况下最快</p>
+<p>结论</p>
+<p>• 所有短序列和元素有序情况下,插入排序性能最好• 在大部分的情况下，快速排序有较好的综合性能• 几乎在任何情况下，堆排序的表现都比较稳定pdqsort 算法</p>
+<p>pdqsort (pattern-defeating-quicksort) 是一种不稳定的混合排序算法，它的不同版本被应用在C++ BOOST、Rust 以及Go 1.19中。它对常见的序列类型做了特殊的优化，使得在不同条件下都拥有不错的性能。</p>
+<p>Version 1</p>
+<p>• 对于短序列 (&lt;&#x3D;24) 我们使用插入排序• 其他情况，使用快速排序 (选择首个元素作为 pivot) 来保证整体性能• 当快速排序表现不佳时 (limit&#x3D;&#x3D;0)，使用堆排序来保证最坏情况下时间复杂度仍然为 O(nlogn)&gt; 当最终 pivot 的位置离序列两端很接近时 (距离小于 length&#x2F;8) 判定其表现不佳，当这种情况的次数达到 limit (即 bits.Len(length))时，切换到堆排序。</p>
+<blockquote>
+<p>Version 2</p>
+</blockquote>
+<p>如何改进？</p>
+<p>• 尽量使得 QuickSort 的 pivot 为序列的中位数 -&gt; 改进 choose pivot</p>
+<p>根据序列长度的不同，来决定选择策略</p>
+<p>优化Pivot的选择</p>
+<p>• 短序列 (&lt;&#x3D;8)，选择固定元素</p>
+<p>• 中序列 (&lt;&#x3D;50)，采样三个元素，median of three</p>
+<p>• 长序列 (&gt;50)，采样九个元素，median of medians</p>
+<p>同时，pivot 的这种采样方式使得我们有探知序列当前状态的能力</p>
+<p>采样的元素都是逆序排列 -&gt; 序列可能已经逆序 -&gt; 翻转整个序列</p>
+<p>采样的元素都是顺序排列 -&gt; 序列可能已经有序 -&gt; 使用插入排序</p>
+<blockquote>
+<p>插入排序实际使用 partiallnsertionSort，即有限制次数的插入排序</p>
+</blockquote>
+<p>Final version</p>
+<p>还有一种场景，元素重复较多的场景。</p>
+<p>如果两次 partition 生成的 pivot 相同，即 partition 进行了无效分割，此时认为 pivot 的值为重复元素。</p>
+<p>优化：当检测到此时的 pivot 和上次相同时（发生在 leftSubArray)，使用 partitionEqual 将重复元素排列在一起，减少重复元素对于 pivot 选择的干扰。</p>
+<p>其他优化：pivot 选择策略表现不佳时，随机交换元素。</p>
+<p>避免一些极端情况使得 QuickSort 总是表现不佳，以及一些黑客攻击情况。</p>
+<p>Reference</p>
+<p>[1] sort: use pdqsort · Issue #50154 · golang&#x2F;go</p>
+<p>    <a target="_blank" rel="noopener" href="https://github.com/golang/go/issues/50154">https://github.com/golang/go/issues/50154</a></p>
+<p>[2] Pattern-defeating Quicksort</p>
+<p>    <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2106.05123">https://arxiv.org/abs/2106.05123</a></p>
+<p>[3] go&#x2F;zsortinterface.go at master · golang&#x2F;go</p>
+<p>    <a target="_blank" rel="noopener" href="https://github.com/golang/go/blob/master/src/sort/zsortinterface.go">https://github.com/golang/go/blob/master/src/sort/zsortinterface.go</a></p>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/3a579951/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">A/B模型测试与分析</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/bf42877d/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">Android 应用反破解的必要性与方案</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

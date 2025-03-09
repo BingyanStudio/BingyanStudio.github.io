@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>浅谈LIFT模型 - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="浅谈LIFT模型 - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/a07464d5/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2022-03-20T21:22:25.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">浅谈LIFT模型</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>March</span>
+            <span>20,</span>
+            <span>2022</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <h2 id="什么是LIFT模型？"><a href="#什么是LIFT模型？" class="headerlink" title="什么是LIFT模型？"></a>什么是LIFT模型？</h2><p>LIFT模型是WiderFunnel （一家致力于为企业提供A&#x2F;B测试驱动网站优化方案的创新企业）提出的 一套产品优化武器， LIFT 模型的核心是它的——六大优化法则。它的原理是基于数据认识的基础，在营销信息中找出问题，设计有关解决这些问题的假设，提高产品效益，得出改进问题的结果，提升转换率。借助这套法则我们可以对网站或者 App 页面中存在的转化率低的问题对症下药，或者当你不知道转化率优化从哪里开始的时候，可以将这六个法则作为切入点进行优化，以此来帮助产品经理和运营人员激活和转化潜在用户。</p>
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2><h2 id="-1"><a href="#-1" class="headerlink" title=""></a></h2><h2 id="LIFT模型的六要素"><a href="#LIFT模型的六要素" class="headerlink" title="LIFT模型的六要素"></a>LIFT模型的六要素</h2><ul>
+<li><p>载体<br>     价值主张 Value proposition</p>
+</li>
+<li><p>推动因素<br>     相关性 Relevance</p>
+</li>
+</ul>
+<p>     清晰度 Clarity</p>
+<p>     紧迫性 Urgency</p>
+<ul>
+<li>阻碍因素<br>     焦虑性 Anxiety</li>
+</ul>
+<p>     注意力分散 Distraction</p>
+<h2 id="怎么用好LIFT模型"><a href="#怎么用好LIFT模型" class="headerlink" title="怎么用好LIFT模型"></a>怎么用好LIFT模型</h2><h3 id="一、强化价值主张"><a href="#一、强化价值主张" class="headerlink" title="一、强化价值主张"></a>一、强化价值主张</h3><h4 id="1、何为价值主张？"><a href="#1、何为价值主张？" class="headerlink" title="1、何为价值主张？"></a>1、何为价值主张？</h4><ul>
+<li>简单来说就是用户感知到的承担你的行为号召所带来的全部好处和成本。</li>
+<li>如果用户感知到的好处与成本之间的差值越大，那么用户响应你的号召的动力就越大。</li>
+</ul>
+<h4 id="2、如何强化价值主张"><a href="#2、如何强化价值主张" class="headerlink" title="2、如何强化价值主张"></a>2、如何强化价值主张</h4><p>我们要做的就是放大收益，缩小成本。</p>
+<h5 id="优化“认知”"><a href="#优化“认知”" class="headerlink" title="优化“认知”"></a>优化“认知”</h5><p>在传达产品特性和好处时，要考虑这些因素：</p>
+<ul>
+<li>文化差异；</li>
+<li>期望页面的内容；</li>
+<li>看到与自己无关的信息时，内心的感受和情绪；</li>
+<li>当时所处的环境；</li>
+<li>类似产品的体验和服务；</li>
+<li>质量、金钱和价值等方面的理念。<br>优化“有形的性能和无形的情感”</li>
+</ul>
+<p>能够满足客户的需求，证明他们感性的使用你的产品是正确的。所以你需要奖励来增强你有形的性能，以及一些手段增强潜在客户对你无形好处的感觉。</p>
+<p>有形的性能及好处（证明感性的决定是正确的）：</p>
+<ul>
+<li>产品或服务的性能；</li>
+<li>奖励和提供物。<br>无形的情感及好处（证明购买的决定是正确的）：</li>
+</ul>
+<p>信誉度：</p>
+<ul>
+<li><p>专业评审、媒体评论、奖项、思想领导力、案例研究</p>
+</li>
+<li><p>专业素质（广告文字来自前后一致和无差别）<br>社会认同感：</p>
+</li>
+<li><p>推荐证言、客户公司商标、社交媒体、客户评分和评论；</p>
+</li>
+<li><p>客户人数（社会价值证明）、名人代言。</p>
+</li>
+</ul>
+<h3 id="二、优化相关性"><a href="#二、优化相关性" class="headerlink" title="二、优化相关性"></a>二、优化相关性</h3><h4 id="1、什么是相关性"><a href="#1、什么是相关性" class="headerlink" title="1、什么是相关性"></a>1、什么是相关性</h4><ul>
+<li><p>页面的相关性是指页面与你的潜在客户期望看到的页面之间的匹配度。</p>
+</li>
+<li><p>当你的潜在用户在搜索他们需要的在线信息时，脑海里已经有了一个明确的需求，或者他们可能发现了一条引发他们思考的信息，并沿着这个线索开始寻找信息，那你需要在营销中提供一个引导路径到潜在用户正在寻找的东西，从而产生转化行为，是否能抓住用户的兴趣到购买的注意力，在很大程度上，是由你创造强有力的刺激信息留下的引导的能力决定的。</p>
+</li>
+</ul>
+<h4 id="2、如何优化相关性"><a href="#2、如何优化相关性" class="headerlink" title="2、如何优化相关性"></a>2、如何优化相关性</h4><ul>
+<li><h5 id="优化目标受众相关性"><a href="#优化目标受众相关性" class="headerlink" title="优化目标受众相关性"></a>优化目标受众相关性</h5></li>
+</ul>
+<p>将受众细分，为不同的受众进行不同的页面设计和营销活动。</p>
+<p>受众细分优势：你了解的越多，信息相关性就越好。</p>
+<p>受众细分劣势：市场细分增加维护成本，降低相关性，增加决策的复杂度。</p>
+<ul>
+<li><h5 id="优化导航相关性"><a href="#优化导航相关性" class="headerlink" title="优化导航相关性"></a>优化导航相关性</h5></li>
+</ul>
+<p>在细分目标受众之后，分析网站数据，测试用的假设，在以多种不同的组合页面拿来做测试（当然也可混合版本，再加上按领域浏览的链接），进行测试，得出结果。</p>
+<h3 id="三、提升清晰度"><a href="#三、提升清晰度" class="headerlink" title="三、提升清晰度"></a>三、提升清晰度</h3><h4 id="1、什么是清晰度"><a href="#1、什么是清晰度" class="headerlink" title="1、什么是清晰度"></a>1、什么是清晰度</h4><p>清晰度是指通过设计创造出精细度高且通畅的视觉流、明确的信息和突出的用户召唤行为，让受众花在理解上时间最少化。</p>
+<h4 id="2、如何优化清晰度"><a href="#2、如何优化清晰度" class="headerlink" title="2、如何优化清晰度"></a>2、如何优化清晰度</h4><p>加强页面组织和内容组织关联性和视觉流向，提升内容的吸引力。</p>
+<ul>
+<li><p>优化信息层级</p>
+</li>
+<li><p>优化视觉流向<br>视觉流向：</p>
+</li>
+<li><p>位置：图片、图案、文字排放位置，因为它改变了视觉的流向和内容的重点。</p>
+</li>
+<li><p>元素：视觉元素应用同样会引导和抑制视觉流向（如：形状、线条和图案）。<br>图片：</p>
+</li>
+</ul>
+<p>应该传递和支持你的价值主张，勿要用装饰图片。统一尺寸和对齐避免分散访客注意力。色彩：</p>
+<ul>
+<li>对比：强调选择重要的元素，而弱化次要内容。</li>
+<li>含义：不同背景文化有不同色彩的含义。</li>
+<li>一致：如：网站的链接蓝色。</li>
+<li>优化文案</li>
+<li>测试标题</li>
+<li>写短的段落、短的句子</li>
+<li>用大的字体</li>
+<li>测试长文案和短文案</li>
+<li>尽量真实</li>
+<li>使用主语语态</li>
+<li>减少形容词</li>
+<li>避免使用缩略语</li>
+<li>优化CTA<br>CTA按键可见度要高，它比设计和色彩更加重要。需要考虑，按键的大小、颜色、位置。</li>
+</ul>
+<h3 id="四、减少注意力分散"><a href="#四、减少注意力分散" class="headerlink" title="四、减少注意力分散"></a>四、减少注意力分散</h3><h4 id="1、什么是注意力分散"><a href="#1、什么是注意力分散" class="headerlink" title="1、什么是注意力分散"></a>1、什么是注意力分散</h4><p>这里说的注意力分散是指在页面上，把用户的注意力从主要的价值主张信息和用户召唤行为上引开的元素。</p>
+<h4 id="2、如何优化注意力分散"><a href="#2、如何优化注意力分散" class="headerlink" title="2、如何优化注意力分散"></a>2、如何优化注意力分散</h4><p>提升用户第一印象阶段和消息阶段：</p>
+<ul>
+<li>第一印象阶段：访客快速判断页面是否吸引人，文案是否适量，界面是否友好。</li>
+<li>消息阶段：用户寻找来理解页面组织方式，以及最重要的信息放置方式。<br>a. 优化第一印象注意力分散</li>
+</ul>
+<p>首屏页面排列和内容是最重要的，页面的这部分要为页面的第一印象负责。</p>
+<p>所以应当把自己放到潜在客户的角度来看问题，检查背景纹理、不对称设计和复杂图形处理是否得当。</p>
+<p>b. 优化消息注意力分散</p>
+<ul>
+<li>当面临太多选择的时候，人们因为无法选择而放弃。第一印象后，消息的质量和交互尤为重要。减少让用户等待和思考的步骤，尤其在一些重要又略微复杂的功能上，比如注册表格，支付路径等。简化是降低用户流失的有效技巧之一。</li>
+<li>所以这个时候需要你检查信息是否过多、是否有不相关的内容或其他图片引起注意力分散问题。去除一些没有价值的功能和美化元素，这些没有价值的信息反而会分散访问者的注意力，把他们从原本会产生价值的元素上引开。</li>
+</ul>
+<h3 id="曾经有人做过一个试验，他布置了一个展示台，里面放置了要销售的果酱，有时候是6种风味有时是24种风味，当有24种的时候，60-的人会停下来尝一尝。当只有6种的时候，40-的人会尝一尝。显然，24种口味的果酱更能抓住兴趣和注意力拉近他们和商品的距离。但是，有趣的是销售的转化率，有24种果酱的时候，只有3-的顾客购买了果酱！有6种选择的时候，竟然是30-的顾客购买了果酱。"><a href="#曾经有人做过一个试验，他布置了一个展示台，里面放置了要销售的果酱，有时候是6种风味有时是24种风味，当有24种的时候，60-的人会停下来尝一尝。当只有6种的时候，40-的人会尝一尝。显然，24种口味的果酱更能抓住兴趣和注意力拉近他们和商品的距离。但是，有趣的是销售的转化率，有24种果酱的时候，只有3-的顾客购买了果酱！有6种选择的时候，竟然是30-的顾客购买了果酱。" class="headerlink" title="曾经有人做过一个试验，他布置了一个展示台，里面放置了要销售的果酱，有时候是6种风味有时是24种风味，当有24种的时候，60%的人会停下来尝一尝。当只有6种的时候，40%的人会尝一尝。显然，24种口味的果酱更能抓住兴趣和注意力拉近他们和商品的距离。但是，有趣的是销售的转化率，有24种果酱的时候，只有3%的顾客购买了果酱！有6种选择的时候，竟然是30%的顾客购买了果酱。"></a>曾经有人做过一个试验，他布置了一个展示台，里面放置了要销售的果酱，有时候是6种风味有时是24种风味，当有24种的时候，60%的人会停下来尝一尝。当只有6种的时候，40%的人会尝一尝。显然，24种口味的果酱更能抓住兴趣和注意力拉近他们和商品的距离。但是，有趣的是销售的转化率，有24种果酱的时候，只有3%的顾客购买了果酱！有6种选择的时候，竟然是30%的顾客购买了果酱。</h3><h3 id="五、降低焦虑感"><a href="#五、降低焦虑感" class="headerlink" title="五、降低焦虑感"></a>五、降低焦虑感</h3><h4 id="1、何为“焦虑感”"><a href="#1、何为“焦虑感”" class="headerlink" title="1、何为“焦虑感”"></a>1、何为“焦虑感”</h4><p>是指在转化漏斗中的任何东西或者在页面上没有的内容都会在潜在客户头脑中产生不确定性。</p>
+<h4 id="2、如何降低焦虑感"><a href="#2、如何降低焦虑感" class="headerlink" title="2、如何降低焦虑感"></a>2、如何降低焦虑感</h4><p>将焦虑感来源最小化，把焦虑感转化成优势来刺激用户行为。</p>
+<p>问下你自己：访客对于完成这次转化有什么可能的担忧呢？</p>
+<p>会不会有对隐私的焦虑感，对产品可用性的焦虑感，网站加载速度的焦虑，要付出的努力度的焦虑感，甚至对品牌的信誉、交付承诺的焦虑。</p>
+<ul>
+<li><p>优化隐私焦虑感<br>在优化隐私焦虑感需要注意以下原则：</p>
+</li>
+<li><p>帮助文字提醒（仅展示该列的字段，而不是把所有的都显示出来）</p>
+</li>
+<li><p>多选择少填写</p>
+</li>
+<li><p>给填写一个理由</p>
+</li>
+<li><p>默认选择</p>
+</li>
+<li><p>任务中勿要有其他不相关链接</p>
+</li>
+<li><p>保持行动按键在一屏内</p>
+</li>
+<li><p>少一些指令式</p>
+</li>
+<li><p>填写任务步骤可多页面展示</p>
+</li>
+<li><p>安全提醒</p>
+</li>
+<li><p>优化可用性焦虑感让用户学习你的网站有多容易</p>
+</li>
+<li><p>优化完成性焦虑感需要给潜在的客户信息作为满足他们的需求担保</p>
+</li>
+<li><p>优化努力度焦虑感将复杂的需求看起来更容易完成</p>
+</li>
+</ul>
+<h3 id="六、制造紧迫性"><a href="#六、制造紧迫性" class="headerlink" title="六、制造紧迫性"></a>六、制造紧迫性</h3><h4 id="1、什么是紧迫性"><a href="#1、什么是紧迫性" class="headerlink" title="1、什么是紧迫性"></a>1、什么是紧迫性</h4><p>紧迫性是指基于你的潜在客户内部的驱动力和外部的影响所觉得需要立刻行动的程度，就是紧迫性因素，通常包括内在紧迫和外在紧迫。</p>
+<h4 id="2、制造紧迫性"><a href="#2、制造紧迫性" class="headerlink" title="2、制造紧迫性"></a>2、制造紧迫性</h4><ul>
+<li>内部的驱动力+外部的影响&#x3D;紧迫性；</li>
+<li>要给CTA，立刻执行的感觉和原因。<br>（1）优化内在紧迫性</li>
+</ul>
+<p>基于你潜在客户的已有需求和欲望前提下，你要给予感染力的外表和购买的一个理由。</p>
+<p>制造内在紧迫感&#x3D;感染力外表+理性的论据支持</p>
+<ul>
+<li>感染力的外表，如：卖滋滋声，不卖牛排。或者多人排队购买。</li>
+<li>理性化：购买是感性的，将此感性的意愿转化为理性的理由。<br>（2）优化外在紧迫性</li>
+</ul>
+<p>向潜在的客户展示优惠，营造出产品或者服务功能好处之外的需求和欲望，如：限时优惠、突出购买等。</p>
+<p>总结</p>
+<p>参考：</p>
+<p>人人都是产品经理社区</p>
+<p>AppAdhoc</p>
+<hr>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/9c8d1a2b/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">辐射度量学</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/c1f359fb/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">Live2D</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

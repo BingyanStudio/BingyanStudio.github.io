@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>Transaction in Redis - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="Transaction in Redis - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/71f12b1e/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2022-03-02T06:13:19.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">Transaction in Redis</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>March</span>
+            <span>2,</span>
+            <span>2022</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <h3 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h3><blockquote>
+<p>为啥要取abstract，可能是因为最近看论文有点PTSD了</p>
+<p>Redis通过MULTI、EXEC、WATCH等命令来实现事务功能。事务提供了一种将多个命令请求打包，然后一次性、按顺序地执行多个命令的机制，并且在事务执行期间，服务器不会中断事务而改去执行其他客户端的命令请求，它会将事务中的所有命令都执行完毕，然后才去处理其他客户端的命令请求</p>
+</blockquote>
+<h3 id="事务的实现"><a href="#事务的实现" class="headerlink" title="事务的实现"></a>事务的实现</h3><p>一个事务从开始到结束通常会经历以下三个阶段：</p>
+<ul>
+<li>事务开始</li>
+<li>命令入队</li>
+<li>事务执行</li>
+</ul>
+<h4 id="事务开始"><a href="#事务开始" class="headerlink" title="事务开始"></a>事务开始</h4><p>MULTI命令的执行标志着事务的开始</p>
+<p>将执行该命令的客户端从非事务状态切换至事务状态，这一切换是通过在客户端状态的flags属性中打开REDIS_MULTI标识来完成的</p>
+<blockquote>
+<p>这里的客户端指的是在Redis服务器中存着客户端状态的数据结构</p>
+<h4 id="命令入队"><a href="#命令入队" class="headerlink" title="命令入队"></a>命令入队</h4></blockquote>
+<p>当一个客户端处于非事务状态时，这个客户端发送的命令会立即被服务器执行</p>
+<p>但是，当一个客户端切换到事务状态之后，服务器会根据这个客户端发来的不同命令执行不同的操作</p>
+<ul>
+<li>如果客户端发送的命令为EXEC、DISCARD、WATCH、MULTI四个命令的其中一个，那么服务器立即执行这个命令</li>
+<li>如果客户端发送的命令是EXEC、DISCARD、WATCH、MULTI四个命令以外的其他命令，那么服务器并不立即执行这个命令，而是将这个命令放入一个事务队列里面，然后向客户端返回QUEUED回复</li>
+</ul>
+<h4 id="事务队列"><a href="#事务队列" class="headerlink" title="事务队列"></a>事务队列</h4><p>每个Redis客户端都有自己的事务状态，这个事务状态保存在客户端状态的mstate属性里面</p>
+<p>事务状态包含一个FIFO的事务队列，以及一个已入队命令的计数器，也就是事务队列的长度</p>
+<p>事务队列是一个multiCmd类型的数组，数组中的每个multiCmd结构都保存了一个已入队命令的相关信息，包括指向命令实现函数的指针、命令的参数，以及参数的数量</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">redisClient</span>  redisClient;<span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">multiState</span>  multiState;<span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">multiCmd</span>  multiCmd;</span><br></pre></td></tr></table></figure>
+<h4 id="执行事务"><a href="#执行事务" class="headerlink" title="执行事务"></a>执行事务</h4><p>当一个处于事务状态的客户端向服务器发送EXEC命令时，这个EXEC命令将立即被服务器执行。服务器会遍历这个客户端的事务队列，执行队列中保存的所有命令，最后将执行命令所得的结果全部返回给客户端</p>
+<h3 id="WATCH命令的实现"><a href="#WATCH命令的实现" class="headerlink" title="WATCH命令的实现"></a>WATCH命令的实现</h3><p>WATCH命令是一个乐观锁，他可以在EXEC命令执行之前，监视任意数量的数据库键，并在EXEC命令执行时，检查被监视的键是否至少有一个已经被修改过了，如果是的话，服务器将拒绝执行事务，并向客户端返回代表事务执行失败的空回复</p>
+<p>接下来介绍下WATCH命令的实现原理，以及事务系统如何监视某个键，并在键被修改的情况下，确保事务的安全性</p>
+<h4 id="使用WATCH命令监视数据库键"><a href="#使用WATCH命令监视数据库键" class="headerlink" title="使用WATCH命令监视数据库键"></a>使用WATCH命令监视数据库键</h4><p>每个Redis数据库都保存着一个watched_keys字典，这个字典的键是某个被WATCH命令监视的数据库键，字典的值则是一个链表，链表中记录了所有监视相应数据库键的客户端</p>
+<p>通过这个字典，服务器可以清楚的知道哪些数据库键正在被监视，以及哪些客户端正在监视这些数据库键</p>
+<h4 id="监视机制的触发"><a href="#监视机制的触发" class="headerlink" title="监视机制的触发"></a>监视机制的触发</h4><p>所有对数据库进行修改的命令，在执行后都会调用相应的函数对watched_keys字典进行检查，查看是否有客户端正在监视刚刚被命令修改过的数据库键，如果有的话，那么这个函数就会将监视被修改键的客户端的REDIS_DIRTY_CAS标识打开，表示该客户端的事务安全性已经被破坏</p>
+<h4 id="判断事务是否安全"><a href="#判断事务是否安全" class="headerlink" title="判断事务是否安全"></a>判断事务是否安全</h4><p>当服务器接收到一个客户端发来的EXEC命令时，服务器会根据这个客户端是否打开了REDIS_DIRTY_CAS标识来决定是否执行事务。如果这个标识没有被打开，就执行客户端提交的这个事务</p>
+<h3 id="事务的ACID性质"><a href="#事务的ACID性质" class="headerlink" title="事务的ACID性质"></a>事务的ACID性质</h3><p>传统的关系数据库中，常常用ACID性质来校验事务功能的可靠性和安全性</p>
+<p>在Redis中，事务总是具有原子性、一致性和隔离性，在Redis运行在某种特定的持久化模式中，事务也具有耐久性</p>
+<h4 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h4><p>对于Redis的事务功能来说，事务队列中的命令要么就全部都执行，要么就一个都不执行，因此，Redis的事务是具有原子性的</p>
+<p>但是，Redis的事务和传统的关系型数据库事务的最大区别在于，Redis不支持事务回滚机制rollback，即使事务队列中的某个命令在执行期间出现了错误，整个事务也会继续执行下去，直到将事务队列中的所有命令都执行完毕为止</p>
+<p>这是因为Redis的作者认为这种复杂的功能和Redis追求简单高效的设计主旨不相符，并且认为事务的执行时遇到错误通常都是编程错误产生的，这种错误通常只会出现在开发环境，没有必要开发事务回滚功能</p>
+<h4 id="一致性"><a href="#一致性" class="headerlink" title="一致性"></a>一致性</h4><p>一致性指数据符合数据库本身的定义和要求，没有包含非法或者无效的错误数据</p>
+<p>Redis通过谨慎的错误检测和简单的设计来保证事务的一致性</p>
+<h4 id="隔离性"><a href="#隔离性" class="headerlink" title="隔离性"></a>隔离性</h4><p>Redis在实际执行事务时是单线程的，并且，服务器保证在执行事务时不会对事务进行中断。Redis的事务总是以串行的方式运行的，总是具有隔离性的</p>
+<h4 id="持久性"><a href="#持久性" class="headerlink" title="持久性"></a>持久性</h4><p>Redis事务的持久性由Redis使用的持久化模式决定</p>
+<p>但是，在一个事务的最后加上SAVE命令总可以保证事务的耐久性</p>
+<p>不过这种做法效率较低，不具有实用性</p>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/3bfa7eb3/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">什么是好的推荐系统</h3>
+                </div>
+            </div>
+        </a>
+        
+        <a class="prev"></a>
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

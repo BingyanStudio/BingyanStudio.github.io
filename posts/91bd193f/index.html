@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>低秩自适应（LoRA）原理、应用以及发展 - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="低秩自适应（LoRA）原理、应用以及发展 - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/91bd193f/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2023-12-25T07:12:52.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">低秩自适应（LoRA）原理、应用以及发展</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>December</span>
+            <span>25,</span>
+            <span>2023</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <h1 id="绪言"><a href="#绪言" class="headerlink" title="绪言"></a>绪言</h1><p>低秩自适应技术可以应用于各种机器学习任务，如图像分类、语音识别、自然语言处理等。它通常在预训练模型的权重矩阵中添加一个低秩矩阵，使模型能够更有效地学习特定于任务的信息。在训练过程中，低秩自适应层可以初始化随机值，并在微调过程中更新以学习特定任务的信息。</p>
+<p>在众多人工智能应用中，大语言模型属于时下相对热门的一个分支，尤其是GPT-4的出现使得大语言模型的潜力被进一步挖掘。但同时，模型的参数量也不断增长；对于GPT-3，其模型的参数量已经能够达到1750亿，GPT-4模型的参数量达到了1.8万亿；在模型具有如此巨大的可调节参数的情况下，想要对模型进行微调变成了一件非常困难的事情，且需要消耗大量的硬件资源；在背景之下，LoRA（Low-Rank Adaptaion）应运而生,通过对原模型的矩阵进行冻结并使用分解后的低秩矩阵来代替Transformer中的权重矩阵并累加到原模型的方式来实现对模型的微调。</p>
+<h1 id="LoRA出现之前相关领域的发展情况概述"><a href="#LoRA出现之前相关领域的发展情况概述" class="headerlink" title="LoRA出现之前相关领域的发展情况概述"></a>LoRA出现之前相关领域的发展情况概述</h1><h2 id="面临的困境"><a href="#面临的困境" class="headerlink" title="面临的困境"></a>面临的困境</h2><p>问题可以描述为在机器学习过程中（在目前讨论的内容中，是大语言模型的训练）对预训练模型再训练时参数的调节问题。对于大语言模型来说，训练的参数量常常百亿甚至千亿级别的（GPT-3的参数量就达到了175 Billlion），要对如此大的模型进行调参，需要使用大量的运算资源；同时，即便运算资源充足，对如此多的参数进行调整也会耗费大量的精力，甚至是不可能的。因此，需要设法减少模型训练过程中需要调节的参数量。</p>
+<h2 id="LoRA之前的解决方案有哪些"><a href="#LoRA之前的解决方案有哪些" class="headerlink" title="LoRA之前的解决方案有哪些"></a>LoRA之前的解决方案有哪些</h2><p>对大模型微调的参数进行修正的研究有很多，就大语言模型来说，先前的研究主要有两个方向：增加适应层（Adapter Layers）和优化输入层后的激活函数（input layer activations）。</p>
+<p>然而，适应层的添加会导致推理延迟，因为其与大型神经网络依赖硬件并行计算的工作模式不同，必须依序进行训练；另一方面，优化输入层后的激活函数涉及到对彼此相关联的参数进行调整，很难找到一个最优的解。</p>
+<h1 id="LoRA原理"><a href="#LoRA原理" class="headerlink" title="LoRA原理"></a>LoRA原理</h1><p>神经网络中含有多个layer，这些layer之间会进行多次矩阵运算。在大语言模型中，每一层被称为一个Transformer。在以往的训练过程中，这些层的矩阵表是通常是满秩的。</p>
+<p>Armen Aghajanyan等人的研究表明，在某些神经网络训练过程中，预训练模型有较低的”内在维度（instrisic dimension）“，仅仅由这些内在维度，就能够较好地描述大模型的特征，意即用较低维度的数据代表更高维度的数据，并由此降低矩阵运算的成本。由此，作者提出了”内在秩“的概念。LoRA模型中的“内在秩”可以理解为模型在各类下游任务上泛化的过程中，优化各类任务的公共低维本征（low-dimensional intrinsic）子空间中非常少量的几个自由参数。</p>
+<p>  (lora用右边的矩阵之积替换了权重矩阵W)</p>
+<h1 id="LoRA优势以及在大语言模型中的具体部署效果"><a href="#LoRA优势以及在大语言模型中的具体部署效果" class="headerlink" title="LoRA优势以及在大语言模型中的具体部署效果"></a>LoRA优势以及在大语言模型中的具体部署效果</h1><h2 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h2><h3 id="模型微调的泛化实现"><a href="#模型微调的泛化实现" class="headerlink" title="模型微调的泛化实现"></a>模型微调的泛化实现</h3><p>一种更通用的微调范式是只微调预训练参数的子集。LoRA进一步降低了约束，在训练中不要求满秩，可以更灵活应对新任务。总而言之，随着模型可训练参数的增加，LoRA大致收敛到原始模型，而基于Adapter的方法收敛到MLP，基于Prefix Tuning的方法收敛到不能接受长输入的模型。</p>
+<h3 id="没有推理延迟"><a href="#没有推理延迟" class="headerlink" title="没有推理延迟"></a>没有推理延迟</h3><p>在LoRA训练过程中, W &#x3D; W_0 + BA，当需要切换到不同的下游任务时，只要将矩阵W和矩阵BA做减法就可以恢复 W_0，大大减小了内存开销，并且不会引入额外的推理延迟</p>
+<h2 id="部署的具体效果以及限制"><a href="#部署的具体效果以及限制" class="headerlink" title="部署的具体效果以及限制"></a>部署的具体效果以及限制</h2><p>原则上，LoRA可以用于任何神经网络的子集中，以减少可训练参数。Transformer架构中，自注意力模块有四个权重矩阵（ W_q,W_k,W_v,W_o），两个MLP模块；在只对下游任务注意力的权重进行调整的情况下，LoRA能够将显卡内存占用降低2&#x2F;3；在GPT-3 175B的训练中，checkpoint的大小从350GB左右缩减到了35MB，这意味着LoRA可以使用更少的I&#x2F;O资源，并降低GPU的使用率。而同时，作者经过一系列实验表明，在训练参数较少的情况下，LoRA的表现也可以媲美甚至超过传统的训练方法。</p>
+<p>但同时，LoRA也存在限制。在批处理不同任务的数据时，需要对每个任务进行单独处理，实现复杂，但是当推理延迟可以被接受时，也可以实现根据任务动态选择LoRA模块。</p>
+<h1 id="LoRA目前的应用"><a href="#LoRA目前的应用" class="headerlink" title="LoRA目前的应用"></a>LoRA目前的应用</h1><h2 id="消费级设备上的大模型应用"><a href="#消费级设备上的大模型应用" class="headerlink" title="消费级设备上的大模型应用"></a>消费级设备上的大模型应用</h2><p>如上所述，LoRA能够对大语言模型进行高效的微调，这使得大模型的调参变得更加容易，降低了大语言模型的训练门槛，也使得大语言模型的用户能够更加容易对大语言模型进行定制；同时，由于训练门槛的降低，使得像Alpaca Lora 这样在消费级硬件上能够运行的大语言模型能有相对好的表现，伴随着目前硬件性能的不断提升，在客户端本地运行的大模型的发展会进一步加速。</p>
+<p>LoRA能够用较少的参数描述一组特征，这在图像生成领域也能够有很广泛的应用。作为同样消耗硬件资源的图像生成任务，LoRA的应用也能够使其在性能相对较低的硬件平台进行训练；LoRA能够作为Stable Diffusion模型的一个插件运行，在不修改SD模型的情况下，使用较少的提示词或样本图片生成目标图片；同时，调优后的LoRA能够作为某种图像风格的适配器，实现图像风格的迁移。</p>
+<h2 id="自然语言转换为工具语言"><a href="#自然语言转换为工具语言" class="headerlink" title="自然语言转换为工具语言"></a>自然语言转换为工具语言</h2><p>Amine Rebei提出可以使用LoRA训练的三个大语言模型将自然语言翻译成SQL语句（作者称之为text-to-SQL）。只要向模型提供问题、数据库的细节以及SQL语法，模型就能够生成对应的SQL语句；训练好的模型在text-to-SQL不仅比GPT-4的速度快，还能有接近甚至高于GPT-4的准确率</p>
+<h2 id="提高训练结果的时效性"><a href="#提高训练结果的时效性" class="headerlink" title="提高训练结果的时效性"></a>提高训练结果的时效性</h2><p>清华大学一个研究团队提出了LCM LoRA，可以实现实时的图像生成。</p>
+<ul>
+<li><h3 id="LCM"><a href="#LCM" class="headerlink" title="LCM"></a>LCM</h3></li>
+</ul>
+<p>基于OpenAI 的宋飏博士在提出的一致性模型（Consistency Model，CM），提出了“潜在一致性模型”（Latent Consistency Model,LCM）.潜在一致性模型支持给定条件的图像生成任务，并结合了潜在编码、无分类器引导等诸多在扩散模型中被广泛应用的技术，大大加速了条件去噪过程，为诸多具有实际应用意义的任务打开了一条通路。</p>
+<p>具体实现上，不同于迭代求解这一常微分方程，潜在一致性模型要求对常微分方程进行直接的单步求解，直接预测方程的最终解，从而在理论上能够在单步内生成图片。而要训练这样的模型，可以对预训练的扩散模型（比如Stable Diffusion）进行参数微调，在极少的资源消耗下赋予模型快速生成的效果</p>
+<ul>
+<li><h3 id="LCM-LoRA"><a href="#LCM-LoRA" class="headerlink" title="LCM LoRA"></a>LCM LoRA</h3></li>
+</ul>
+<p>在潜在一致性模型的基础上，作者团队随后进一步发布了他们关于 LCM-LoRA 的技术报告。由于潜在一致性模型的蒸馏过程可以被视作是对于原有的预训练模型的微调过程，从而可以使用 LoRA 等高效微调技术来训练潜在一致性模型。得益于 LoRA 技术带来的资源节省，作者团队在 Stable Diffusion 系列中参数量最大的 SDXL 模型上进行了蒸馏，成功得到了能够在极少步数内生成与 SDXL 数十步相媲美的潜在一致性模型。</p>
+<h2 id="LoRA的发展动向"><a href="#LoRA的发展动向" class="headerlink" title="LoRA的发展动向"></a>LoRA的发展动向</h2><h3 id="DyLoRA"><a href="#DyLoRA" class="headerlink" title="DyLoRA"></a>DyLoRA</h3><p>LoRA能够减少训练参数方面的开销，但是SVD(上文的矩阵B和矩阵A的乘积)仍然有两个问题：其一，是SVD的大小是固定的，如果想要改变SVD的秩的话，就需要重新训练；其二，将SVD的秩调整到最优也是一件非常耗费精力的事。因此，动态低秩自适应(Dynamic Low-Rank Adaptation)应运而生。</p>
+<p>与传统 LoRA不同的是，DyLoRA 在训练过程中针对一系列 rank 而不是单一 rank 进行训练。这意味着 DyLoRA 可以动态地适应不同的 rank，提供模型更大的灵活性和适应性。对多个rank进行训练，还能让DyLoRA知道在不同的设备或对于不同的任务应该使用什么秩来进行训练，从而达到相对好的性能发挥。</p>
+<p>对比LoRA，在一些常见的自然语言模型（如RoBERTa,GPT等）的训练中，DyLoRA速度提高了4至7倍，并且在更多不同的模型上表现出一致性。</p>
+<h3 id="S-LoRA"><a href="#S-LoRA" class="headerlink" title="S-LoRA"></a>S-LoRA</h3><p>对于行业大模型来说，仅拥有强大的”底座“基础大型模型并不足够，更重要的是如何让这些基础模型能够为垂直领域的业务赋能。或者说，如何让一个基础的模型能够快速高效地微调而向不同的领域提供服务。</p>
+<p>一个思路是，通过对一个基础大型模型使用不同领域的数据进行LoRA方式的微调，可以得到多个小型LoRA适配器作为微调结果。这些适配器的参数非常小（例如只有基础模型参数的1%），而且在部署阶段，适配器可以共享基础模型的权重。这样一来，不仅微调阶段的计算量很小，LoRA相比全量微调更加高效，而且在推理阶段具有更大的优势。</p>
+<p>S-LoRA解决的问题是如何在单台机器上部署数千个同源的LoRA adapter。所谓同源就是这些LoRA adapter都是来自同一个base model的权重。针对从同一基础模型用LoRA微调出来的多个adapter结果，S-Lora的提出者提出了一套高效部署方案。通过扩展Batching策略，PageAttention内存管理策略和并行策略，实现单个GPU服务上千个LoRA adapter的效果。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>在人工智能对硬件要求日益提高的今天，LoRA的不断发展让相关领域的模型训练等活动更加能够突破性能瓶颈，将人工智能的应用领域进一步推广，并降低训练、使用这些模型的时间成本，使得人工智能能够更好地服务于人类社会。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2106.09685">1.LORA: LOW-RANK ADAPTATION OF LARGE LANGUAGE MODELS</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/620928739">2.知乎对LoRA的介绍</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/tloen/alpaca-lora">3. Alpaca LoRA</a></p>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2310.04378">3.THU LCM LoRA</a></p>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2210.07558">4.DyLoRA</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/623455592">5.Dynamic Retrival LoRA知乎介绍</a></p>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2312.02251">6.Fine-Tuning Language Models for Context-Specific SQL Query Generation</a></p>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2311.03285">7.S-LoRA: Serving Thousands of Concurrent LoRA Adapters</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/667213961">8.S-Lora 知乎介绍</a></p>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/f7e98eb0/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">Jetpack Compose下的生命周期</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/5dc710b2/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">​用 Rust 写一个操作系统</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

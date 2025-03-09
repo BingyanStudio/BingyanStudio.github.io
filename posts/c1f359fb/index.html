@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>Live2D - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="Live2D - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/c1f359fb/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2022-03-20T00:37:52.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">Live2D</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>March</span>
+            <span>20,</span>
+            <span>2022</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <p>一、什么是Live2D？</p>
+<ul>
+<li><p>Live2D是一种应用于电子游戏的绘图渲染技术，技术由日本Cybernoids公司开发。通过一系列的连续图像和人物建模来生成一种类似三维模型的二维图像。</p>
+</li>
+<li><p>对于以动画风格为主的冒险游戏来说非常有用，缺点是Live 2D人物无法大幅度转身。</p>
+</li>
+<li><p>Live2D系统是采用2D风格，但是看起来像3D那样，可以栩栩如生的表现出人物表情和感觉的全新系统，在对话的起伏时的表情等，都会就如动画一样，可以动起来。</p>
+</li>
+</ul>
+<p>相对于 3D 动画，Live 2D 的一大优势是省钱。在建模上，2D 环境下的建模，比如纹理绘制、“网格”编辑、“蒙皮”等操作都远比 3D 模型来的简单，上手也容易，花的时间也少。动画编辑上花费的精力不会差太多。</p>
+<p>Live 2D 的另一个优势是，能够获得更贴近 2D 动画的手绘风格（毕竟本来就是手画的2D）。</p>
+<p>虽然有非真实渲染的技术可以用 ，但在先出了漫画、动画，而你又需要让游戏里会动的模型和漫画、动画画风一样的情况下，想要快速（主要还是省钱）得到好看的结果，Live2D 是个不错的选择。</p>
+<ul>
+<li>但是拿live2d和3d比较就是个明显的定位错误问题。</li>
+</ul>
+<p>在移动平台上，游戏的三维建模是远远不可能与桌面平台的游戏建模相比较的，受制于移动平台的电量计算能力。身边大部分的手游三维建模都是非常粗糙的，这在短期内是不可改变的事实。除非手机性能有一天足以和PC抗衡还不用考虑耗电量的问题。但是二维立绘就没这种问题了他们不但原本就非常精美，放在手机上也同样精美。</p>
+<p>二、Live2D和spine</p>
+<ul>
+<li><p>时至今日，使用live2d技术的代表案例有碧蓝航线，少女前线，双生视界的立绘动画。</p>
+</li>
+<li><p>使用spine技术的代表案例有公主链接，明日方舟等的q版小人。</p>
+</li>
+</ul>
+<p>如果是命运之子，碧蓝航线这些让立绘动为目的的话，明显是live2d更优秀毋庸置疑，但如果是横版过关这种需要做个2d小人然后自己操作的，如刀塔传奇，明日方舟等还是spine更优。</p>
+<p>三、如何做一张Live2D</p>
+<p>1、分图层</p>
+<p>以这张为例，我们要有意识地在ps里分出自己想要动的图层，一般是头，身体，四肢三大部分，头又要分为五官，例如眼睛要细分为眼睑，眼白，眼珠等。</p>
+<p>2、导入Live2D</p>
+<p>想让人物动的自然，我们需要细分网格，手动给细致部位打上钉子。</p>
+<p>在制作动画时，想让结构动的自然，我们就手动给轴线打上胶水钉，这样移动的时候就更整体了。</p>
+<p>3、动画</p>
+<p>模型制作好后我们就导入动画工作区，之前的帧数都在参数里了。</p>
+<p>打关键帧和AE和flash有点像，live2d在2.0开始也加入了模板功能，而且K帧时候的动作文件也可以复用并且操作十分简易。参数系统的引用对K帧过程很方便，比如说眨眼动作，我们只需在建模时调整好关键帧，之后在K帧过程但凡需要用到该动作，我们就只需要拉动一下参数条就可以了。</p>
+<p>好了，这样我们就完成了一张简单的Live2D图了。</p>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/a07464d5/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">浅谈LIFT模型</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/488e1c4/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">前端水印</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

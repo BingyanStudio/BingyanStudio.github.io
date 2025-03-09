@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>ARPU的计算和应用 - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="ARPU的计算和应用 - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/d6faca5/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2022-12-13T02:26:41.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">ARPU的计算和应用</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>December</span>
+            <span>13,</span>
+            <span>2022</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/rxLIic6e5g8SvhKswrWCVK36o2EAfZHDamtG7rxCmy7W6DSCbChpwRicFrZqO8KZEJpppMNplp51E3fxBc6mJWaA/640?wx_fmt=jpeg">ARPU是什么？</p>
+<p>ARPU 是 Average Revenue Per User 的缩写，中文意思为平均每个用户收入。在SaaS中这也是一个重要的指标， 从计算的角度看，ARPU值的大小取决于两个因素，业务收入和用户数量，相对用户数量，业务收入越高，ARPU值越大。ARPU越高说明企业盈利好，意味着发展前景好。</p>
+<p>举个栗子，从不充钱买皮肤的王者玩家拉低了王者荣耀的ARPU值。</p>
+<p>ARPU往往会给股东、投资商看，可以体现企业的赢利能力，ARPU值提高，则代表该公司有投资可行性。但ARPU不能代表公司利润，考虑利润时，还需要一并考虑成本指标。</p>
+<p>现在，除电信运营商之外，ARPU也开始应用于其他行业，比如游戏、电商。例如，通过ARPU指标的追踪，游戏运营者们可以找到一个最佳方案，去界定产品价格、拉拢收费用户或引导用户消费。</p>
+<p>那么我们怎么看一个产品的ARPU值呢？</p>
+<p>四种计算方式和应用场合</p>
+<ol>
+<li>产品总收入&#x2F;产品用户数（最传统）</li>
+</ol>
+<p>最可以真实体现产品整体盈利能力的计算方法。</p>
+<ol start="2">
+<li>月总收入除以月的付费用户数</li>
+</ol>
+<p>这种计算口径下实际上计算的是arppu，即平均每付费用户的收入，这个计算口径会使ARPU值看起来更高，所以经常用于做一些报表。但是该方法也有弊端，即不能发现产品整体的营收能力和营收潜力，尤其是当付费用户渗透率比较低时，此时该数据的意义就更小了。</p>
+<p>所以ARPU值还有另外一个公式，即ARPU&#x3D;ARPPU×付费用户比例，通过这个公式可以看出来，只有单个付费用户的付费水平和付费用户的比例都在一个相对合理的区间范围内，产品整体的ARPU值才能持续保持在一个不错的水平上。</p>
+<ol start="3">
+<li>月总收入除以累积用户总数</li>
+</ol>
+<p>一般正常情况下不会这么计算ARPU。因为存在大量的引流式用户和沉默用户，把这类用户纳入统计其实没有太大的意义。但是在有些特殊场景下，某些产品怕ARPU值太高引起舆论风险，所以会采用这种极端方式来混淆视听。</p>
+<ol start="4">
+<li>分层用户月收入除以分层用户数</li>
+</ol>
+<p>这种是将用户分成不同的类型，收入也是对应分层用户收入，例如可以将用户分成不同的渠道来源，不同生命周期阶段，不同活跃情况等特征，这样就可以看具备不同特征用户的用户质量和付费能力，把具备不同特征、来自不同渠道的用户的arpu值进行对比，就可以直观的体现哪部分用户的付费能力偏低，然后再定向的做针对性的运营调整，比如定向降低这部分用户首次购买会员门槛，或者是不是减少这部分渠道的投放预算等等。</p>
+<p>这个对于营收导向用户运营是一个最基础且非常常用的数据分析手段，所以可以发现不同的计算方法计算出来的ARPU值的差异是很大的，所以在自己计算或者看到别人给出的arpu 值时，首先要明确计算口径和计算周期，再进行具体的分析和对比。</p>
+<p>那我们为什么要做ARPU&#x2F;ARPPU?</p>
+<p>1、ARPU值高，代表了平台变现潜力高。一般来说，平台的营收与ARPU的关系是:平台每日的营收&#x3D;DAU*ARPU。也就是说，只要日活再做上来，那就是一个非常可观的营收规模了。这是与商业市场相关的核心指标，几乎人人都会关注。</p>
+<p>2、这是一个很“顽固”的指标。与早先的商业定位有巨大关联。很难做上去，但也很难掉下来。是一个值得长期投入的高价值指标。</p>
+<p>3、ARPU&#x3D;ARPPU*付费转化率，也就是说，统计周期内，每个付费用户给了1000块钱（ARPPU&#x3D; 1000元），如果转化率只有1%，那么算下来每个用户只给了10块钱。</p>
+<p>那么如何提升ARPU&#x2F;ARPPU呢?</p>
+<p>1、早先商业定位时，瞄准高消费力人群会比较理想。简单点儿说，LV包包的APP的ARP(P)U比康师傅方便面的APP高很多。</p>
+<p>2、运营手段中，则常用增值业务、广告、捆绑销售三种。</p>
+<p>1、增值业务最好理解，想要免广告、想要解锁新功能，请付费。</p>
+<p>2、广告最常见，基本是个APP，刚打开的时候，要么是活动，要么就是3-5秒钟的XX广告。</p>
+<p>3、捆绑销售，则是常见的电商手段，比如联名会员，比如加价购之类的。就是鼓励你一次性多消费。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/rxLIic6e5g8SvhKswrWCVK36o2EAfZHDaslKRITUiamXNefItmhjpiaVPJmEXYjw07ImojXicCpZicpIMs2WNUJTbNw/640?wx_fmt=jpeg"></p>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/633479c1/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">关于Figma组件属性的一点点</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/d7b9c2db/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">《精灵公主》制作过程解析</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

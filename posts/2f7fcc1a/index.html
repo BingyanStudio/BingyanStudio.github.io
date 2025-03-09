@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>初步探索安卓MVI架构 - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="初步探索安卓MVI架构 - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/2f7fcc1a/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2023-11-28T05:37:53.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">初步探索安卓MVI架构</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>November</span>
+            <span>28,</span>
+            <span>2023</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <p>在当今快速发展的安卓应用开发领域，架构的选择对于应用的可维护性和可扩展性至关重要。一种与传统MVVM架构十分相似的架构模式是MVI（Model-View-Intent）。</p>
+<h2 id="MVI架构简介"><a href="#MVI架构简介" class="headerlink" title="MVI架构简介"></a>MVI架构简介</h2><p>MVI架构是一种响应式、函数式的架构，通过分离状态、用户意图和渲染逻辑来构建应用。它包括以下核心组件：</p>
+<ul>
+<li>Model（模型）： 表示应用的状态，是不可变的数据结构，存储应用的当前状态。</li>
+<li>View（视图）： 负责渲染界面，将模型状态转化为用户界面。</li>
+<li>Intent（意图）： 用户与应用交互产生的事件，用于触发状态变化。<br>MVI的核心思想是通过单向数据流动，使得状态变化变得可预测、可测试，进而提高应用的稳定性和可维护性。</li>
+</ul>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8Rich3n8qJdiaz4XB3eoBnUmBPq7D7VcCEwYria7ar8hKxJ4ZiaVhRXKsru8yJ6fJcsnkgI1jcH0Pmoicw/640?wx_fmt=png&from=appmsg">## MVI架构的实现</p>
+<h3 id="使用Compose进行实现"><a href="#使用Compose进行实现" class="headerlink" title="使用Compose进行实现"></a>使用Compose进行实现</h3><h4 id="1-模型（Model）"><a href="#1-模型（Model）" class="headerlink" title="1. 模型（Model）"></a>1. 模型（Model）</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data <span class="keyword">class</span> <span class="symbol">AppState</span>(<span class="symbol">val</span> <span class="symbol">data: <span class="symbol">String</span>, <span class="symbol">val</span></span> <span class="symbol">isLoading: <span class="symbol">Boolean</span></span>)</span><br></pre></td></tr></table></figure>
+<p>模型（Model）是不可变的数据类，存储应用的状态信息。在这个例子中，AppState 包含应用数据和一个标志位，表示数据是否正在加载。</p>
+<h4 id="2-视图（View）"><a href="#2-视图（View）" class="headerlink" title="2. 视图（View）"></a>2. 视图（View）</h4><figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@Composablefun MyScreen(<span class="keyword">state</span>: AppState, <span class="keyword">on</span>UserIntent: (UserIntent) -&gt; Unit)         Button(<span class="keyword">on</span>Click = )     &#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>这里，MyScreen 是一个使用 Jetpack Compose 构建的视图函数。它接受一个表示应用状态的 AppState 对象和一个用于处理用户意图的回调函数。</p>
+<h4 id="3-意图（Intent）"><a href="#3-意图（Intent）" class="headerlink" title="3. 意图（Intent）"></a>3. 意图（Intent）</h4><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">sealed</span> <span class="keyword">class</span> <span class="title class_">UserIntent</span> </span><br></pre></td></tr></table></figure>
+<p>用户意图是一组可交互的事件，它们被封装成一个密封类 UserIntent。在这个例子中，我们定义了一个 LoadData 的用户意图。</p>
+<h4 id="4-ViewModel"><a href="#4-ViewModel" class="headerlink" title="4. ViewModel"></a>4. ViewModel</h4><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyViewModel</span> : <span class="type">ViewModel</span>()     &#125;    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">loadData</span><span class="params">()</span></span>     &#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>ViewModel 负责处理用户意图并更新状态。在这个例子中，processIntent 函数根据接收到的用户意图调用相应的处理函数，例如 loadData。</p>
+<h2 id="MVI规范"><a href="#MVI规范" class="headerlink" title="MVI规范"></a>MVI规范</h2><h4 id="1-一致的命名约定"><a href="#1-一致的命名约定" class="headerlink" title="1. 一致的命名约定"></a>1. 一致的命名约定</h4><p>在MVI架构中，保持一致的命名约定有助于提高代码的可读性。例如，模型类（Model）可以以 AppState 的形式存在，用户意图（Intent）可以采用 UserIntent 的命名方式。此外，视图函数和处理用户意图的函数也应采用清晰、一致的命名。</p>
+<h4 id="2-不可变性"><a href="#2-不可变性" class="headerlink" title="2. 不可变性"></a>2. 不可变性</h4><p>模型（Model）和用户意图（Intent）应该是不可变的。这意味着一旦创建，它们的状态就不应该被修改。这有助于避免状态的意外改变，从而提高了应用的可预测性。</p>
+<h4 id="3-单向数据流"><a href="#3-单向数据流" class="headerlink" title="3. 单向数据流"></a>3. 单向数据流</h4><p>确保单向数据流的实施是MVI的核心。用户意图（Intent）触发状态变化，而不是直接修改状态。这种单向数据流的方式有助于降低复杂性，使得应用的状态变化变得可追踪、可测试。</p>
+<h4 id="4-响应式编程"><a href="#4-响应式编程" class="headerlink" title="4. 响应式编程"></a>4. 响应式编程</h4><p>利用响应式编程库，如RxJava或Kotlin Flow，以简化异步任务和用户输入的处理。这使得代码更加干净、易于理解，并且方便处理涉及多个步骤的异步操作。</p>
+<h4 id="5-组件化"><a href="#5-组件化" class="headerlink" title="5. 组件化"></a>5. 组件化</h4><p>将应用拆分为独立的组件，每个组件都有自己的MVI架构。这样的组件化设计有助于提高代码的可维护性和团队协作。</p>
+<h4 id="6-单一职责原则"><a href="#6-单一职责原则" class="headerlink" title="6. 单一职责原则"></a>6. 单一职责原则</h4><p>每个组件（Model、View、Intent）都应该专注于一个明确的职责。例如，View只关注渲染界面，Model只负责状态管理，而Intent则处理用户的交互。这遵循了单一职责原则，提高了代码的可维护性。</p>
+<h2 id="MVI架构的优势"><a href="#MVI架构的优势" class="headerlink" title="MVI架构的优势"></a>MVI架构的优势</h2><ul>
+<li>可预测性： 单向数据流使得状态变化可预测，减少了应用中的不确定性，有助于提高代码质量。例如，在 processIntent 函数中，根据用户意图的不同，状态变化是可预测的。</li>
+<li>可测试性： 模块化的架构使得单元测试更加容易，每个组件都可以独立测试。例如，我们可以轻松地编写测试来验证 ViewModel 在接收不同的用户意图时是否正确地更新状态。</li>
+<li>可维护性： 分离关注点使得代码更易于理解和维护，新功能的添加和现有功能的修改变得更加简便。例如，如果需要修改加载数据的逻辑，只需在 loadData 函数中进行修改，而不影响其他部分的代码。</li>
+<li>响应式编程： 使用响应式编程风格，能够更自然地处理用户交互和异步操作。例如，在 loadData 函数中，我们使用了 viewModelScope.launch 来处理异步加载数据的操作。</li>
+<li>适应性： MVI架构适用于各种规模的应用，从小型应用到大型企业级应用都能够受益于其设计原则。例如，在大型应用中，可以通过将不同的模块拆分为独立的 MVI 架构组件来实现更好的模块化和团队协作。<br>总体而言，MVI架构通过其清晰的设计原则和优越的特性，为安卓应用开发提供了一种强大的架构选择。在使用Kotlin和Compose的情况下，MVI更是展现出了其简洁而强大的一面。</li>
+</ul>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/edf4bacb/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">subtick简谈</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/7961c6c1/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">关于用户需求和痛点捕捉</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

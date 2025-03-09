@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>SwiftUI 实现雷达图/极坐标图表 - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="SwiftUI 实现雷达图/极坐标图表 - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/2617abaa/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2023-10-29T07:56:20.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">SwiftUI 实现雷达图/极坐标图表</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>October</span>
+            <span>29,</span>
+            <span>2023</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <hr>
+<h2 id="SwiftUI-Radar-Chart"><a href="#SwiftUI-Radar-Chart" class="headerlink" title="SwiftUI-Radar-Chart"></a>SwiftUI-Radar-Chart</h2><p>SwiftUI 实现雷达图&#x2F;极坐标图表</p>
+<p>SwiftUI 团队十分贴心地在 WWDC 2022 上发布了一个叫做 SwiftUI Charts 的框架，其中包含了一些常见的图表，比如折线图、柱状图、饼图等等。但是雷达图&#x2F;极坐标图表并没有在其中，最近正好有个小项目需要用到极坐标图，于是就自己实现了一个。</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>虽然 SwiftUI Charts 没有直接提供雷达图&#x2F;极坐标图表，但是 SwiftUI 中还是可以比较方便的绘制路径，通过 Path 和 Shape 协议就可以实现。</p>
+<h3 id="极坐标图"><a href="#极坐标图" class="headerlink" title="极坐标图"></a>极坐标图</h3><p>首先定义一个极坐标点</p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="type">PolarPoint</span>         <span class="keyword">while</span> tmp &lt; <span class="number">0</span>         self.radian = tmp    &#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>其中初始化时把角度都调整到了 ，方便后续排序展示</p>
+<h4 id="坐标系"><a href="#坐标系" class="headerlink" title="坐标系"></a>坐标系</h4><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">PolarChartGrid</span>: Shape             path.<span class="built_in">move</span>(to: center)        <span class="keyword">for</span> step in <span class="number">1</span> ... divisions             <span class="keyword">return</span> path    &#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>Path.addArc 函数可以很方便的添加圆弧</p>
+<h4 id="数据"><a href="#数据" class="headerlink" title="数据"></a>数据</h4><p>由于数据这里都是极坐标格式表示的，但是绘制是基于直角坐标，展示时要进行转换，并且 UI 系统中的 y 轴与数学上惯用的 y 轴方向是相反的，转换时要注意</p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="type">PolarChartPath</span>: Shape         &#125;        <span class="keyword">return</span> path    &#125;&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="合成"><a href="#合成" class="headerlink" title="合成"></a>合成</h4><p>最后将坐标系与数据叠加在一起就完成了。</p>
+<p>这里在总 View 的 data 属性初始化时对数据进行了排序，这样可以保证绘制时的顺序，并且在总 View 处进行排序可以避免以后对 Shape 做动画时数据的重复排序节省计算资源。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">PolarChart</span>: <span class="title class_ inherited__">View</span> )        <span class="keyword">self</span>.grid<span class="title class_ inherited__">Color</span> = grid<span class="title class_ inherited__">Color</span>        <span class="keyword">self</span>.data<span class="title class_ inherited__">Color</span> = data<span class="title class_ inherited__">Color</span>    &#125;      <span class="keyword">var</span> body: <span class="keyword">some</span> <span class="title class_ inherited__">View</span> )!.radius, data: data)                .stroke(line<span class="title class_ inherited__">Width</span>: 1.0)        &#125;    &#125;&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="雷达图"><a href="#雷达图" class="headerlink" title="雷达图"></a>雷达图</h3><p>完成极坐标图后再完成雷达图就简单了，只需坐标系绘制时将圆弧改为分段直线，另外数据的格式也可以简化为直接使用 Double 数组表示</p>
+<h4 id="坐标系-1"><a href="#坐标系-1" class="headerlink" title="坐标系"></a>坐标系</h4><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">RadarChartGrid</span>: Shape             <span class="keyword">for</span> step in <span class="number">1</span> ... divisions         &#125;            <span class="keyword">return</span> path    &#125;&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="数据-1"><a href="#数据-1" class="headerlink" title="数据"></a>数据</h4><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">struct RadarChartPath: Shape             let radius = <span class="built_in">min</span>(<span class="selector-tag">rect</span><span class="selector-class">.maxX</span> - <span class="selector-tag">rect</span><span class="selector-class">.midX</span>, <span class="selector-tag">rect</span><span class="selector-class">.maxY</span> - <span class="selector-tag">rect</span>.midY)        <span class="selector-tag">var</span> <span class="selector-tag">path</span> = <span class="built_in">Path</span>()            <span class="keyword">for</span> (index, entry) <span class="keyword">in</span> data<span class="selector-class">.enumerated</span>()         &#125;        <span class="selector-tag">path</span><span class="selector-class">.closeSubpath</span>()        return <span class="selector-tag">path</span>    &#125;&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="合成-1"><a href="#合成-1" class="headerlink" title="合成"></a>合成</h4><figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="type">RadarChart</span>: <span class="built_in">View</span>       var body: some <span class="built_in">View</span>     &#125;&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>本文实现了一个简单的雷达图&#x2F;极坐标图表，但是还有很多可以改进的地方，功能上可以增加动画、增加数据标签、增加数据点标签，工程实现上可以利用 Swift 作为 DSL 的优势，利用 ViewModifier、ViewBuilder 等特性，将数据与样式分离，实现更好的复用性。</p>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/e3de27e0/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">如何通过NPC让游戏世界“活”过来</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/aa2e369/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">《Pentiment》中的字体设计</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

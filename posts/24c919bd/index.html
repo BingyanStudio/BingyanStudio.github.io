@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>数据报表精简 - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="数据报表精简 - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/24c919bd/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2024-05-07T21:56:10.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">数据报表精简</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>May</span>
+            <span>7,</span>
+            <span>2024</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <p>0 前言</p>
+<p>前两天在小红书上刷到一个帖子，分享来自一位字节的产经，内容是她所认为的成为一名合格产经需要经历的步骤。</p>
+<p>学习产品经理基础知识：包括产经工作流程、工作职责、工作内容、需要能力、产品方法论；</p>
+<p>学习产经常用工具：包括原型图工具、流程图工具和思维导图工具；</p>
+<p>学习产品方法论：包括竞品分析、用户画像、用户研究、需求分析、用户留存模型、增长模型；</p>
+<p>学习数据分析和技术概念：包括excel、sql和python，数据分析的思路，如何在具体问题和业务中应用；</p>
+<p>做一个产品项目，输出作品集：项目内容包括竞品分析报告、产品架构、原型图、需求文档；</p>
+<p>提升产品思维和逻辑能力：不断拆解产品app，思考逻辑。拆解维度包括产品定位、目标用户、核心业务逻辑、产品功能架构、功能点分析、数据表现、迭代路线、关键运营点、用户反馈。</p>
+<p>1 为什么使用数据报表</p>
+<p>数据报表是产品管理中不可或缺的工具，它能帮助我们梳理业务数据，精细化管理，发现问题并预测发展趋势，从而提升运营效率。</p>
+<p>2 为什么要治理数据报表</p>
+<p>在处理大量数据时，可能会遇到后台处理超时、响应失真或前端渲染卡死等问题。数据查询效率受到数据表数量、字段数量和数据量的影响。无效数据的累积也可能干扰我们对产品状况的判断，影响决策的准确性。</p>
+<p>3 如何简化数据报表</p>
+<h4 id="原则一：审视数据的必要性"><a href="#原则一：审视数据的必要性" class="headerlink" title="原则一：审视数据的必要性"></a>原则一：审视数据的必要性</h4><p>在设计数据报表时，我们往往面临是否包含某项数据的抉择。为了避免报表中充斥着冗余数据，我们应当坚持仅纳入那些对业务有实质性贡献的数据。具体来说，数据的价值可以从以下三个维度进行评估：</p>
+<ol>
+<li><p>业务总结价值：数据是否能够反映业务的整体发展和健康状况，如用户增长或交易流水。</p>
+</li>
+<li><p>运营指导价值：数据是否能够为运营决策提供明确的方向，例如轮播图的点击率或产品的转化率。</p>
+</li>
+<li><p>产品迭代参考价值：数据是否能够为产品的持续改进提供依据，如AB测试结果或用户行为追踪数据。</p>
+</li>
+</ol>
+<h4 id="原则二：考量数据的时效性"><a href="#原则二：考量数据的时效性" class="headerlink" title="原则二：考量数据的时效性"></a>原则二：考量数据的时效性</h4><p>在处理数据时，我们并不总是需要最即时的数据。例如，如果我们的目标是分析过去一周的用户增长趋势，那么可以采取以下优化措施：</p>
+<ol>
+<li><p>排除当日数据：由于当日数据可能会因各种因素而波动，因此可以将其排除在统计之外。</p>
+</li>
+<li><p>利用历史数据稳定性：对于已经过去的数据，由于它们是固定的，可以预先进行统计并存储，从而减少每次查询时的计算量。</p>
+</li>
+</ol>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8TLWI4mEKjSWOh9aPv0Vbnjew20tAveTfDUqZrhXBz8IiciaicfPXDcIDic8tCia1hoczXh73iaVN6ib5SdA/640?wx_fmt=png&from=appmsg"></p>
+<h4 id="原则三：分层次展示数据"><a href="#原则三：分层次展示数据" class="headerlink" title="原则三：分层次展示数据"></a>原则三：分层次展示数据</h4><p>在面对大量数据时，一次性展示所有数据会导致报表难以阅读，同时也会增加系统的负担。因此，可以采用分层次展示数据的方法：</p>
+<ol>
+<li><p>数据分割：通过分页或分步展示，避免一次性处理过多数据，提高报表的可读性。</p>
+</li>
+<li><p>选择性展示：允许用户根据需要选择性地查看数据，如只关注特定渠道或时间段的数据。</p>
+</li>
+</ol>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8TLWI4mEKjSWOh9aPv0VbnjtkbIvglUFLUyooBnia3STqjaJ0CNDTgjYpjw6hUF2l54rMGlxaJvcuA/640?wx_fmt=png&from=appmsg">但也许你并不需要同时查看50个渠道的数据，你可能只是关注资源总量前5的渠道，或者只是想看一下刚开拓的几个新渠道的资源总量曲线，这种情况下，完全不用去统计所有渠道的数据，可以设计一个渠道的选择器，在选择了渠道之后，才去统计对应渠道的数据，对于没有选择的渠道，则无需统计，这样的设计也可以有效降低系统处理数据的压力。</p>
+<h4 id="原则四：合理安排数据的获取时间"><a href="#原则四：合理安排数据的获取时间" class="headerlink" title="原则四：合理安排数据的获取时间"></a>原则四：合理安排数据的获取时间</h4><p>对于数据的导出和下载，我们应当考虑系统的处理能力，避免因数据量过大而导致的性能问题：</p>
+<ol>
+<li><p>时间范围限定：在导出数据时，询问用户所需的具体时间段，以减少处理的数据量。</p>
+</li>
+<li><p>异步处理：对于大批量数据的导出，可以采用服务器异步处理的方式，用户在操作后可以继续使用其他功能，待处理完成后再进行下载。</p>
+</li>
+</ol>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/b8b59aae/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">浅析安卓IPC机制</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/85fe36be/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">如何提高容器的性能</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

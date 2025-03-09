@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>CSS背景 - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="CSS背景 - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/28d95575/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2023-11-19T05:50:37.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">CSS背景</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>November</span>
+            <span>19,</span>
+            <span>2023</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <h2 id="推荐一本好书"><a href="#推荐一本好书" class="headerlink" title="推荐一本好书"></a>推荐一本好书</h2><p>书名：《CSS揭秘》</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/rxLIic6e5g8Rwm5ST9MXqmHNCln7C6fjy3Tx31nbYrjDodKxB4juJZtNF7srNG6MNzG1ia5fPPJwhqVlKicwzWTibw/640?wx_fmt=jpeg&from=appmsg">作者简介：</p>
+<p>Lea Verou</p>
+<blockquote>
+<p>W3C CSSI作组特邀专家，设计CSS语言的委员之一，此前曾在W3C担任开发者代言人。目前，她在麻省理工学院从事人机交互领域的研究。她还是一位博客作家，并经常在国际性技术会议上担任讲师；她创建的多个开源项目广受开发者欢迎。</p>
+<p>定位</p>
+</blockquote>
+<p>适合CSS进阶，或者对CSS使用技巧有浓厚兴趣的人。这本书不是一本“菜谱”，而是以某个专题为切入点，深入讲解一些实现层面的细节，而且极为优雅，或者说有“工匠精神”</p>
+<h2 id="from-WET-to-DRY"><a href="#from-WET-to-DRY" class="headerlink" title="from WET to DRY"></a>from WET to DRY</h2><p>这里 wet 和 dry 显然有更深层的含义， wet 展开是：”We Enjoy Typing“ ， DRY 展开是 : “Don’t Repeat Yourself”。</p>
+<p>这两个词在所有编程语言的教程中几乎都能够看到，CSS虽然不算一门编程语言，但是其实很多时候编写CSS的思维模式和编写代码有共通之处，写出简洁、易维护、易修改的CSS是我们的美好期望。</p>
+<h3 id="合理使用简写属性"><a href="#合理使用简写属性" class="headerlink" title="合理使用简写属性"></a>合理使用简写属性</h3><p>下面的代码：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">background</span>:rebeccapurple;<span class="attribute">background-color</span>:rebeccapurple;</span><br></pre></td></tr></table></figure>
+<p>这两个写法其实是有区别的。</p>
+<p>前者能够确保我们得到一个紫色的纯色背景图，而后者却未必，因为它只是声明了颜色，如果同时有一个background-image的声明在起作用，那么它得到的就可能是一只小猫的图片。</p>
+<p>简写的意义在于：</p>
+<ol>
+<li>对于我们没有在简写中显式给出的属性，会被给予默认值。（如background-image 会被设置为 none)</li>
+<li>如果未来css引入新的特性，那么简写能够自动涵盖新的属性，可以抵御未来的风险。</li>
+<li>合理简写能够减少重复<br>这里我一直在强调合理</li>
+</ol>
+<p>因为一味追求简写也会导致代码变WET，比如下面的例子：</p>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">background:url(a.png) no-<span class="built_in">repeat</span> <span class="built_in">top</span> <span class="built_in">right</span> /<span class="number">2</span>em <span class="number">2</span>em,            url(b.png) no-<span class="built_in">repeat</span> <span class="built_in">bottom</span> <span class="built_in">right</span> /<span class="number">2</span>em <span class="number">2</span>em,            url(c.png) no-<span class="built_in">repeat</span> <span class="built_in">bottom</span> <span class="built_in">left</span> /<span class="number">2</span>em <span class="number">2</span>em;</span><br></pre></td></tr></table></figure>
+<p>background-size和background-repeat的值被重复了三遍，尽管每层背景的这两个值确实是相同的</p>
+<p>这里我们就可以用到“列表扩散规则”（如果只为某个属性提供一个值，那它就会扩散并应用到列表中的每一项）</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">background</span>:<span class="built_in">url</span>(<span class="string">tr.png</span>) top right,            <span class="built_in">url</span>(<span class="string">br.png</span>) bottom right,            <span class="built_in">url</span>(<span class="string">bl.png</span>) bottom left;<span class="attribute">background-size</span>:<span class="number">2em</span> <span class="number">2em</span>;<span class="attribute">background-repeat</span>:no-repeat;</span><br></pre></td></tr></table></figure>
+<p>这样的话如果我们日后要修改，就只需要修改两处，而不是原来的六处了。</p>
+<h3 id="被滥用的浏览器前缀"><a href="#被滥用的浏览器前缀" class="headerlink" title="被滥用的浏览器前缀"></a>被滥用的浏览器前缀</h3><p>浏览器前缀是对CSS实验性特性的解决方案，但它饱受诟病，这个设计的最初意图是：</p>
+<blockquote>
+<p>每个浏览器都可以实现这些实验性的（甚至是私有的、非标准的）特性，但要在名称前面加上自己特有的前缀。最常见的前缀分别是Firefox的-moz-、IE的-ms-、Opera的-o-以及Safari和Chrome的-webkit-。网页开发者可以自由地尝试这些加了前缀的特性，并把试用结果反馈给工作组，而工作组随后会将这些反馈吸收到规范之中，并且逐渐完善该项特性的设计。由于最终标准化的版本会有一个不同的名称（没有前缀），它在实际应用中就不会跟加前缀版本相冲突了。</p>
+<p>由于不同浏览器支持这些特性的速度是不一样的，意味着如果有一个厂商支持了某个实验性特性，开发者就要在代码中追加对应前缀的样式，于是开发者想了一个办法，就是一次性把所有前缀都加上，最后加个不带前缀的版本，最后代码看起来像这样：</p>
+</blockquote>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-moz-<span class="attribute">border-radius</span>:<span class="number">10px</span>;-ms-<span class="attribute">border-radius</span>:<span class="number">10px</span>;-o-<span class="attribute">border-radius</span>:<span class="number">10px</span>;-webkit-<span class="attribute">border-radius</span>:<span class="number">10px</span>;<span class="attribute">border-radius</span>:<span class="number">10px</span>;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这里面有两条声明是完全多余的：-ms-border-radius和-o-border-radius这两个属性从来没有在任何浏览器中出现过，因为IE和Opera从一开始就是直接实现border-radius这个无前缀版本的</p>
+<p>显然，把每个声明都重复五遍是相当枯燥的，而且很难维护。更要命的是，如果需求发生改动，你就需要改动这么多处的代码。</p>
+</blockquote>
+<p>代码变得非常WET !</p>
+<h2 id="从0开始的渐变图像冒险"><a href="#从0开始的渐变图像冒险" class="headerlink" title="从0开始的渐变图像冒险"></a>从0开始的渐变图像冒险</h2><p>突击提问：你用过 conic-gradient 吗？</p>
+<h3 id="linear-gradient-线性渐变"><a href="#linear-gradient-线性渐变" class="headerlink" title="linear-gradient 线性渐变"></a>linear-gradient 线性渐变</h3><p>简单例子</p>
+<p>线性渐变的渐变方向是一条直线，设置好色标，角度，就能得到一个不错的效果：</p>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">background</span>: linear-<span class="title function_">gradient</span>(<span class="built_in">red</span> <span class="number">0</span>, <span class="built_in">blue</span> <span class="number">100</span>%)<span class="comment">/* 默认从0开始，到100结束， 下面的等价 */</span><span class="built_in">background</span>: linear-<span class="title function_">gradient</span>(<span class="built_in">red</span>, <span class="built_in">blue</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8Rwm5ST9MXqmHNCln7C6fjytGDKA2MtBEdewpbNMHEZNpoicHkl9sxIksHDm8h3H6wWBF1jVddb67g/640?wx_fmt=png&from=appmsg">💡 渐变色应该用于background-image 而非 background-color</p>
+<p>条纹</p>
+<p>合理设置色标可以避免渐变区域的产生，从而产生条纹。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">background</span>:<span class="built_in">linear-gradient</span>(<span class="number">#fb3</span> <span class="number">50%</span>,<span class="number">#58a</span> <span class="number">50%</span>);<span class="attribute">background-size</span>: <span class="number">100%</span> <span class="number">30px</span>;</span><br></pre></td></tr></table></figure>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8Rwm5ST9MXqmHNCln7C6fjyib1UdIhvMeEScrAwhsribp4gwIqLpVTprMWdYJW1lScDt1VqcbXWdDSw/640?wx_fmt=png&from=appmsg">或者是用repeating-linear-gradient</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 几种等价的写法 */</span><span class="attribute">background</span>: <span class="built_in">repeating-linear-gradient</span>(<span class="number">#fb3</span> <span class="number">0</span>, <span class="number">#fb3</span> <span class="number">15px</span>, <span class="number">#58a</span> <span class="number">15px</span>, <span class="number">#58a</span> <span class="number">30px</span>);<span class="attribute">background</span>: <span class="built_in">repeating-linear-gradient</span>(<span class="number">#fb3</span>, <span class="number">#fb3</span> <span class="number">15px</span>, <span class="number">#58a</span> <span class="number">15px</span>, <span class="number">#58a</span> <span class="number">30px</span>);<span class="attribute">background</span>: <span class="built_in">repeating-linear-gradient</span>(<span class="number">#fb3</span> <span class="number">0</span>, <span class="number">#fb3</span> <span class="number">15px</span>, <span class="number">#58a</span> <span class="number">0</span>, <span class="number">#58a</span> <span class="number">30px</span>);</span><br></pre></td></tr></table></figure>
+<p>效果和前面完全一样，repeating前缀的版本会自动重复，无需设置size</p>
+<p>💡 仔细看第三个写法，这是正确的吗？绝对正确，这是因为CSS规范规定：“如果某个色标的位置值比整个列表中在它之前的色标的位置值都要小，则该色标的位置值会被设置为它前面所有色标位置值的最大值”，当我们设置为0时，会自动使用15px 作为色标，这样写的好处在于，如果我们要改变条纹的宽度，只需要修改一处。</p>
+<p>改变方向</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 下面两个写法等价 */</span><span class="attribute">background</span>: <span class="built_in">repeating-linear-gradient</span>(to right, <span class="number">#fb3</span> <span class="number">0</span>, <span class="number">#fb3</span> <span class="number">15px</span>, <span class="number">#58a</span> <span class="number">0</span>, <span class="number">#58a</span> <span class="number">30px</span>);<span class="attribute">background</span>: <span class="built_in">repeating-linear-gradient</span>(<span class="number">90</span> deg, <span class="number">#fb3</span> <span class="number">0</span>, <span class="number">#fb3</span> <span class="number">15px</span>, <span class="number">#58a</span> <span class="number">0</span>, <span class="number">#58a</span> <span class="number">30px</span>);</span><br></pre></td></tr></table></figure>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8Rwm5ST9MXqmHNCln7C6fjybJYvn4icudcKSQ068ictPp0ph010bhJ6jmkU0GgwHrapWvQ88C6tKDiaA/640?wx_fmt=png&from=appmsg">### 更加复杂的图像</p>
+<p>单个背景图能做到的效果是有限的，但是如果我们把多个渐变图叠加在一起，并且充分利用遮罩关系，或者改变backgroun-blend-mode就能产生许多复杂的背景图</p>
+<blockquote>
+<p>CSS3 Patterns Gallery (verou.me)</p>
+<p>比如下面的代码：</p>
+</blockquote>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">linear</span>-gradient(<span class="number">45</span>deg, #<span class="number">92</span>baac <span class="number">45</span>px, transparent <span class="number">45</span>px)<span class="number">64</span>px <span class="number">64</span>px,linear-gradient(<span class="number">45</span>deg, #<span class="number">92</span>baac <span class="number">45</span>px, transparent <span class="number">45</span>px,transparent <span class="number">91</span>px, #e1ebbd <span class="number">91</span>px, #e1ebbd <span class="number">135</span>px, transparent <span class="number">135</span>px),linear-gradient(-<span class="number">45</span>deg, #<span class="number">92</span>baac <span class="number">23</span>px, transparent <span class="number">23</span>px, transparent <span class="number">68</span>px,#<span class="number">92</span>baac <span class="number">68</span>px,#<span class="number">92</span>baac <span class="number">113</span>px,transparent <span class="number">113</span>px,transparent <span class="number">158</span>px,#<span class="number">92</span>baac <span class="number">158</span>px);background-color:#e1ebbd;background-size: <span class="number">128</span>px <span class="number">128</span>px;</span><br></pre></td></tr></table></figure>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8Rwm5ST9MXqmHNCln7C6fjyaSrghtFkLI9xF3w0QfmoLtdfRickfGwKDviavEKuRX0shUwr95lo3MOQ/640?wx_fmt=png&from=appmsg">### 画一个棋盘</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8Rwm5ST9MXqmHNCln7C6fjyCicp3IQ9N8zxIVicHOfTvNkJLaPDSaHIIXAgyb7KcmQZ4WWrbfCiaVtWA/640?wx_fmt=png&from=appmsg">有思路吗？</p>
+<p>只观察这个图片的基本组成单位，我们容易发现这是一个2 * 2的重复结构</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8Rwm5ST9MXqmHNCln7C6fjy12s2O5nQqkRfMF7R4ghxgiaUvgAGwI6SKWB5NHVvibFF1dnurwaye0ow/640?wx_fmt=png&from=appmsg">可以用三角形拼接，再加上错位，可以合成两个灰色正方形，把白色作为底色，就能得到棋盘效果：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">background</span>: #eee;      background-image:        linear-gradient(<span class="number">45</span>deg,          rgba(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, .<span class="number">25</span>) <span class="number">25</span>%, transparent <span class="number">0</span>,          transparent <span class="number">75</span>%, rgba(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, .<span class="number">25</span>)<span class="number">0</span>),        linear-gradient(<span class="number">45</span>deg,          rgba(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, .<span class="number">25</span>) <span class="number">25</span>%, transparent <span class="number">0</span>,          transparent <span class="number">75</span>%, rgba(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, .<span class="number">25</span>)<span class="number">0</span>);      background-position: <span class="number">0</span> <span class="number">0</span>, <span class="number">15</span>px <span class="number">15</span>px;      background-size: <span class="number">30</span>px <span class="number">30</span>px;</span><br></pre></td></tr></table></figure>
+<p>有没有更好的办法？</p>
+<p>有！</p>
+<h3 id="conic-gradient"><a href="#conic-gradient" class="headerlink" title="conic-gradient"></a>conic-gradient</h3><p>这个又叫锥形渐变，画过色轮的人应该不陌生。它的渐变色产生的过程是：渐变的颜色围绕一个中心点旋转（而不是从中心辐射）进行过渡。</p>
+<p>中心位置是可以调的，这就使得这个函数异常强大。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">background</span>: <span class="built_in">conic-gradient</span>(<span class="number">#bbb</span> <span class="number">0</span>, <span class="number">#bbb</span> <span class="number">25%</span>, <span class="number">#eee</span> <span class="number">0</span>, <span class="number">#eee</span> <span class="number">50%</span>, <span class="number">#bbb</span> <span class="number">0</span>, <span class="number">#bbb</span> <span class="number">75%</span>, <span class="number">#eee</span> <span class="number">0</span>, <span class="number">#eee</span>);<span class="attribute">background-size</span>:<span class="number">30px</span> <span class="number">30px</span>;</span><br></pre></td></tr></table></figure>
+<p>效果和之前完全一样，但是代码变的很简洁</p>
+<p>还可以进一步优化：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">background</span>:<span class="built_in">repeating-conic-gradient</span>(<span class="number">#bbb</span> <span class="number">0</span>,<span class="number">#bbb</span> <span class="number">25%</span>,<span class="number">#eee</span> <span class="number">0</span>,<span class="number">#eee</span> <span class="number">50%</span>);<span class="attribute">background-size</span>:<span class="number">30px</span> <span class="number">30px</span>;</span><br></pre></td></tr></table></figure>
+<p>改变中心位置</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">background</span>: conic-gradient(at <span class="number">50</span>% -<span class="number">5</span>%, #<span class="number">198072</span> <span class="number">0</span> , #<span class="number">11</span>FACD <span class="number">120</span>deg, #<span class="number">00</span>FA0A);</span><br></pre></td></tr></table></figure>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8Rwm5ST9MXqmHNCln7C6fjyFAibfjJPOpPHRicPNssB7CNsp4ibibZEia3yjxqnyOuxZPia0naAmx7kOqdA/640?wx_fmt=png&from=appmsg">能得到混合的颜色效果，这对于随机性颜色背景来说十分有用。</p>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/34f9032b/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">基于视觉的非接触式手势交互</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/7471eed1/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">故事，公众号运营的一个手法</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

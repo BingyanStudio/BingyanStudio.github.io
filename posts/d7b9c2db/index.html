@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>《精灵公主》制作过程解析 - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="《精灵公主》制作过程解析 - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/d7b9c2db/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2022-12-06T04:09:13.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">《精灵公主》制作过程解析</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>December</span>
+            <span>6,</span>
+            <span>2022</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <p>大家好！这是我的第五届GGAC的参赛作品《精灵公主》。很多影视或游戏中的精灵形象都非常吸引我，他们或灵巧轻盈，或高贵典雅；同时受《冰与火之歌》以及其衍生剧集（《权游》与《龙之家族》）的影响，我同样陶醉于那来自东方古瓦雷利亚的龙族血脉，于是我便想自己制作一位衣着华美，仪态端庄，白发紫瞳，长颈高挑的精灵公主形象在技术层面上，通过这个作品我掌握了使用Marvelous Designer制作复杂服装模型与使用Substance Designer制作布料纹理的技术，这也是我第一次使用blender的cycles渲染角色模型，也是第一此制作写实花卉，同时我还掌握了很多新的blender技巧并运用在了该作品上制作过程大约是三个月，接下来我将介绍制作过程并着重介绍关于渲染方面的知识，希望你能喜欢~## 前期准备</p>
+<p>首先还是收集参考图，这是一个长期的工作，在一开始你可能并不清楚到底想做一个什么样的作品，随着制作的深入你对下一步的方向有了更充分的认识再进一步来筛选参考图主要的参考图收集网站是yandex，pinterest和artstation，我将各类参考图分门别类整理在开源参考图软件PureRef中随时作参考同时不断更新## 开始我们的项目</p>
+<p>一切从一个绑定好的角色模型开始，我将她的身高调整为180m，这是一个高挑纤细的身材</p>
+<p>大致摆好pose，然后制作出各个基本元素：花束，之前练习时制作的简单服饰，还有用曲线大概做的头发，这一阶段不需要有多高的精度，毕竟只是草模</p>
+<p>同时搭建出环境，打光营造出氛围，一开始我的野心还是挺大的，希望制作一个角色外加完整的环境，后来由于时间不够，便专注于刻画角色## Marvelous Designer制作服装模型</p>
+<p>Md是一个非常方便强大的布料模拟软件，他能以类似传统服装打版的方式进行服装制作同时提供高质量的物理模拟，之所以一开始便要摆好pose就是为了将角色模型导入md制作出符合角色形体姿态的衣物，同时开启风力，制作裙摆被风吹拂的动态</p>
+<p>我主要用它来模拟大的布料结构，一些小的细节或者是形状的调整完全可以在blender中进一步调整，如上图红色部分便是在blender中制作的，同时我也通过雕刻的方式进一步优化了造型## Substance Designer制作布料材质</p>
+<p>SD是全世界CG艺术家都在使用的程序化纹理软件，顾名思义便是使用程序化也就是节点（参数）的方式制作纹理用于各类cg项目<img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8TUtV5QekaibnxtYFYBL2enYwaBdmlAcBLiaTl3ReJe5LUichibicKmicicJZFJlh1oNBwpvsKhg3NzOB5og/640?wx_fmt=png">水果大佬的程序化披萨，作品主页：<a target="_blank" rel="noopener" href="https://www.artstation.com/artwork/ZGaLRX">https://www.artstation.com/artwork/ZGaLRX</a></p>
+<p>上图是一个非常经典的程序化纹理，你可以看到其制作过程，这类材质在制作完成后只需修改参数便能得到不同的效果，所以复用性非常高且能很灵活地调整</p>
+<p>程序化纹理是一个非常大的话题在这里不过多展开，我想着重介绍这位法国的纹理艺术家Pauline Boiteux，她在使用SD制作布料材质方面属于顶尖级别，她在YouTube上有很多SD的课程对我帮助很大</p>
+<p>大佬的布料作品只能用叹为观止来形容，感兴趣可以去她的A站主页了解更多：<a target="_blank" rel="noopener" href="https://www.artstation.com/jappluz">https://www.artstation.com/jappluz</a></p>
+<p>在学习了SD的使用后，我也为此次服装制作了多套套纹理贴图SD中已经能预览出效果，但我需要的是导出贴图到blender中使用</p>
+<p>可以看到我并没有导出类似于基础色，粗糙度之类的通道，而是选择导出不同的遮罩，在blender中使用他们创造材质可以保留材质的程序化特性，一会就能看到</p>
+<p>我使用blender中的材质节点调用这些遮罩，便可以单独控制遮罩区域的颜色、糙度、金属度等信息</p>
+<p>可以看到同样的材质我们在blender只需调整几个参数便能得到完全不同的效果</p>
+<p>于是我便为该项目制作了上图的若干材质## Blender制作饰品模型</p>
+<p>使用blender的建模功能，我制作所需的各类饰品，主要包括各类吊坠、珠宝钻石、戒指、手饰以及链条，由于模型已经较为复杂，材质我希望尽可能简洁，这样才不会过于杂乱</p>
+<p>使用曲线修改器，我可以通过曲线很方面的控制这些链条，将它们以不同的方式组合将产生更复杂的效果## Zbrush、Mari、Substance Painter制作角色模型</p>
+<p>将我们所做的一切导入Zbrush，实际上我只在zbrush中雕刻角色，其他部分导入进来只作为参考。此时的头发与花只是草模，我会在之后重新制作</p>
+<p>在zbrush中调整了身体的形态后，我将其导入Mari绘制置换贴图</p>
+<p>之后将绘制好的置换贴图导出，分为RG两个通道，分别是较大与较小的皮肤细节，R通道我将其在zb中应用，并进行进一步修改，最终在zb中雕刻出上图的皮肤细节，并烘焙出法线贴图用于Substance Painter的绘制，烘焙出修改后的R通道置换贴图用于之后blender渲染，G通道我之后在blender中直接使用</p>
+<p>基础色同样先在mari中绘制<img src="https://mmbiz.qpic.cn/mmbiz_jpg/rxLIic6e5g8TUtV5QekaibnxtYFYBL2enYuPuHMQbPiakVoKzCsLORkxdbJHicPBsoE7dxicrIhibzkOpDiaib4iabkqj3A/640?wx_fmt=jpeg">再导入到SP进一步修改<img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8TUtV5QekaibnxtYFYBL2enYn0HasawvK00BtfsQtvicfav1FUd1WNhhq48pjlYZzMJq4EcDxYWRQlA/640?wx_fmt=png">使用之前制作的贴图，在Blender中创建的身体着色器</p>
+<p>同时制作出眼睛与睫毛，面部结构与材质会在之后不断调整</p>
+<p><strong>使用Maya的Xgen制做毛发贴图</strong></p>
+<p>我使用xgen烘焙毛发贴图，我将多个通道进行了合并，方便之后在blender中的使用</p>
+<p>在blender中一步步创建毛发## 制作花束</p>
+<p>在blender中创建出基本元素，导入sp进行纹理绘制<img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8TUtV5QekaibnxtYFYBL2enYDIlC4vkmxcGib2arSWgvlXDk2AxmAibGLkb8XL1bJny0G4vvjiaQI7P5A/640?wx_fmt=png">绘制好贴图后，在bl中制作出不同的变体，每柱植物都用曲线控制，汇集成花束</p>
+<h2 id="渲染的一些知识"><a href="#渲染的一些知识" class="headerlink" title="渲染的一些知识"></a>渲染的一些知识</h2><h3 id="关于打光"><a href="#关于打光" class="headerlink" title="关于打光"></a>关于打光</h3><p>打光我是用的是比较传统的2点打光外加一个反光板，同时背景板打上一个圆形光烘托氛围<img src="https://mmbiz.qpic.cn/mmbiz_jpg/rxLIic6e5g8TUtV5QekaibnxtYFYBL2enYbPYUPI8EIpaPpoqDk9bDrgARtzTJMbhN80FS6qGHRLCS6qfwG4BBxw/640?wx_fmt=jpeg">主光为侧向光，提供主要光源，展示模型结构<img src="https://mmbiz.qpic.cn/mmbiz_jpg/rxLIic6e5g8TUtV5QekaibnxtYFYBL2enYRQ1rIzKc4Dxc7bicxVPiajVzQcmQdsQ0mJViapQ7w5tYDRc8lu7e4PUBQ/640?wx_fmt=jpeg">背光强化轮廓</p>
+<p>反光板表现暗部细节</p>
+<p>背景光### 关于布料高光</p>
+<p>布料的高光不同于一般物体，这源于其表面的微观结构，细密的织物会影响高光的分布，我们可以直接看对比</p>
+<p>可以看到差距非常明显，左图平平无奇，右图的质感明显更好，同时强化了模型结构</p>
+<p>想要实现这种效果，我们需要调用菲尼尔节点，同时同颜色渐变进行控制，将其作为遮罩</p>
+<p>如上图所示，我们将其用来控制布料明暗</p>
+<p>将其打包，便可在多个材质间复用，内部共享数据，外部参数则保存独立### 关于透光</p>
+<p>生活中很多物体都有透光，但是在3d中它却常常被忽视，在这个作品中，透光为提升质感作出了非常大的贡献，来看看对比</p>
+<p>衣服与植物的透光开启与否</p>
+<p>头发的透光开启与否透光在物理上的含义是光在摄入物体表面后，有多少从正面反射（包含漫反射，镜面反射与次表面散射），有多少从背面射出（这便是透射），可以在材质节点中实现它</p>
+<p>将两个着色器以一定系数混合，便决定了反射与透射的占比</p>
+<p>好啦，这便是这次分享的内容，可以前往作品主页查看原图与更多制作过程截图（能投个票就更好啦~）：<a target="_blank" rel="noopener" href="https://www.ggac.com/v2/work/detail/358138%EF%BC%8C%E8%B0%A2%E8%B0%A2%EF%BC%81">https://www.ggac.com/v2/work/detail/358138，谢谢！</a></p>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/d6faca5/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">ARPU的计算和应用</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/c48d8047/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">写推文给我们带来什么</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

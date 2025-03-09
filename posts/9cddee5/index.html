@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>浅谈 markdown-it 原理 - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="浅谈 markdown-it 原理 - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/9cddee5/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2023-11-02T05:53:10.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">浅谈 markdown-it 原理</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>November</span>
+            <span>2,</span>
+            <span>2023</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <p>markdown 是一种轻量级标记语言，使用易读易写的纯文本格式编写文档，排版语法简洁。markdown-it 是一个由 javascript 语言编写的 markdown 解析器。通过对 markdown-it 源码的学习，我们可以大致了解到 markdown 语法是如何被解析成 html 语句的。</p>
+<h2 id="markdown-解析的整体流程"><a href="#markdown-解析的整体流程" class="headerlink" title="markdown 解析的整体流程"></a>markdown 解析的整体流程</h2><p>markdown-it 通过 parse 函数将字符串转换为 token ，在 render 函数通过 token 生成我们需要的 html 字符串。</p>
+<p>可以在 <a target="_blank" rel="noopener" href="https://markdown-it.github.io/">https://markdown-it.github.io/</a> 中点击右上角 debug 按钮查看通过 parse 得到的 token。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8Q41vPhOcHwdRcfkwER3z2jMZ9BOLCXsJ8ziccyfRTvXTPTnumug9SqThicYTYBQibCm86ib3ppKFomAA/640?wx_fmt=png">markdown解析流程## markdown-it 入口文件</p>
+<p>通过 markdown-it 的入口文件，我们可以了解到 markdown-it 的基本功能。</p>
+<p>在 markdown-it&#x2F;lib&#x2F;index.js 文件中我们可以看到</p>
+<ul>
+<li>MarkdownIt 类的初始化</li>
+</ul>
+<p>function MarkdownIt(presetName, options)     &#x2F;&#x2F; 初始化preset  if (!options) ;      presetName &#x3D; ‘default’;    }  }      &#x2F;&#x2F; parse、tokenize、render流程中主要使用的类  this.inline &#x3D; new ParserInline();   this.block &#x3D; new ParserBlock();  this.core &#x3D; new ParserCore();  this.renderer &#x3D; new Renderer();  &#x2F;&#x2F; 主要用于校验 url 的合法以及 decode 与 encode    this.linkify &#x3D; new LinkifyIt();  this.validateLink &#x3D; validateLink;  this.normalizeLink &#x3D; normalizeLink;  this.normalizeLinkText &#x3D; normalizeLinkText;  this.utils &#x3D; utils;  this.helpers &#x3D; utils.assign({}, helpers);  this.options &#x3D; {};  this.configure(presetName);  if (options) }</p>
+<ul>
+<li>为 MarkdownIt 类定义方法</li>
+</ul>
+<p>&#x2F;&#x2F; 合并optionsMarkdownIt.prototype.set &#x3D; function (options) ;&#x2F;&#x2F; 根据presets禁用 ParserInline、ParserBlock、ParserCore 的某些规则MarkdownIt.prototype.configure &#x3D; function (presets) ;&#x2F;&#x2F; 开启 ParserInline、ParserBlock、ParserCore 的某些规则MarkdownIt.prototype.enable &#x3D; function (list, ignoreInvalid) ;&#x2F;&#x2F; 关闭 ParserInline、ParserBlock、ParserCore 的某些规则MarkdownIt.prototype.disable &#x3D; function (list, ignoreInvalid) ;&#x2F;&#x2F; 使用插件MarkdownIt.prototype.use &#x3D; function (plugin &#x2F;*, params, … *&#x2F;) ;&#x2F;&#x2F; parse入口MarkdownIt.prototype.parse &#x3D; function (src, env)   var state &#x3D; new this.core.State(src, this, env);  this.core.process(state);  return state.tokens;};&#x2F;&#x2F; render入口MarkdownIt.prototype.render &#x3D; function (src, env) ;  return this.renderer.render(this.parse(src, env), this.options, env);};&#x2F;&#x2F; 仅用于编译inline类型tokenMarkdownIt.prototype.parseInline &#x3D; function (src, env) ;&#x2F;&#x2F; 接收parseInline的token并生成htmlMarkdownIt.prototype.renderInline &#x3D; function (src, env) ;  return this.renderer.render(this.parseInline(src, env), this.options, env);};</p>
+<h2 id="ParserCore"><a href="#ParserCore" class="headerlink" title="ParserCore"></a>ParserCore</h2><p>parse 函数中调用了 ParserCore 类的 process 方法获得 token。我们可以在 lib&#x2F;parser_core.js 中看到 ParserCore 的逻辑。</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title">Core</span>() &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Ruler"><a href="#Ruler" class="headerlink" title="Ruler"></a>Ruler</h4><p>ParserCore 类中只有 ruler 一个变量，想要更好的了解 ParserCore 的功能，我们首先要认识一下 Ruler 类。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> Ruler()   <span class="regexp">//</span>  this.__rules__ = [];    <span class="regexp">//</span> 存放职责链的信息  this.__cache__ = null;&#125;</span><br></pre></td></tr></table></figure>
+<p>在 Ruler 类中会储存很多 rule 处理函数。在 parse 的过程中，Ruler 负责调用 parse 相关的 rule 处理函数生成 token</p>
+<h4 id="process-过程"><a href="#process-过程" class="headerlink" title="process 过程"></a>process 过程</h4><p>在 MarkdownIt.prototype.parse 中执行了 this.core.process(state)。以下是 process 的相关代码</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// parser_core.jsvar _rules = [  [ <span class="string">&#x27;normalize&#x27;</span>,      <span class="built_in">require</span>(<span class="string">&#x27;./rules_core/normalize&#x27;</span>)      ],  [ <span class="string">&#x27;block&#x27;</span>,          <span class="built_in">require</span>(<span class="string">&#x27;./rules_core/block&#x27;</span>)          ],  [ <span class="string">&#x27;inline&#x27;</span>,         <span class="built_in">require</span>(<span class="string">&#x27;./rules_core/inline&#x27;</span>)         ],  [ <span class="string">&#x27;linkify&#x27;</span>,        <span class="built_in">require</span>(<span class="string">&#x27;./rules_core/linkify&#x27;</span>)        ],  [ <span class="string">&#x27;replacements&#x27;</span>,   <span class="built_in">require</span>(<span class="string">&#x27;./rules_core/replacements&#x27;</span>)   ],  [ <span class="string">&#x27;smartquotes&#x27;</span>,    <span class="built_in">require</span>(<span class="string">&#x27;./rules_core/smartquotes&#x27;</span>)    ],  [ <span class="string">&#x27;text_join&#x27;</span>,      <span class="built_in">require</span>(<span class="string">&#x27;./rules_core/text_join&#x27;</span>)      ]];<span class="function"><span class="keyword">function</span> <span class="title">Core</span><span class="params">()</span></span> &#125;// 按顺序执行_rules中的rule处理函数Core.prototype.process = <span class="function"><span class="keyword">function</span> <span class="params">(state)</span></span> &#125;;// ruler.jsRuler.prototype.push = <span class="function"><span class="keyword">function</span> <span class="params">(ruleName, fn, options)</span></span> ;      this.__rules__.push();  this.__cache__ = null;&#125;;Ruler.prototype.getRules = <span class="function"><span class="keyword">function</span> <span class="params">(chainName)</span></span>     this.__compile__();  &#125;      <span class="keyword">return</span> this.__cache__[chainName] || [];&#125;;</span><br></pre></td></tr></table></figure>
+<p>Core 构造函数将 _rules 数组通过 push 方法储存在 Ruler 类中，可以通过 getRules 获取所需职责链上的 rule 处理函数。</p>
+<p>process 获取了 _rules 中所有元素，并按顺序执行。其中，parse 过程最核心的部分在 block 和 inline 中，分别对应着 ParserBlock 和 ParserInline 两个类。</p>
+<h2 id="token"><a href="#token" class="headerlink" title="token"></a>token</h2><p>我们先来了解一下 ParseBlock 与 ParserInline 需要生成怎样的 token，在 lib&#x2F;token.js 中可以看到 Token 类的定义</p>
+<figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Token</span><span class="params">(<span class="keyword">type</span>, tag, nesting)</span> </span></span><br></pre></td></tr></table></figure>
+<h2 id="ParserBlock"><a href="#ParserBlock" class="headerlink" title="ParserBlock"></a>ParserBlock</h2><p>在 lib&#x2F;parser_block 中可以看到 ParserBlock 的定义</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title">ParserBlock</span>() );  &#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>类似于 ParserCore ，ParserBlock 首先导入生成 block token 所需要的 rule。</p>
+<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ParserBlock.prototype.parse = function (src, md, env, <span class="keyword">out</span>Tokens)   <span class="keyword">state</span> = new this.State(src, md, env, <span class="keyword">out</span>Tokens);  this.tokenize(<span class="keyword">state</span>, <span class="keyword">state</span>.line, <span class="keyword">state</span>.lineMax);&#125;;ParserBlock.prototype.State = require(&#x27;./rules_block/state_block&#x27;);</span><br></pre></td></tr></table></figure>
+<p>在 tokenize 之前，parse 方法首先创建了一个 state 用于管理 tokenize 过程中的一些状态。在 lib&#x2F;rules_block&#x2F;state_block.js 中可以看到 StateBlock 类的定义。</p>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">StateBlock</span><span class="params">(src, md, env, tokens)</span> </span><br></pre></td></tr></table></figure>
+<p>接下来看看 tokenize 函数是如何生成 token 的</p>
+<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ParserBlock.prototype.tokenize = function (<span class="keyword">state</span>, startLine, endLine)     if (<span class="keyword">state</span>.sCount[line] <span class="variable">&lt; state.blkIndent)     if (state.level &gt;</span>= <span class="keyword">max</span>Nesting)     prevLine = <span class="keyword">state</span>.line;    // 按顺序执行<span class="keyword">rule</span>处理函数生成token    <span class="keyword">for</span> (i = <span class="number">0</span>; i <span class="variable">&lt; len; i++)         break;      &#125;    &#125;    if (!ok) throw new Error(&#x27;none of the block rules matched&#x27;);     state.tight = !hasEmptyLines;    if (state.isEmpty(state.line - 1))     line = state.line;    if (line &lt; endLine &amp;&amp; state.isEmpty(line))   &#125;&#125;;</span></span><br></pre></td></tr></table></figure>
+<p>生成 token 最主要的步骤就是 ok &#x3D; rules[i](state, line, endLine, false); 这一步。通过顺序执行 rule 处理函数对每一种 markdown 语法进行逐一判断，如果符合则更新 token 并返回 true 。</p>
+<figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var <span class="symbol">_rules</span> = [  [ <span class="string">&#x27;table&#x27;</span>,      require(<span class="string">&#x27;./rules_block/table&#x27;</span>),      [ <span class="string">&#x27;paragraph&#x27;</span>, <span class="string">&#x27;reference&#x27;</span> ] ],  [ <span class="string">&#x27;code&#x27;</span>,       require(<span class="string">&#x27;./rules_block/code&#x27;</span>) ],  [ <span class="string">&#x27;fence&#x27;</span>,      require(<span class="string">&#x27;./rules_block/fence&#x27;</span>),      [ <span class="string">&#x27;paragraph&#x27;</span>, <span class="string">&#x27;reference&#x27;</span>, <span class="string">&#x27;blockquote&#x27;</span>, <span class="string">&#x27;list&#x27;</span> ] ],  [ <span class="string">&#x27;blockquote&#x27;</span>, require(<span class="string">&#x27;./rules_block/blockquote&#x27;</span>), [ <span class="string">&#x27;paragraph&#x27;</span>, <span class="string">&#x27;reference&#x27;</span>, <span class="string">&#x27;blockquote&#x27;</span>, <span class="string">&#x27;list&#x27;</span> ] ],  [ <span class="string">&#x27;hr&#x27;</span>,         require(<span class="string">&#x27;./rules_block/hr&#x27;</span>),         [ <span class="string">&#x27;paragraph&#x27;</span>, <span class="string">&#x27;reference&#x27;</span>, <span class="string">&#x27;blockquote&#x27;</span>, <span class="string">&#x27;list&#x27;</span> ] ],  [ <span class="string">&#x27;list&#x27;</span>,       require(<span class="string">&#x27;./rules_block/list&#x27;</span>),       [ <span class="string">&#x27;paragraph&#x27;</span>, <span class="string">&#x27;reference&#x27;</span>, <span class="string">&#x27;blockquote&#x27;</span> ] ],  [ <span class="string">&#x27;reference&#x27;</span>,  require(<span class="string">&#x27;./rules_block/reference&#x27;</span>) ],  [ <span class="string">&#x27;html_block&#x27;</span>, require(<span class="string">&#x27;./rules_block/html_block&#x27;</span>), [ <span class="string">&#x27;paragraph&#x27;</span>, <span class="string">&#x27;reference&#x27;</span>, <span class="string">&#x27;blockquote&#x27;</span> ] ],  [ <span class="string">&#x27;heading&#x27;</span>,    require(<span class="string">&#x27;./rules_block/heading&#x27;</span>),    [ <span class="string">&#x27;paragraph&#x27;</span>, <span class="string">&#x27;reference&#x27;</span>, <span class="string">&#x27;blockquote&#x27;</span> ] ],  [ <span class="string">&#x27;lheading&#x27;</span>,   require(<span class="string">&#x27;./rules_block/lheading&#x27;</span>) ],  [ <span class="string">&#x27;paragraph&#x27;</span>,  require(<span class="string">&#x27;./rules_block/paragraph&#x27;</span>) ]];</span><br></pre></td></tr></table></figure>
+<p>块级元素的 rule 有以上这些，基本上都能根据名称判断他们各自负责生成的 token 类型。以比较常用的标题标签（#、##类语法 ）为例：</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">module.exports = <span class="keyword">function</span> heading(state, startLine, endLine, silent)   // 判断是否为code block  ch  = state.src.charCodeAt(pos);  // 获取当前位置字符的Unicode  <span class="keyword">if</span> (ch !== <span class="number">0x23</span><span class="comment">/* # */</span> || pos &gt;= max)   // 当前字符不为#则说明不符合标题语法  // 计算标题等级（#的数量）  <span class="keyword">level</span> = <span class="number">1</span>;  ch = state.src.charCodeAt(++pos);  <span class="keyword">while</span> (ch === <span class="number">0x23</span><span class="comment">/* # */</span> &amp;&amp; pos &lt; max &amp;&amp; <span class="keyword">level</span> &lt;= <span class="number">6</span>)   <span class="keyword">if</span> (<span class="keyword">level</span> &gt; <span class="number">6</span> || (pos &lt; max &amp;&amp; !isSpace(ch)))   <span class="keyword">if</span> (silent)   // 删除字符串末尾形如<span class="string">&#x27;    ###  &#x27;</span>的字符串  max = state.skipSpacesBack(max, pos);  tmp = state.skipCharsBack(max, <span class="number">0x23</span>, pos); // #  <span class="keyword">if</span> (tmp &gt; pos &amp;&amp; isSpace(state.src.charCodeAt(tmp - <span class="number">1</span>)))     // 进入下一行    state.line = startLine + <span class="number">1</span>;    // 生成标题语法的token    token        = state.push(<span class="string">&#x27;heading_open&#x27;</span>, <span class="string">&#x27;h&#x27;</span> + String(<span class="keyword">level</span>), <span class="number">1</span>);  token.markup = <span class="string">&#x27;########&#x27;</span>.<span class="keyword">slice</span>(<span class="number">0</span>, <span class="keyword">level</span>);  token.map    = [ startLine, state.line ];  token          = state.push(<span class="string">&#x27;inline&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="number">0</span>);  token.content  = state.src.<span class="keyword">slice</span>(pos, max).trim();  token.map      = [ startLine, state.line ];  token.children = [];  token        = state.push(<span class="string">&#x27;heading_close&#x27;</span>, <span class="string">&#x27;h&#x27;</span> + String(<span class="keyword">level</span>), <span class="number">-1</span>);  token.markup = <span class="string">&#x27;########&#x27;</span>.<span class="keyword">slice</span>(<span class="number">0</span>, <span class="keyword">level</span>);  <span class="keyword">return</span> <span class="keyword">true</span>;&#125;;</span><br></pre></td></tr></table></figure>
+<p>再来看看比较常用的代码块：</p>
+<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">module.exports = function fence(<span class="keyword">state</span>, startLine, endLine, silent)   // 判断是否为code <span class="built_in">block</span>  if (pos + <span class="number">3</span> &gt; <span class="keyword">max</span>)   // 如果这一行没有三个字符，则肯定不是```语法  marker = <span class="keyword">state</span>.src.charCodeAt(pos);  if (marker !== <span class="number">0</span>x7E/* ~ */ &amp;&amp; marker !== <span class="number">0</span>x60 /* ` */)   mem = pos;  pos = <span class="keyword">state</span>.<span class="keyword">skip</span>Chars(pos, marker); // 跳过相同的`字符  len = pos - mem;  if (len <span class="variable">&lt; 3)   markup = state.src.slice(mem, pos);  params = state.src.slice(pos, max);  if (params.indexOf(String.fromCharCode(marker)) &gt;</span>= <span class="number">0</span>)   // 如果这是结尾的```， 则可以直接返回  if (silent)   // 寻找结尾的```语法  nextLine = startLine;  <span class="keyword">for</span> (;;)     pos = mem = <span class="keyword">state</span>.bMarks[nextLine] + <span class="keyword">state</span>.tShift[nextLine];    <span class="keyword">max</span> = <span class="keyword">state</span>.eMarks[nextLine];    if (pos <span class="variable">&lt; max &amp;&amp; state.sCount[nextLine] &lt; state.blkIndent)     if (state.src.charCodeAt(pos) !== marker)     if (state.sCount[nextLine] - state.blkIndent &gt;</span>= <span class="number">4</span>)     pos = <span class="keyword">state</span>.<span class="keyword">skip</span>Chars(pos, marker);    if (pos - mem <span class="variable">&lt; len)   // 结尾的`数量应不少于开始的数量    pos = state.skipSpaces(pos);  // 确保末尾只有空格    if (pos &lt; max)     haveEndMarker = true;        break;  &#125;  len = state.sCount[startLine];  state.line = nextLine + (haveEndMarker ? 1 : 0);    // 生成fence token  token         = state.push(&#x27;fence&#x27;, &#x27;code&#x27;, 0);  token.info    = params;  token.content = state.getLines(startLine + 1, nextLine, len, true);  token.markup  = markup;  token.map     = [ startLine, state.line ];  return true;&#125;;</span></span><br></pre></td></tr></table></figure>
+<h2 id="ParserInline"><a href="#ParserInline" class="headerlink" title="ParserInline"></a>ParserInline</h2><p>在 parserBlock 之后，token 中常常会出现类似 content 为 <strong>ad</strong> 的，加粗语法尚未解析的元素，这个时候就需要 Parser Inline 进行进一步的解析</p>
+<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">module.exports = function inline(<span class="keyword">state</span>)   &#125;&#125;;</span><br></pre></td></tr></table></figure>
+<p>同样的，我们先来看看 inline 中的 state 储存了哪些属性</p>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">StateInline</span><span class="params">(src, md, env, outTokens)</span> ;  <span class="keyword">this</span>.delimiters = [];  <span class="comment">// 存放一些特殊标记的分隔符，比如*、~等&#125;</span></span><br></pre></td></tr></table></figure>
+<p>在 lib&#x2F;parser_inline.js 中我们可以看到 ParserInline 的定义</p>
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">var</span> _rules = <span class="meta">[</span>  <span class="meta">[</span> <span class="string">&#x27;text&#x27;</span>,            <span class="keyword">require</span>(<span class="string">&#x27;./rules_inline/text&#x27;</span>) <span class="meta">]</span>,  // 提取连续的非 isTerminatorChar 字符  <span class="meta">[</span> <span class="string">&#x27;newline&#x27;</span>,         <span class="keyword">require</span>(<span class="string">&#x27;./rules_inline/newline&#x27;</span>) <span class="meta">]</span>,  // 处理换行符 \n  <span class="meta">[</span> <span class="string">&#x27;escape&#x27;</span>,          <span class="keyword">require</span>(<span class="string">&#x27;./rules_inline/escape&#x27;</span>) <span class="meta">]</span>,  // 处理转义字符 \  <span class="meta">[</span> <span class="string">&#x27;backticks&#x27;</span>,       <span class="keyword">require</span>(<span class="string">&#x27;./rules_inline/backticks&#x27;</span>) <span class="meta">]</span>,  // 处理反引号字符 `  <span class="meta">[</span> <span class="string">&#x27;strikethrough&#x27;</span>,   <span class="keyword">require</span>(<span class="string">&#x27;./rules_inline/strikethrough&#x27;</span>).tokenize <span class="meta">]</span>, // 处理删除字符 ~  <span class="meta">[</span> <span class="string">&#x27;emphasis&#x27;</span>,        <span class="keyword">require</span>(<span class="string">&#x27;./rules_inline/emphasis&#x27;</span>).tokenize <span class="meta">]</span>,  // 处理加粗文字的字符 *或者_  <span class="meta">[</span> <span class="string">&#x27;link&#x27;</span>,            <span class="keyword">require</span>(<span class="string">&#x27;./rules_inline/link&#x27;</span>) <span class="meta">]</span>,  // 解析超链接  <span class="meta">[</span> <span class="string">&#x27;image&#x27;</span>,           <span class="keyword">require</span>(<span class="string">&#x27;./rules_inline/image&#x27;</span>) <span class="meta">]</span>,  // 解析图片  <span class="meta">[</span> <span class="string">&#x27;autolink&#x27;</span>,        <span class="keyword">require</span>(<span class="string">&#x27;./rules_inline/autolink&#x27;</span>) <span class="meta">]</span>,  // 解析 &lt; 与 &gt; 之间的 url  <span class="meta">[</span> <span class="string">&#x27;html_inline&#x27;</span>,     <span class="keyword">require</span>(<span class="string">&#x27;./rules_inline/html_inline&#x27;</span>) <span class="meta">]</span>,  // 解析HTML行内标签  <span class="meta">[</span> <span class="string">&#x27;entity&#x27;</span>,          <span class="keyword">require</span>(<span class="string">&#x27;./rules_inline/entity&#x27;</span>) <span class="meta">]</span>  // 解析HTML实体标签，比如 、&quot;、&#x27;等等];var _rules2 = <span class="meta">[</span>  <span class="meta">[</span> <span class="string">&#x27;balance_pairs&#x27;</span>,   <span class="keyword">require</span>(<span class="string">&#x27;./rules_inline/balance_pairs&#x27;</span>) <span class="meta">]</span>, // 给诸如*、~等找到配对的开闭标签  <span class="meta">[</span> <span class="string">&#x27;strikethrough&#x27;</span>,   <span class="keyword">require</span>(<span class="string">&#x27;./rules_inline/strikethrough&#x27;</span>).postProcess <span class="meta">]</span>,  // 处理~字符，生成标签的token  <span class="meta">[</span> <span class="string">&#x27;emphasis&#x27;</span>,        <span class="keyword">require</span>(<span class="string">&#x27;./rules_inline/emphasis&#x27;</span>).postProcess <span class="meta">]</span>,  // 处理*或者_字符，生成或者标签的token  <span class="meta">[</span> <span class="string">&#x27;text_collapse&#x27;</span>,   <span class="keyword">require</span>(<span class="string">&#x27;./rules_inline/text_collapse&#x27;</span>) <span class="meta">]</span>  // 合并相邻的文本节点];function ParserInline()   this.ruler2 = new Ruler();  for (i = 0; i &lt; _rules2.length; i++) &#125;</span><br></pre></td></tr></table></figure>
+<p>与 ParserBlock 不同的是，ParserInline 有两个 rule 实例，一个在 tokenize 时调用，一个在 tokenize 后调用</p>
+<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ParserInline.prototype.tokenize = function (<span class="keyword">state</span>)       &#125;    &#125;    if (ok)       continue;    &#125;    <span class="keyword">state</span>.pending += <span class="keyword">state</span>.src[<span class="keyword">state</span>.pos++];  &#125;  if (<span class="keyword">state</span>.pending) &#125;;ParserInline.prototype.parse = function (str, md, env, <span class="keyword">out</span>Tokens) &#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="Render"><a href="#Render" class="headerlink" title="Render"></a>Render</h2><p>render 函数根据 token 的 type 进行渲染</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Renderer</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">render</span> = <span class="keyword">function</span> (<span class="params">tokens, options, env</span>)  <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> rules[type] !== <span class="string">&#x27;undefined&#x27;</span>)  <span class="keyword">else</span>   &#125;  <span class="keyword">return</span> result;&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>当 type 为 inline 时<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Renderer.prototype.renderInline = <span class="keyword">function</span> <span class="title"></span>(tokens, options, env)  else   &#125;  <span class="keyword">return</span> <span class="type">result</span>;&#125;;</span><br></pre></td></tr></table></figure></li>
+<li>当 type 为 undefined 时<figure class="highlight elm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Renderer</span>.proto<span class="keyword">type</span>.renderToken = function renderToken(tokens, idx, options)   if (token.block &amp;&amp; token.nesting !== -1 &amp;&amp; idx &amp;&amp; tokens[idx - 1].hidden)     // 添加元素名称，如  result += (token.nesting === -1 ? &#x27; : &#x27;&lt;&#x27;) + token.tag;  // 添加元素属性，如  result += this.renderAttrs(token);  // 添加元素结束符，如  if (token.nesting === 0 &amp;&amp; options.xhtmlOut)   // 判断是否需要在末尾添加换行    if (token.block)  else if (nextToken.nesting === -1 &amp;&amp; nextToken.tag === token.tag)       &#125;    &#125;  &#125;  result += needLf ? &#x27;&gt;\n&#x27; : &#x27;&gt;&#x27;;  return result;&#125;;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/f9b90b5a/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">数据分析指标</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/e3de27e0/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">如何通过NPC让游戏世界“活”过来</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

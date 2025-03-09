@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>Hook模型 - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="Hook模型 - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/225b7680/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2022-11-01T07:41:57.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">Hook模型</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>November</span>
+            <span>1,</span>
+            <span>2022</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <p>先来几个很痛的问题：</p>
+<p>距离你上次点开微信过去了多久？</p>
+<p>距离你上次刷微博过去了多久？</p>
+<p>今天打了几局王者？</p>
+<p>今天刷了多少次抖音？</p>
+<p>……</p>
+<p>再来几个典型的场景：</p>
+<p>在走路的时候，在吃饭的时候，在排队的时候，在摸鱼的时候，在睡前的时候，你都在刷什么app？</p>
+<p>……</p>
+<p>你会发现，你总是会不自觉地拿起手机，点开那些你最为熟悉的互联网产品，开始消磨时间，在不知不觉中，又到了凌晨两点。</p>
+<p>或许，你已经对这些产品“上瘾”了。</p>
+<p>别紧张，这不是什么多坏的事情。</p>
+<p>我们应该思考的是，我们为何会对这些互联网产品“上瘾”？这些互联网产品怎么样让我们“上瘾”？</p>
+<p>今天来介绍一下hook模型。</p>
+<p>什么是Hook模型？</p>
+<p>Hook，即钩子，有吸引人的东西之意。</p>
+<p>Hook模型，是由《上瘾》的作者尼尔·埃亚尔、瑞安·胡佛提出的一种产品设计方法。核心内容是如何让用户对产品“上瘾”，也就是让用户养成使用习惯的四大产品逻辑。</p>
+<p>其包括四个要素：</p>
+<p>触发（Trigger）</p>
+<p>行动（Action）</p>
+<p>奖励（Reward）</p>
+<p>投入（Investment）</p>
+<p>1、Trigger 触发</p>
+<p>触发，hook模型的第一步，即让用户开始使用你的产品。这需要给用户一个触发点，从而让其拥有使用产品的动机。</p>
+<p>触发主要分为两类：</p>
+<p>1、内部触发</p>
+<p>内部触发更多从用户侧出发。如满足了用户的需求，用户的心理因素等。</p>
+<p>2、外部触发</p>
+<p>外部触发侧重于外部的因素，即产品提供的因素。外部触发主要有四种：付费型触发、回馈型触发、自主型触发、人际型触发。</p>
+<p> · 付费型触发</p>
+<p>通过广告等付费渠道吸引用户下载app，如各种洗脑魔性的广告，你一定会记住58同城。</p>
+<p> · 回馈型触发</p>
+<p>如通过微博热搜、推文等较为正面的推送。各种高质量的你以为是软文的推文刷到最后发现这是广告，便是如此。</p>
+<p> · 人际型触发</p>
+<p>通过人际关系、社会关系触达到各种用户。最简单的例子便是拼多多。</p>
+<p> · 自主型触发</p>
+<p>通过产品自身的消息push、活动推送、订阅等形式触达用户。</p>
+<p>2、Action 行动</p>
+<p>行动，即触发用户后希望用户完成的行为。为了让用户完成期望达成的行为，产品会降低门槛，减少实现闭环的路径，让用户花费尽可能低的成本、通过尽可能少的路径完成行为。</p>
+<p>一句话来说，用户开始行动、完成任务需要满足拥有充足的动机和具备足够的能力两个条件。</p>
+<p>3、Reward 奖励</p>
+<p>奖励，即在用户完成任务之后给予一定的奖励。就像写完作业就可以获得玩半个小时手机的奖励一样，产品也会在你完成任务之后给予你奖励，不会让你觉得之前花的精力都白费了。游戏里的奖励机制最为丰富。打游戏通过一关后，往往会给予你一些金币或道具，亦或是一些成就或称号，从而起到激励你继续玩下去的作用。</p>
+<p>有效且高效的奖励不会是一成不变的，也不会是单一的。如果每一次给的奖励都一样，并且也没有什么多大的吸引力，或是并不会对用户产生多大的好处，久而久之用户也不会持续使用下去，不会形成“上瘾”。比如说，写完一门课的作业，每次都奖励你看十分钟新闻。你更想要的可能是玩十分钟手机，打十分钟游戏，累了的话也想睡十分钟觉，这样你才会更有动力地完成学习任务，而不是每次都看十分钟令你昏昏欲睡、毫无兴趣的新闻。</p>
+<p>最佳的奖励是多变的、随机性的、不可预测的奖励（variable reward）。这样自然会调动用户的好奇心和渴望感，也不会让用户久而久之对一成不变的、单一的奖励感到麻木和无聊。考试成绩想让爸妈看到，也会想挂在年级的榜单上让所有人看到，想拿到爸妈给的奖励，同时也想拿学校给的奖学金，也是这样的道理。</p>
+<p>无穷的多变性，是维系用户长期保持兴趣的关键。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8Q739fRnUg18kaTS1v2RBQWvaXFXK6IlBckK95HjbVqObYJa0qVY07zQNpr9Qyp4cVjWianbmHIokw/640?wx_fmt=png">美团成长中心设置的多种奖励</p>
+<p>4、Investment 投入</p>
+<p>投入，简单来说就是让用户花费更多的时间和精力投入在其中。用户对产品投入的时间和精力越多，对产品的依赖性越高，越会形成“上瘾”，形成一种自然而然的习惯。此外，用户在使用产品中，投入的形式通常是多种多样的。玩游戏买个皮肤，投入了金钱；网购买衣服花费两小时，投入了时间和精力；拼多多拉好友砍一刀，投入了社会关系……投入的成本远远不止时间和金钱。</p>
+<p>这就是沉没成本的问题。</p>
+<p>当用户意识到自己投入的成本有多少后，便不会轻易地说弃就弃了。</p>
+<p>所以，产品会通过各种手段吸引用户持续深入地使用，也会把用户投入的成本以“成就”的方式展现在用户面前。比如当你成为大V后，你拥有了成千上万的粉丝，成为了一个小有名气的博主。粉丝的关注、获得的名气便会转化为你持续产出的动力。</p>
+<p>举个例子——不背单词app</p>
+<p>虽然学习类产品多种多样，层出不穷，但是除非拥有很强的自制力，或是已经养成了习惯，很难长时间坚持下去使用一个学习型产品。</p>
+<p>在如此之多的背单词产品中，不背单词脱颖而出，巧妙地让用户对学习合理地“上瘾”。</p>
+<p>Step1 触发</p>
+<p>你是一个想要寻求一款背单词产品的大学生。你对比了许多款同类型的产品，最终选择了不背单词。</p>
+<p>你被同学推荐而来，你被其简洁直白但是又不失美观的界面吸引，你被其组队背单词、和好友互勉的功能打动，你认为其独特的拼写功能可以更高效地帮助你记忆单词，你觉得其丰富的词典功能、拓展词汇可以帮助你更加深入地学习。你决定试一试，下载了不背单词。</p>
+<p>Step2 行动</p>
+<p>此时你已经下载好了不背单词，并且点开了它，开始了你的初次使用，迈出了第一步。不背单词引导你完成基本设置后，你就可以开始使用它背单词了。</p>
+<p>Step3 奖励</p>
+<p>背完了单词后，不背单词贴心地提醒你获得了多少金币，你既获得了学到知识的满足感和成就感，又在物质上获得了奖励。准备再背下一组后，它提醒你还有单词没有复习，先复习再学习新单词会有奖励，于是你点进了复习。</p>
+<p>积攒的金币可以兑换各种付费功能，如果使用时间够长、积攒够多的话，甚至可以花很少的钱兑换到终身大会员。你被此吸引，决定一定要好好背单词，争取白嫖拿下会员。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8Q739fRnUg18kaTS1v2RBQWwSqrzSoL4znQSMWIXnKh4bYVSkdvV9qcp8s89bFlGEVDkud8acOwpg/640?wx_fmt=png"></p>
+<p>Step4 投入</p>
+<p>你已经持续使用了一段时间，渐渐地由于生活中事情太多，偶尔会忘记背单词打卡。需要复习的单词逐渐增多，再不背就真的复习不完了。</p>
+<p>为了督促自己，你参加了组队背单词活动。组队背单词活动给你设定了要求，要求你在组队的两周期间最多漏打卡一次，每天背单词时间最少达到15分钟。达不到要求，你和队友都无法获得奖励，小组会自动解散。你背负着自己背单词的任务，也背负着和好友的友情，从最开始的经常忘记打卡，到没空的时候就点开背个单词，养成了一种背单词的习惯，最终完成了两周的打卡任务。</p>
+<p>在不背单词的仪表盘里，你也可以清晰地看到自己背单词的状况。看见自己背了这么多单词，连续打卡了这么多天，你感受到满满的成就感，决定要坚持下去，努力背完这一本词书，养成每天打卡的好习惯。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8Q739fRnUg18kaTS1v2RBQWUGbibMMtCA0JPpDjNWpLzXqjmBXTJE00u29UR7cnKEwxQH0UvuIYoAA/640?wx_fmt=png"></p>
+<p>总结</p>
+<p>实现hook模型可以简单概括为：</p>
+<p>引导用户使用 → 用户采取行动 → 给予用户一定的反馈与激励 → 投入沉淀，减少用户的沉没成本 → 持续使用，形成循环</p>
+<p>hook模型的应用其实随处可见，毕竟每天“上瘾”的app从来都不止一个。前段时间爆火的羊了个羊，也是很巧妙地拿捏了人心，让所有人都欲罢不能，沉迷其中。</p>
+<p>所以，对产品上瘾了，不一定是什么坏事，也不是自己自制力太差的原因。身为产品经理，谁不希望自己的产品是人人使用、人人上瘾的“爆款”呢？</p>
+<p>资料参考：</p>
+<p>人人都是产品经理社区</p>
+<p>《上瘾》[美]尼尔·埃亚尔 &#x2F; [美]瑞安·胡佛</p>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/74dce755/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">Pinia</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/b77a45a0/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">从初学者角度的二次解读文章 - 《自己实现黑白图片自动上色AI》</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

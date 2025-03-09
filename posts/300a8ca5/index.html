@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>虚拟列表 - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="虚拟列表 - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/300a8ca5/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2022-03-04T04:35:37.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">虚拟列表</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>March</span>
+            <span>4,</span>
+            <span>2022</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/rxLIic6e5g8RHNt0wcLs3mty4OkEicZh7VLj2ftQVibmARz9goMQzVqPQSgae2LHWF4TiaEkdDagSiap3qB6JicribYicA/640?wx_fmt=jpeg">### 需求场景</p>
+<blockquote>
+<p>刷不到底的信息流，无尽图片，复杂的DOM结构…</p>
+<p>总之，有长列表，有复杂元素，就可能需要优化</p>
+<p>对于很多场景，我们不能一次性加载完所有的数据并且全都渲染出来，这既耗费性能，又影响用户体验。</p>
+</blockquote>
+<p>这里介绍几种常见的解决方法，以及它们的特点。</p>
+<h4 id="分页加载"><a href="#分页加载" class="headerlink" title="分页加载"></a>分页加载</h4><ul>
+<li>需要后端支持</li>
+<li>分页请求可能会打断用户体验</li>
+<li>有筛选项时（筛选部分列表项展示）可能触发新的请求，造成延迟</li>
+</ul>
+<h4 id="懒加载"><a href="#懒加载" class="headerlink" title="懒加载"></a>懒加载</h4><ul>
+<li>解决首屏加载问题</li>
+<li>并没有解决性能问题</li>
+</ul>
+<h4 id="虚拟列表"><a href="#虚拟列表" class="headerlink" title="虚拟列表"></a>虚拟列表</h4><ul>
+<li>实现较麻烦</li>
+<li>长时间加载大量数据不会有性能负担</li>
+<li>更新时可能会出现跳变</li>
+<li>滑动过快可能会出现白屏<br>综合来说，虚拟列表在用户体验和应用性能方面都表现的比较好，但处理不当可能会出现跳变、白屏的问题。</li>
+</ul>
+<p>因此在实际情况中是否需要使用，还是需要综合考虑数据量、是否支持请求分页、每个列表项dom元素的复杂程度、是否有筛选项等因素，再去权衡。</p>
+<h3 id="原理分析"><a href="#原理分析" class="headerlink" title="原理分析"></a>原理分析</h3><p>什么是虚拟列表呢？</p>
+<p>虚拟列表是一种根据滚动容器元素的可视区有选择地渲染长列表中某一部分数据的方案</p>
+<p>首先，我们要有一个很长很长很长的列表，还要有每个列表项对应的dom素。</p>
+<p>我们知道，对于整个列表，如果要将所有元素渲染到屏幕上，数据如果多了，就容易出现卡顿。</p>
+<p>因此，我们需要对列表和视窗之间进行一些划分。</p>
+<h3 id="简单实现"><a href="#简单实现" class="headerlink" title="简单实现"></a>简单实现</h3><p>接下来我们一起实现一个精简的版本，大概思路是：</p>
+<p>请求所有数据，对列表分页，监听滚动，计算当前应该展示到第几页，然后截取对应区间的数据，更新展示区域。</p>
+<p>具体实现时，现假设我们的列表项是固定长度的，并且能够计算得到。</p>
+<h5 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h5><p>定义以下变量：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">        totalList: [], <span class="regexp">//</span> 总列表        renderList: [], <span class="regexp">//</span> 渲染列表        curPage: <span class="number">1</span>, <span class="regexp">//</span> 当前展示的页索引，从<span class="number">1</span>开始        containerTop: <span class="number">0</span> <span class="regexp">//</span> 渲染列表盒子在整个列表盒子的高度        <span class="regexp">//</span> constants        perPageNum: <span class="number">10</span>, <span class="regexp">//</span> 每页包含列表项数        itemHeight: <span class="number">100</span>, <span class="regexp">//</span> 每个列表项的高度        showLen: <span class="number">3</span> <span class="regexp">//</span> 缓冲渲染长度</span><br></pre></td></tr></table></figure>
+<h6 id="关于参数的设置"><a href="#关于参数的设置" class="headerlink" title="关于参数的设置"></a>关于参数的设置</h6><ul>
+<li><p>我们对整个列表进行了分页，一页包含的列表项的总高度大约是一个视窗的高度，建议设置得比实际数量大一些，便于缓冲</p>
+</li>
+<li><p>根据itemHeight和curPage记录当前视窗显示的第一个元素所属的页，也就是当前要展示的页</p>
+</li>
+<li><p>showLen为缓冲，这里一般设置为3，表示渲染当前视窗及其上下共3个页面，满足基本一次手势上划和下拉的展示缓冲</p>
+</li>
+</ul>
+<h5 id="页面结构"><a href="#页面结构" class="headerlink" title="页面结构"></a>页面结构</h5><p>来两个盒子：</p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.scroll-<span class="built_in">box</span>(:<span class="built_in">style</span>=<span class="string">&quot;&quot;</span>)    .render-<span class="built_in">box</span>(:<span class="built_in">style</span>=<span class="string">&quot;&quot;</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>外层scroll-box用来放整个长列表</p>
+</li>
+<li><p>列表项只起到占高度的作用，并没有实际元素，因此不会造成页面负担</p>
+</li>
+<li><p>如不考虑过滤功能，高度totalHeight直接设置为totalList.length * itemHeight</p>
+</li>
+<li><p>相对定位</p>
+</li>
+<li><p>内层render-box存放真实渲染的列表项</p>
+</li>
+<li><p>绝对定位，相对于父元素偏移</p>
+</li>
+<li><p>可以直接通过改top属性保证它在视窗内（可以优化）</p>
+</li>
+</ul>
+<h5 id="列表划分"><a href="#列表划分" class="headerlink" title="列表划分"></a>列表划分</h5><p>列表划分的关系如下图：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8RHNt0wcLs3mty4OkEicZh7VH82hVxv6fY4WkQfshhUDnicSVDicQCkWRpsPVxibE7DWibKIMNmaIVXy6w/640?wx_fmt=png">##### 计算</p>
+<h6 id="计算页值"><a href="#计算页值" class="headerlink" title="计算页值"></a>计算页值</h6><p>计算红色部分视窗对应的页索引curPage</p>
+<p>实现：在长列表盒子中监听滚动事件，动态计算curPage的值，注意这里curPage是从1开始计数：</p>
+<figure class="highlight erlang"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">handleScroll</span> <span class="params">(e)</span> </span></span><br></pre></td></tr></table></figure>
+<p>现在我们已经得到了正确的页面值啦，写的时候可以先在浏览器里面上下滑动试试</p>
+<h6 id="计算渲染列表及高度"><a href="#计算渲染列表及高度" class="headerlink" title="计算渲染列表及高度"></a>计算渲染列表及高度</h6><p>接下来要做的，就是在每次更新curPage时，渲染它及其上下的页面对应的列表项，同时改变渲染部分盒子的高度，使其位于视窗中</p>
+<p>计算也很简单，需要考虑以下两种情况：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8RHNt0wcLs3mty4OkEicZh7Vy1aB4zFYjX3mQpTMZ90N8EU2Vt3kXUFwKgYNYRBaKyDJZaY15qiciasA/640?wx_fmt=png">1. 首次滚动</p>
+<ul>
+<li>前三个页面的加载containerTop仍然为0</li>
+<li>渲染列表截取0到3页内容</li>
+</ul>
+<ol start="2">
+<li>持续滚动</li>
+</ol>
+<ul>
+<li>containerTop高度为视窗上方的高度，即(curPage - 1) * perPageNum * itemHeight</li>
+<li>renderList修改为curPage对应页及其上下两页的内容。例如图2中curPage从3到4，那我们需要截取的就是第3、4、5页的列表项，这里slice用的是索引值所以要减一<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> ()  <span class="keyword">else</span> &#125;</span><br></pre></td></tr></table></figure>
+到这里，一个简单的虚拟列表就实现好了，代码也非常少</li>
+</ul>
+<h4 id="补充完善"><a href="#补充完善" class="headerlink" title="补充完善"></a>补充完善</h4><p>当然，我们还需要补充一下</p>
+<ul>
+<li><p>筛选功能（如果有）</p>
+</li>
+<li><p>在每次totalList使用前过滤一层再用即可</p>
+</li>
+<li><p>平滑移动</p>
+</li>
+<li><p>直接改containerTop容易出现跳变，当翻页时可能会突然偏移，因此可以使用transform修改样式</p>
+</li>
+<li><p>缓存</p>
+</li>
+<li><p>这里因为数据量不大（没有上千），性能问题主要出在dom结构复杂，因此请求了全部数据，只做了缓冲，并没有进行缓存</p>
+</li>
+<li><p>要写缓存也可以用哈希表然后二分查找</p>
+</li>
+<li><p>列表元素变长</p>
+</li>
+<li><p>这就需要去动态获取元素的高度了，当然可能会遇到兼容性的问题，计算的方法并没有多少变化</p>
+</li>
+<li><p>性能</p>
+</li>
+<li><p>可以查看浏览器分析计算、渲染等花费的时间来分析性能</p>
+</li>
+<li><p>小程序可以开启数据更新打印，便于定位性能瓶颈</p>
+</li>
+</ul>
+<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>以上只是一种比较精简的虚拟列表的实现，不同的方案主要在缓冲设置上的区别比较大，其他的主要是变量设置不同，例如可以维护渲染列表的首尾索引而不是整个渲染列表，不使用多页缓冲进行缓存等</p>
+<p>不同版本的实现，可以去读一些较官方版本的源码，如：</p>
+<p>react-tiny-virtual-list，react-virtualized, vue virtual scroll list</p>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/e9413904/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">解读视觉动线</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/3bfa7eb3/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">什么是好的推荐系统</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

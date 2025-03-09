@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>组会分享——如何优雅地发送邮件 - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="组会分享——如何优雅地发送邮件 - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/a79b3c96/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2024-05-22T19:13:53.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">组会分享——如何优雅地发送邮件</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>May</span>
+            <span>22,</span>
+            <span>2024</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <p>泥嚎呀，今天想聊一聊邮件的事。</p>
+<p>我们平常可能会收到来自各种网站的邮件，以我订阅的 WakaTime 为例，它会给我推送一个周报：</p>
+<p>💡 WakaTime 可以和主流 IDE 或者编辑器关联，统计 coding 的时长等数据。<img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8QetOcRqEwaG6HNRiczhC5ORYZ2DoKXpoic8wibB0C7MXPdHZ1YDo5JaD2zDDP0Ig6kO94wf4vWxmDRA/640?wx_fmt=png&from=appmsg">我这里用的邮箱客户端是 qq 邮箱网页版，我们可以很容易看出这里是一个 HTML 文本，可以用 devtools 查看一下内容区域的结构是什么样的：</p>
+<p>   <img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8QetOcRqEwaG6HNRiczhC5ORVNb3ia83cXbgOibCjNnzg7jV7OhucZVmtBZqOHHUCkuxMztibyh3r6FYw/640?wx_fmt=png&from=appmsg">它的主体结构是下面这样的：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div <span class="keyword">class</span>=&quot;<span class="symbol">readmail_content</span>&quot;&gt;  &lt;<span class="symbol">div</span> <span class="symbol">class</span>=&quot;<span class="symbol">readmail_content_html</span> <span class="symbol">qmbox</span> <span class="symbol">qmbox_Web</span>&quot; <span class="symbol">id</span>=&quot;<span class="symbol">readmail_content_html</span>&quot;&gt;    &lt;<span class="symbol">style</span>&gt;<span class="symbol">style</span>&gt;    &lt;<span class="symbol">div</span> <span class="symbol">bgcolor</span>=&quot;#<span class="symbol">F7F7F7</span>&quot;&gt;<span class="symbol">div</span>&gt;  <span class="symbol">div</span>&gt;<span class="symbol">div</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>显然这就是邮件的主体结构，最外层的两个 div 元素是 qq 邮箱添加的，而我们看到的  html  文本则是被放入了里面。</p>
+<p>💡 这个结构在不同邮箱网站中会不一样，请自行探索🕶。既然如此，我们能否用编程的方式，发送一个被华丽的 CSS 装饰的 HTML 文本给别人呢？当然可以😎，这就是接下来要尝试的。</p>
+<h2 id="nodemailer-启动！"><a href="#nodemailer-启动！" class="headerlink" title="nodemailer 启动！"></a>nodemailer 启动！</h2><p>用我熟悉的 Node 可以快速搭建一个发送邮件的服务，用到的库是 nodemailer</p>
+<p>首先，我们需要添加 nodemailer 这个包:</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm <span class="keyword">install</span> nodemailer</span><br></pre></td></tr></table></figure>
+<p>接下来在项目中导入：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">//</span> index.jsconst nodemailer = require(<span class="string">&#x27;nodemailer&#x27;</span>);</span><br></pre></td></tr></table></figure>
+<p>既然要发送邮件，我们肯定需要一个账号，可以用 nodemailer.createTransport 定义一个发送邮件的对象，并指定账号和密码:</p>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> transporter = nodemailer.createTransport(,&#125;);</span><br></pre></td></tr></table></figure>
+<p>我来解释一下关键参数的含义：</p>
+<ol>
+<li>host : host 是指邮件服务器的主机地址。对于 qq 邮箱，SMTP 服务器的主机地址是 <strong>smtp.qq.com</strong>。SMTP（Simple Mail Transfer Protocol，简单邮件传输协议）是用于发送电子邮件的互联网标准协议。每个电子邮件服务提供商都会有自己独特的 SMTP 服务器地址。例如，Gmail 的 SMTP 服务器地址是 <strong>smtp.gmail.com</strong>。<br>💡 可以在邮箱的帮助文档中查询到对应的信息1. port : 一般是 456 或者 587,  这两个都是加密端口</li>
+<li>auth : 这里的 pass 不是密码，而是用授权码，授权码可以从邮箱的客户端中申请获得。<br>完成之后我们只需要调用 transporter.sendMail 发送邮件即可，这里我写了一个异步函数来完成这件事：</li>
+</ol>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> content = `</span><br></pre></td></tr></table></figure>
+<p>&#96;async function sendMail() )  console.log(“Message sent: %s”, info.messageId);}sendMail().catch(console.error);这里的 content 是一个加载动画，具体实现比较复杂，实现的方式不是重点 :&gt;</p>
+<p>这是在不同设备上面看到的效果：</p>
+<ul>
+<li>安卓 qq 邮箱 APP：</li>
+<li>qq 邮箱网页版:<br><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8QetOcRqEwaG6HNRiczhC5ORNVFQDpBl9aib3pvCJrRac7gOJcLPLs9GKEO8l1WOFt6iakcEQOzib6GLw/640?wx_fmt=png&from=appmsg">App 中能看到正常的 CSS 动画，但是在网页端我们什么都没看到，这是为什么？</li>
+</ul>
+<h2 id="content-被篡改"><a href="#content-被篡改" class="headerlink" title="content 被篡改"></a>content 被篡改</h2><p>打开 devtools， 观察一下我们的 content 部分的 html:</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="selector-tag">div</span> class=<span class="string">&quot;readmail_content_html qmbox qmbox_Web&quot;</span> id=<span class="string">&quot;readmail_content_html&quot;</span>&gt;  &lt;style&gt;    <span class="selector-class">.qmbox</span> <span class="selector-class">.loader_OZAT</span>     <span class="selector-class">.qmbox</span> <span class="selector-class">.loader</span><span class="selector-pseudo">::before</span>     <span class="selector-class">.qmbox</span> <span class="selector-class">.loader</span><span class="selector-pseudo">::after</span>     <span class="keyword">@keyframes</span> l10-<span class="number">0</span>     <span class="selector-class">.qmbox</span> <span class="number">50%</span>,<span class="selector-class">.qmbox</span> <span class="number">100%</span>     &#125;    <span class="keyword">@keyframes</span> l10-<span class="number">1</span>     &#125;    <span class="keyword">@keyframes</span> l10-<span class="number">2</span>     <span class="selector-class">.qmbox</span> <span class="number">80%</span>,<span class="selector-class">.qmbox</span> <span class="number">100%</span>     &#125;  style&gt;  &lt;<span class="selector-tag">div</span> class=<span class="string">&quot;loader_OZAT&quot;</span>&gt;div&gt;div&gt;</span><br></pre></td></tr></table></figure>
+<p>可以观察到我们的 content 被 qq 邮箱篡改了！</p>
+<p>具体来说：</p>
+<ol>
+<li>每个选择器前面被加上了 .qmbox 这个类选择器。</li>
+<li>@keyframes 内部被错误地添加上了 .qmbox ，造成语法错误</li>
+<li>div 的 loader 类变成了 loader_OZAT<br>第一条是比较好理解的，通过加上前缀，来防止类名污染。</li>
+</ol>
+<p>但是 2， 3 条的机制我就不是很能理解了，尤其是 2 显然是一个 bug，这直接导致动画失效。</p>
+<p>不过我们能推断出 qq 邮箱是会对发来的 html 做处理的，来保证网站和用户的安全。</p>
+<p>复原之后我们的马里奥又回来辣！</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8QetOcRqEwaG6HNRiczhC5ORQ9hhfibBJV394xIicx7qudkAB4RMB60gRssibdibgKSE4F94OL7icZ4FpSg/640?wx_fmt=png&from=appmsg">## js 是否能插入到 content 里？</p>
+<p>那既然我们能在 content 里面写 html 和 css，那么我们能否写 js 呢？</p>
+<p>考虑到安全，qq 邮箱应该是会删掉 content 里面的 js 的，我们可以来验证一下。</p>
+<p>把 content 替换为下面的内容:</p>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> content = `                  计数器: <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    +<span class="number">1</span>    </span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/a823bc0e/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">UGC：如何让用户更好的参与进内容创作</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/fb1a87b/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">从“假装XX存钱法”看年轻人的消费观和自我投射</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

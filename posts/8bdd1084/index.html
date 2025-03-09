@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>Konva - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="Konva - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/8bdd1084/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2022-06-10T07:37:58.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">Konva</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>June</span>
+            <span>10,</span>
+            <span>2022</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <p>Konva 是一个 HTML5 Canvas JavaScript 框架，它通过对 2d context 的扩展实现了在桌面端和移动端的可交互性。## 基本层次</p>
+<p>渲染分层清晰：Stage，Layer，Group 和 Shape</p>
+<p>我们可以用画布类比 Stage，图层类比 Layer，图层中的元素就是 Shape，Group 则是几个元素的组合。</p>
+<p>官方给出的层次体系如下所示：</p>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">              Stage                |<span class="string">         +------+------+         </span>|<span class="string">             </span>|<span class="string">       Layer         Layer         </span>|<span class="string">             </span>|<span class="string">   +-----+-----+     Shape   </span>|<span class="string">           </span>|<span class="string"> Group       Group   </span>|<span class="string">           </span>|<span class="string">   +       +---+---+   </span>|<span class="string">       </span>|<span class="string">       </span>|<span class="string">Shape   Group    Shape           </span>|<span class="string">           +           </span>|<span class="string">         Shape</span></span><br></pre></td></tr></table></figure>
+<h2 id="绘制图形与设置样式"><a href="#绘制图形与设置样式" class="headerlink" title="绘制图形与设置样式"></a>绘制图形与设置样式</h2><p>Konva 支持的图形：Rect，Circle，Ellipse，Line，Polygon，Spline，Blob，Image，Text，TextPath，Star，Label，SVG Path 和 RegularPolygon</p>
+<p>样式：</p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> <span class="built_in">tr</span> = <span class="built_in">new</span> Konva.Transformer();<span class="built_in">tr</span>.attachTo(e.target);</span><br></pre></td></tr></table></figure>
+<h3 id="自定义图形-custom-shape"><a href="#自定义图形-custom-shape" class="headerlink" title="自定义图形 custom shape:"></a>自定义图形 custom shape:</h3><p>Konva.Context 是对原生 2d canvas context 的包装，它除了和原生 context 有相同的属性和方法外还增加了一些额外的 API。</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="built_in">rect</span> = <span class="keyword">new</span> Konva.Shape(&#125;);</span><br></pre></td></tr></table></figure>
+<p>最佳实践：尽可能不要在 sceneFunc 里面手动添加样式，你只需要绘制一些路径，然后使用 context.fillStrokeShape(shape) 处理样式问题。</p>
+<h2 id="绑定事件、交互与变换"><a href="#绑定事件、交互与变换" class="headerlink" title="绑定事件、交互与变换"></a>绑定事件、交互与变换</h2><p>用 on() 给节点绑定事件，基本支持鼠标键盘以及移动端事件。</p>
+<p>事件也包含：dragstart、 dragmove、 dragend 等拖拽事件，transformstart, transform 和 transformend 变换事件。</p>
+<h2 id="最简单的一个例子："><a href="#最简单的一个例子：" class="headerlink" title="最简单的一个例子："></a>最简单的一个例子：</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> stage= <span class="keyword">new</span> Konva.Stage();  <span class="keyword">let</span> layer= <span class="keyword">new</span> Konva.Layer();<span class="keyword">let</span> <span class="keyword">group</span>= <span class="keyword">new</span> Konva.Group();<span class="keyword">let</span> rect= <span class="keyword">new</span> Konva.Rect();<span class="keyword">group</span>.<span class="keyword">add</span>(rect);layer.<span class="keyword">add</span>(<span class="keyword">group</span>);stage.<span class="keyword">add</span>(layer);</span><br></pre></td></tr></table></figure>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8Rz25qKmt049zvsKjNd6KibITOUbAGm82qXAswQsLicD2dsUMSHISXYyT4TySP3BcTgZ7QZPwMef3dQ/640?wx_fmt=png">### 添加事件</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rect.on(<span class="string">&quot;mouseenter mouseup&quot;</span>, <span class="keyword">function</span> <span class="title"></span>() );rect.on(<span class="string">&quot;mouseleave  mousedown &quot;</span>, <span class="keyword">function</span> <span class="title"></span>() );</span><br></pre></td></tr></table></figure>
+<h3 id="添加键盘事件"><a href="#添加键盘事件" class="headerlink" title="添加键盘事件"></a>添加键盘事件</h3><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let <span class="attribute">container</span>=stage.container();container.tabIndex=1;//使其可以被focusconst <span class="attribute">DELTA</span>=4;container.addEventListener(&quot;keydown&quot;,function(e)else <span class="keyword">if</span>(e.<span class="attribute">keyCode</span>===38)else <span class="keyword">if</span>(e.<span class="attribute">keyCode</span>===39)else <span class="keyword">if</span>(e.<span class="attribute">keyCode</span>===40)else    e.preventDefault();    layer.batchDraw();&#125;);</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/7221075c/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">介绍一下情绪版</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/9befedba/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">硬表面建模与写实纹理绘制的分享</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

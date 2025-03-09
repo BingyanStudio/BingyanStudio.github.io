@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>前端摇一摇功能基本实现 - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="前端摇一摇功能基本实现 - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/510bcd3a/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2022-09-22T02:08:21.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">前端摇一摇功能基本实现</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>September</span>
+            <span>22,</span>
+            <span>2022</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <h2 id="这里的-摇一摇-指什么"><a href="#这里的-摇一摇-指什么" class="headerlink" title="这里的 摇一摇 指什么"></a>这里的 摇一摇 指什么</h2><p>简单来说，就是通过摇动移动设备去完成一些功能</p>
+<p>那么对于程序员而言，主要是监听移动设备摇动的事件</p>
+<p>我们如何判断用户是否摇动了移动设备，又如何获得摇动的相关信息</p>
+<h2 id="DeviceMotionEvent-API"><a href="#DeviceMotionEvent-API" class="headerlink" title="DeviceMotionEvent API"></a>DeviceMotionEvent API</h2><p>由 HTML5 提供，可以获得设备的物理方向及运动信息</p>
+<p>这里我们用到的主要是其中 devicemotion 事件，提供设备的加速度信息，有 4 个只读属性：</p>
+<ol>
+<li>accelerationIncludingGravity：重力加速度</li>
+<li>acceleration：加速度（需要设备陀螺仪支持）</li>
+<li>rotationRate（alpha，beat，gamma）：旋转速度</li>
+<li>interval：获取的时间间隔<br>封装事件监听函数</li>
+</ol>
+<figure class="highlight moonscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const useEventListener = <span class="function"><span class="params">(  event: <span class="built_in">string</span>,  eventHandler,  useCapture = <span class="literal">false</span>)</span> =&gt;</span> ;&#125;;</span><br></pre></td></tr></table></figure>
+<p>监听 devicemotion 事件</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">const unRegister</span> = useEventListener(            <span class="string">&quot;devicemotion&quot;</span>,            onDeviceMotionHandler          );</span><br></pre></td></tr></table></figure>
+<h2 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h2><p>由上文可知，我们可以获得的是三维加速度信息，所以首先需要由加速度计算得速度</p>
+<p>这里用加速度在 x、y、z 三个方向单位时间变化率来表示速度</p>
+<figure class="highlight erlang-repl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const calculateSpeed = (  curA: DeviceMotionEvent[<span class="string">&quot;acceleration&quot;</span>],  lastA: DeviceMotionEvent[<span class="string">&quot;acceleration&quot;</span>],  diff: number) =&gt;  (Math.sqrt(    Math.pow(curA!.x! - lastA!.x!, <span class="number">2</span>) +      Math.pow(curA!.y! - lastA!.y!, <span class="number">2</span>) +      Math.pow(curA!.z! - lastA!.z!, <span class="number">2</span>)  ) /    diff) *  <span class="number">10000</span>;</span><br></pre></td></tr></table></figure>
+<p>此时我们可以通过实际测试，设置一个临界速度，当实际速度超过临界速度时，即认为发生了一次摇动</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const CRITICAL_SPEED <span class="operator">=</span> <span class="number">800</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>记录开始时间与开始时间后的摇动次数，则可计算出从开始时间到当前时间的摇动频率</p>
+<p>当时间间隔足够短时，可认为获得的是当前时刻的摇动频率</p>
+<figure class="highlight nim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// 这三个变量都对外暴露，使用 <span class="keyword">ref</span> 可以同步修改<span class="keyword">const</span> frequency = <span class="keyword">ref</span>(<span class="number">0</span>);<span class="keyword">const</span> shakeTimes = <span class="keyword">ref</span>(<span class="number">0</span>);<span class="keyword">const</span> startTime = <span class="keyword">ref</span>(<span class="type">Date</span>.now());<span class="keyword">let</span> lastTime = <span class="type">Date</span>.now(); // 上一次时间<span class="keyword">let</span> lastA: <span class="type">DeviceMotionEvent</span>[<span class="string">&quot;acceleration&quot;</span>] = ; // 上一次加速度<span class="keyword">const</span> deviceMotionHandler = (e: <span class="type">DeviceMotionEvent</span>) =&gt; ;  </span><br></pre></td></tr></table></figure>
+<p>至此，我们已经可以判断用户是否摇动了移动设备，且获得摇动次数与摇动频率</p>
+<h2 id="兼容各种情况"><a href="#兼容各种情况" class="headerlink" title="兼容各种情况"></a>兼容各种情况</h2><p>核心功能的实现并不复杂，但在实际应用中会碰到各种不兼容的情况需要处理</p>
+<p>注意我们的网站需要支持 HTTPS 协议，才能使用 DeviceMotionEvent API</p>
+<p>在此之前先封装处理 await</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const awaitWraper = <span class="function"><span class="params">(promise)</span> =&gt;</span> promise.<span class="keyword">then</span>(<span class="function"><span class="params">(res)</span> =&gt;</span> [<span class="literal">null</span>, res]).<span class="keyword">catch</span>(<span class="function"><span class="params">(err)</span> =&gt;</span> [err, <span class="literal">null</span>]);</span><br></pre></td></tr></table></figure>
+<p>接着将之前的具体实现包装成 registerOnDeviceMotion 函数，用于注册 devicemotion 事件</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">interface registerOnDeviceMotionReturnType <span class="keyword">const</span> registerOnDeviceMotion = <span class="keyword">async</span> (): <span class="built_in">Promise</span> =&gt; ;    <span class="comment">/* 如果设备不支持 devicemotion 事件 */</span>    <span class="keyword">if</span> (!window.DeviceMotionEvent)     <span class="keyword">let</span> lastTime = <span class="built_in">Date</span>.now(); <span class="regexp">// 上一次时间    let lastA: DeviceMotionEvent[&quot;acceleration&quot;] = ; //</span> 上一次加速度    <span class="comment">/* 事件处理函数 */</span>    <span class="keyword">const</span> deviceMotionHandler = (e: DeviceMotionEvent) =&gt; ;    <span class="comment">/* IOS 13 */</span>    <span class="keyword">if</span> (<span class="keyword">typeof</span> DeviceMotionEvent.requestPermission === <span class="string">&quot;function&quot;</span>)  <span class="keyword">else</span>       &#125; <span class="keyword">else</span>     &#125;    returnObj.success = <span class="literal">true</span>;    returnObj.unRegister = useEventListener(      <span class="string">&quot;devicemotion&quot;</span>,      onDeviceMotionHandler    );    <span class="keyword">return</span> returnObj;  &#125;;   </span><br></pre></td></tr></table></figure>
+<p>在 IOS 中，在使用 DeviceMotionEvent API 时需要用户手动授权</p>
+<p>我们可以将用户授权的行为绑定给某个在发生该行为前必须经历的事件，比如点击开始按钮</p>
+<figure class="highlight moonscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const getPermission = <span class="function"><span class="params">()</span> =&gt;</span> )    <span class="keyword">if</span> (permissionRes.<span class="built_in">error</span>) alert(permissionRes.<span class="built_in">error</span>) // 这里用 alert 模拟一下展示错误信息  &#125;);&#125;const clickHandler = <span class="function"><span class="params">()</span> =&gt;</span> ;</span><br></pre></td></tr></table></figure>
+<p>最终在某个 DOM 元素上监听 click 事件</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/7f815b63/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">浅谈用户体验</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/f744f392/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">市集上新小游戏，《军训大对抗》限时开启！</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

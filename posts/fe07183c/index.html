@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>你知道我为存下你的数据付出多少吗？ - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="你知道我为存下你的数据付出多少吗？ - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/fe07183c/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2024-03-22T02:56:09.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">你知道我为存下你的数据付出多少吗？</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>March</span>
+            <span>22,</span>
+            <span>2024</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8SDMHHUsujb9a5emHWO3PSIbMvDEgL3hbanEAZza07sFwDmAaWm8pguEib8hZf1yYr6A9ElM60ygkQ/640?wx_fmt=png&from=appmsg">引子</p>
+<p>SSD（Solid State Drive），即固态硬盘，是一种以半导体闪存（NAND Flash）作为介质的存储设备。和传统机械硬盘（Hard Disk Drive，HDD）不同，SSD以半导体存储数据，用纯电子电路实现，没有任何机械设备，这就决定了它在性能、功耗、可靠性等方面和HDD有很大不同。</p>
+<p>速度快，是用户在使用SSD过程中最为直观的感受。那是什么成就了SSD的神速呢？除了速度快，相比HDD，SSD还有什么优点呢？这就得从SSD的原理说起了。SSD是一种以半导体为主要存储介质、外形和数据传输接口与传统的HDD相同的存储产品。目前主流SSD使用一种叫闪存的存储介质。</p>
+<p>SSD 的读与写</p>
+<p>SSD作为主流的非易失性存储硬件之一，是如何持久化存储数据的，读取数据的过程发生了什么？通过下面的图片，我们可以略知一二。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8SDMHHUsujb9a5emHWO3PSIIe9YZlLUQqiayAsJZyAia2IQ2wnicZht9uJ3T7WzkGSfAkTZB6raymW9g/640?wx_fmt=png&from=appmsg">从图中可以看出，SSD主要有三大功能模块组成：</p>
+<p>1、前端接口和相关的协议模块</p>
+<p>2、中间的FTL层(Flash Translation Layer)模块</p>
+<p>3、后端和闪存通信模块</p>
+<p>接下来，我们以写为例，来看一下整个的过程。</p>
+<p>操作系统通过接口发送写命令给SSD，SSD接收到该命令后执行，并接收用户要写入的数据。数据一般会先缓存在SSD内部的RAM中，FTL会为每个逻辑数据块分配一个闪存地址，当数据凑到一定数量后，FTL便会发送写闪存请求给后端，然后后端根据写请求，把缓存中的数据写到对应的闪存空间。</p>
+<p>然而由于闪存不能覆盖写，闪存块需擦除才能写入。主机发来的某个数据块，它不是写在闪存固定位置，SSD可以为其分配任何可能的闪存空间写入。因此，SSD内部需要FTL这样一个东西，完成逻辑数据块到闪存物理空间的转换或者映射。</p>
+<p>举个例子，假设SSD容量为128GB，逻辑数据块大小为4KB，所以该SSD一共有128GB&#x2F;4KB&#x3D;32M个逻辑数据块。每个逻辑块都有一个映射，即每个逻辑块在闪存空间都有一个存储位置。闪存地址大小如果用4字节表示，那么存储32M个逻辑数据块在闪存中的地址则需要32M×4B&#x3D;128MB大小的映射表。当然，在SSD中更常用的是页映射.</p>
+<p>正是因为这样的映射表，让SSD高度封装，操作系统不必关心存储的物理位置。然而，其实到这里，HDD与SDD的区别并没有足够的体现，中间的FTL层是我们研究与提升SSD性能的关键之一。</p>
+<p>由于前端接口协议都是标准化的，后端和闪存的接口及操作也是标准化的（闪存遵循ONFI或者Toggle协议），因此，一个SSD在前端协议及闪存确定下来后，差异化就体现在FTL算法上了。FTL算法决定了性能、可靠性、功耗等SSD的核心参数。</p>
+<p>FTL 算法</p>
+<p>SSD 的 FTL 算法包括了 坏块管理、Trim、磨损平衡、映射管理等，考虑到篇幅因素，本文将从映射管理的角度来看 FTL 算法</p>
+<p>映射的种类</p>
+<p>根据映射粒度的不同，FTL映射有基于块的映射，有基于页的映射，还有混合映射（Hybrid Mapping）。</p>
+<p>块映射中，以闪存的块为映射粒度，一个用户逻辑块可以映射到 任意一个闪存物理块，但是映射前后，每个页在块中的偏移保持不变。由于映射表只需存储块的映射，因此存储映射表所需空间小，但其性能差，尤其是小尺寸数据的写入性能，用户即使只写入一个逻辑页，也需要把整个物理块数据先读出来，然后改变那个逻辑页的数据，最后再整个块写入。块映射有好的连续大尺寸的读写性能，但小尺寸数据的写性能是非常糟糕的。</p>
+<p>U盘一般都是采用块映射（U盘使用的存储介质也是闪存，因此也是有FTL的），适合大数据的传输，不适合小尺寸数据的写入。</p>
+<p>页映射中，以闪存的页为映射粒度，一个逻辑页可以映射到任意一个物理页中，因此每一个页都有一个对应的映射关系。由于闪存页远比闪存块多，因此需要更多的空间来存储映射表。但它的性能更好，尤其体现在随机写上面。为追求性能，SSD一般都采用页映射。</p>
+<p>混合映射是块映射和页映射的结合，如图4-5所示。一个逻辑块映射到任意一个物理块，但在块中，每个页的偏移并不是固定不动的，块内采用页映射的方式，一个逻辑块中的逻辑页可以映射到对应物理块中的任意页。因此，它的映射表所需空间以及性能都是介于块映射和页映射之间的。</p>
+<p>映射的基本管理</p>
+<p>用户通过LBA（Logical Block Address，逻辑块地址）访问SSD，每个LBA代表着一个逻辑块（大小一般为512B&#x2F;4KB&#x2F;8KB……），我们把用户访问SSD的基本单元称为逻辑页（Logical Page）。而在SSD内部，SSD主控是以闪存页为基本单元读写闪存的，我们称闪存页为物理页（Physical Page）。用户每写入一个数据页，SSD主控就会找一个物理页把用户数据写入，SSD内部同时记录了这样一条映射（Map）。有了这样一个映射关系后，下次用户需要读某个逻辑页时，SSD就知道从闪存的哪个位置把数据读取上来，如下图所示。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8SDMHHUsujb9a5emHWO3PSIiaPEaruueyic3AbiaTZZqXWiccTYolmib7BqXNIEIH4PvRJyxLv3iaFK1uyw/640?wx_fmt=png&from=appmsg">SSD内部维护了一张逻辑页到物理页地址转换的映射表（Map Table）。用户每写入一个逻辑页，就会产生一个新的映射关系，这个映射关系会加入（第一次写）或者更改（覆盖写）映射表。当读取某个逻辑页时，SSD首先查找映射表中该逻辑页对应的物理页，然后再访问闪存读取相应的用户数据。</p>
+<p>由于闪存页和逻辑页大小不同，一般前者大于后者，所以实际上不会是一个逻辑页对应一个物理页，而是若干个逻辑页写在一个物理页中。换句话来说，逻辑页其实是和子物理页一一对应的。</p>
+<p>举个例子，当映射页大小为4KB，物理地址用4Byte表示时，映射表大小是SSD容量大小的1&#x2F;1024。这里假设了SSD内部映射粒度等于逻辑页大小，当然它们可以不一样。</p>
+<p>对于绝大多数SSD，我们可以看到上面都有板载DRAM，其主要作用就是存储这张映射表，如下图所示。在SSD工作时，全部或绝大部分的映射表都可以放在DRAM上，映射关系可以快速访问。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8SDMHHUsujb9a5emHWO3PSIa5Kbm54WVk6GVOibDPTz9S5C8388IMWZcjTD6oFjsUD0LPBRXhIOIOg/640?wx_fmt=png&from=appmsg">但有些入门级SSD或者移动存储设备，出于成本和功耗考虑，它们采用DRAM-Less设计，即不带DRAM，比如经典的Sandforce主控，它并不支持板载DRAM，那么它的映射表存在哪里呢？它采用二级映射。一级映射表常驻SRAM，二级映射表小部分缓存在SRAM，大部分都存放在闪存上。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8SDMHHUsujb9a5emHWO3PSIVaERic1264x7tVX9XQCtLep8ygWwAMYOoMZTopNyPC5CRfNbdxpTdXQ/640?wx_fmt=png&from=appmsg"></p>
+<p>二级表就是L2P（Logical address To Physical address，逻辑地址到物理地址转换）表，它被分成一块一块（Region）的，大部分存储在闪存中，小部分缓存在RAM中。一级表则存储这些块在闪存中的物理地址，由于它不是很大，一般都可以完全放在RAM中。</p>
+<p>SSD工作时，对带DRAM的SSD来说，只需要查找DRAM当中的映射表，获取到物理地址后访问闪存便会得到用户数据，这期间只需要访问一次闪存。而对不带DRAM的SSD来说，它首先会查看该逻辑页对应的映射关系是否在SRAM内：如果在，直接根据映射关系读取闪存；如果不在，那么它首先需要把映射关系从闪存中读取出来，然后再根据这个映射关系读取用户数据，这就意味着相比于有DRAM的SSD，它需要读取两次闪存才能把用户数据读取出来，底层有效带宽减小。下图是不带DRAM的SSD结构。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8SDMHHUsujb9a5emHWO3PSILqHSxRWias6305I0eeke3eyIKROxw1SibaPArUnK3NMJ8bxhAryClCKQ/640?wx_fmt=png&from=appmsg">对顺序读来说，映射关系连续，因此一次映射块的读，可以满足很多用户数据的读，也意味着DRAM-less的SSD可以有好的顺序读性能。但对随机读来说，映射关系分散，一次映射关系的加载基本只能满足一笔逻辑页的读，因此对随机读来说，需要访问两次闪存才能完成读操作，随机读性能就不是那么理想了。</p>
+<p>当然，映射表除了可以放在板载DRAM、SRAM和闪存中，它还可以放到主机的内存中，在此处我们不做赘述。</p>
+<p>映射表刷新</p>
+<p>映射表在SSD掉电前，是需要把它写入到闪存中去的。下次上电初始化时，需要把它从闪存中部分或全部加载到SSD的缓存（DRAM 或者 SRAM）中。随着SSD的写入，缓存中的映射表不断增加新的映射关系，为防止异常掉电导致这些新的映射关系丢失，SSD的固件不仅仅只在正常掉电前把这些映射关系刷新到闪存中去，而是在SSD运行过程中，按照一定策略把映射表写进闪存。这样，即使发生异常掉电，丢失的也只是一小部分映射关系，上电时可以较快地重建这些映射关系。</p>
+<p>那么，什么时候会触发映射表的写入呢？一般有以下几种情况：</p>
+<p>·新产生的映射关系累积到一定的阈值</p>
+<p>·用户写入的数据量达到一定的阈值</p>
+<p>·闪存写完闪存块的数量达到一定的阈值</p>
+<p>·其他</p>
+<p>而写入策略一般有：</p>
+<p>·全部更新</p>
+<p>·增量更新</p>
+<p>全部更新表示的是缓存中映射表（干净的和不干净的）全部写入到闪存，增量更新的意思是只把新产生的（不干净的）映射关系刷入到闪存中去。显然，相比后者，前者需要写入更多的数据量，一方面影响用户写入性能和时延（latency），另一方面增加写放大，但其好处是固件实现简单，不需要去知道哪些映射关系是干净的，哪些是不干净的。固件算法在决策的时候，应根据软硬件架构，综合考虑，使用最适合自己系统的映射表写入策略。</p>
+<p>参考：</p>
+<p>[1.《深入浅出SSD：固态存储核心技术、原理与实战》]</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8SDMHHUsujb9a5emHWO3PSIicWWvxVdJu2fho4hMjYAd6XL30tf1AqWsyzrZFpFaOH7zA3dA70UyBw/640?wx_fmt=png&from=appmsg"></p>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/3c5cdbb2/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">23.6K Star，告别Notion、飞书，开源在线协作云文档平台 Outline 部署指南</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/69fb166/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">好奇心的回报——游戏里的隐藏要素</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>Unity编辑器拓展：Editor与PropertyDrawer - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="Unity编辑器拓展：Editor与PropertyDrawer - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/cefb3615/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2023-10-23T21:11:56.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">Unity编辑器拓展：Editor与PropertyDrawer</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>October</span>
+            <span>23,</span>
+            <span>2023</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><h2 id="1-啥是编辑器拓展？"><a href="#1-啥是编辑器拓展？" class="headerlink" title="1. 啥是编辑器拓展？"></a>1. 啥是编辑器拓展？</h2><p>让我们想象自己是一个即将进行关卡搭建的策划。开发同学已经写好了相应的脚本，你只需要配置一下相应物体的参数，就能建立一个好玩的关卡了！然而……</p>
+<p>你为主角添加了 Player 这个组件。然后你看到了这些东西：  </p>
+<p>这些参数都是干啥用的?你用高超的英语技巧推断了一下：</p>
+<ul>
+<li><p>Speed → 速度</p>
+</li>
+<li><p>Jump Height → 跳跃高度</p>
+</li>
+</ul>
+<p>但是Jump Buffer是个啥？跳跃缓冲器？</p>
+<p>Coyote Time 呢？丛林狼时间</p>
+<p>哦豁，这下如果开发不在的话，这些参数就要一个个自己查、自己调试了，大大降低了游戏的开发效率。</p>
+<p>那假如我掏出这个，阁下又该如何面对呢？ </p>
+<p>相比于之前的版本，现在的面板都使用中文作为标注，且按照一定的类别进行分类放置，看起来舒服多了；  就算仍有些参数不能理解，也能大概猜出意思，进行调试也更加方便了！ </p>
+<p>作为游戏开发，我们不仅仅需要关注逻辑代码是否通顺、是否高效，也应考虑到代码应当让不会写代码策划、美术同学们可以更容易地看得懂我们提供的工具，从而更好地交流协作。</p>
+<p>显然，Unity不会良心到把中文都为我们准备好；要实现上述的功能，我们需要对Unity进行一些小小的改动——编辑器拓展。</p>
+<h2 id="2-你在编辑啥？"><a href="#2-你在编辑啥？" class="headerlink" title="2. 你在编辑啥？"></a>2. 你在编辑啥？</h2><p>你打开了Unity，编写了 MyComponent.cs 文件，把他挂载到了一个空物体上。</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">using UnityEngine;<span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">MyComponent</span> : <span class="symbol">MonoBehaviour</span></span><br></pre></td></tr></table></figure>
+<p>你的组件看起来是这个样子的：</p>
+<p>然后你可以给Speed这个属性一个好看的值，比如5：  </p>
+<p>这个过程非常自然，你可以很方便地编辑这些值，然后在游戏里看到效果。  但实际上，Unity在这中间替你做了非常多的事情。有哪些呢？</p>
+<p>在编辑器内，当你修改Inspector内的参数时，实际上修改的是序列化对象 SerializedObject 存储的值。同时，我们可以通过拓展 Editor 和 PropertyDrawer 来实现自定义 Inspector 显示</p>
+<h2 id="3-自定义-Editor"><a href="#3-自定义-Editor" class="headerlink" title="3. 自定义 Editor"></a>3. 自定义 Editor</h2><blockquote>
+<p>如果你只想要自定义PropertyDrawer的话，也不要跳过这一章，这底下会讲一些基础概念，且在PropertyDrawer那里不会重复的。 </p>
+<p>当你拓展Editor时，你可以完全重写某一类型的物体在Inspector内的表现，而不影响其他类型的物体的表现。</p>
+</blockquote>
+<h3 id="3-1-先看看效果！"><a href="#3-1-先看看效果！" class="headerlink" title="3.1 先看看效果！"></a>3.1 先看看效果！</h3><blockquote>
+<p>注意：所有对编辑器的拓展脚本（using UnityEditor）都需要放在任意位置下的Editor文件夹里！ </p>
+<p>让我们创建一个Editor文件夹，然后在里面创建 MyComponentEditor.cs。  接下来复制粘贴以下内容，看看会发生什么！</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">using UnityEngine;using UnityEditor;[CustomEditor(typeof(MyComponent))]public <span class="keyword">class</span> <span class="title class_">MyComponentEditor</span> : Edito<span class="string">r&quot;);        &#125;        // 画个提示框        EditorGUILayout.HelpBox(&quot;</span>这是帮助框，里面可以写帮助信息<span class="string">&quot;,MessageType.Info);        // 别忘了把更改保存到serializedObject哦！        serializedObject.ApplyModifiedProperties();    &#125;&#125;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>你问我 MyComponent 是哪来的？看看第一节！</p>
+<p>他的效果是这样的：  </p>
+</blockquote>
+<p>接下来，我们来分析一下上面那一段代码是如何工作的：</p>
+<h3 id="3-2-IMGUI-与-EditorGUILayout"><a href="#3-2-IMGUI-与-EditorGUILayout" class="headerlink" title="3.2 IMGUI 与 EditorGUILayout"></a>3.2 IMGUI 与 EditorGUILayout</h3><p>IMGUI 是一个非常流行的GUI库。Unity将IMGUI的相关操作封装进了C#，供开发者更方便地绘制GUI。 </p>
+<p>Unity已经提供了更现代化的GUI套件 UI ToolKit 以供UI绘制。这一套系统更加复杂，但是它实现了可视化的编辑器，并且支持更灵活地定制UI的样式、数据绑定等。 </p>
+<blockquote>
+<p>考虑到项目实际应用上，IMGUI 已经能满足绝大多数需求，本文将继续使用 IMGUI。你也可以使用 UI ToolKit 实现类似的功能。</p>
+<p>Unity总共提供了四个 IMGUI 的封装类：</p>
+</blockquote>
+<ul>
+<li><p>UnityEngine.GUI</p>
+</li>
+<li><p>UnityEngine.GUILayout</p>
+</li>
+<li><p>UnityEditor.EditorGUI</p>
+</li>
+<li><p>UnityEditor.EditorGUILayout</p>
+</li>
+</ul>
+<p>  </p>
+<p>其中，UnityEngine 命名空间下的两个类在游戏内与编辑器拓展内均可调用，而 UnityEditor 下的两个类只能在编辑器拓展中使用。 </p>
+<p>每一个类型都有大量的静态方法，负责绘制各种UI控件。</p>
+<p>GUI 与 GUILayout 的区别在于：</p>
+<ul>
+<li><p>GUI 绘制UI的方法都需要你主动为其提供一个 Rect 对象，以表示这个UI所在的位置</p>
+</li>
+<li><p>GUILayout 绘制UI时会自动计算其位置。</p>
+</li>
+</ul>
+<p> </p>
+<p>EditorGUI 与 EditorGUILayout 同理。  继承 Editor 编写自定义绘制内容的时候，通常采用 EditorGUILayout。</p>
+<h3 id="3-3-代码解读"><a href="#3-3-代码解读" class="headerlink" title="3.3 代码解读"></a>3.3 代码解读</h3><h4 id="3-3-1-基础控件"><a href="#3-3-1-基础控件" class="headerlink" title="3.3.1 基础控件"></a>3.3.1 基础控件</h4><p>EditorGUILayout.LabelField(“嗨害嗨！这是自定义的内容！”);这一行代码将会绘制一行文字，对应Inspector中的</p>
+<p>实际上，Unity提供了类型 GUIContent 对“要显示的文字”进行封装： </p>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EditorGUILayout.LabelField(    <span class="keyword">new</span> GUIContent(<span class="string">&quot;嗨害嗨！这是自定义的内容！&quot;</span>, <span class="string">&quot;这是这句话的ToolTip! &quot;</span>));</span><br></pre></td></tr></table></figure>
+<p>这样，当鼠标移动到这句话上时，就会弹出 ToolTip 了：  </p>
+<p>GUIContent 也有一个包含 Texture 的构造函数。如果传入了一张图片，那么这张图片就会作为图标显示在文字的左侧。</p>
+<p>类似地，EditorGUILayout.HelpBox(string, MessageType) 会绘制一个帮助框，如上方截图所示。</p>
+<h4 id="3-3-2-按钮"><a href="#3-3-2-按钮" class="headerlink" title="3.3.2 按钮"></a>3.3.2 按钮</h4><figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if (<span class="name">GUILayout</span>.Button(<span class="string">&quot;按我!&quot;</span>))<span class="string">&quot;);&#125;</span></span><br></pre></td></tr></table></figure>
+<p>这几行代码要求Unity绘制一个按钮，并且在按下按钮的时候打印这句话。这里有两个地方有一丢丢奇怪：</p>
+<ul>
+<li><p>为啥使用的是 GUILayout 而不是 EditorGUILayout ？</p>
+</li>
+<li><p>为啥 GUILayout.Button(string) 的返回值可以表示【按钮是否被按下】？</p>
+</li>
+</ul>
+<p>第一个很好解释：EditorGUILayout 里根本没有封装 Button 方法！  为啥？因为按钮也经常在游戏内使用，所以添加到 GUILayout 供玩家在游戏内添加显然是更好的选择</p>
+<p>第二个需要解释一下：  与直觉相悖的是， OnInspectorGUI() （什么，你问我这是啥？再仔细看看前面的内容！）的调用其实非常频繁。你的鼠标划过Inspector对应位置，Unity都需要检查一下：</p>
+<ul>
+<li><p>你的鼠标有没有碰到按钮？</p>
+</li>
+<li><p>有 → 将按钮变得高亮</p>
+</li>
+<li><p>没有 → 将高亮的按钮变回原样（如果有的话）</p>
+</li>
+<li><p>其他类似的检测</p>
+</li>
+</ul>
+<p>当你的鼠标按下时，Unity会检查鼠标的位置是否在按钮内(以判定鼠标是否按了按钮)，并向 GUILayout.Button(string) 返回一个布尔值供用户判断。</p>
+<h4 id="3-3-3-属性框"><a href="#3-3-3-属性框" class="headerlink" title="3.3.3 属性框"></a>3.3.3 属性框</h4><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> spd = serializedObject.FindProperty(<span class="string">&quot;speed&quot;</span>);EditorGUILayout.PropertyField(spd, <span class="keyword">new</span> GUIContent(<span class="string">&quot;速度&quot;</span>));</span><br></pre></td></tr></table></figure>
+<p>在这两行代码中，我们找到了当前编辑的 serializedObject 的指定属性，以 SerializedProperty 类型实例的形式返回。 </p>
+<blockquote>
+<p>都看到这里了，不妨复习一下前面的流程图？</p>
+<h5 id="序列化属性-SerializedProperty"><a href="#序列化属性-SerializedProperty" class="headerlink" title="序列化属性 SerializedProperty"></a>序列化属性 SerializedProperty</h5></blockquote>
+<p>SerializedProperty 依附于 SerializedObject 存在。</p>
+<p>获取它的实例有两种方式：</p>
+<ul>
+<li><p>serializedObject.FindProperty(“属性路径（通常是名称）”)</p>
+</li>
+<li><p>serializedProperty.FindPropertyRelative(“属性路径”)</p>
+</li>
+</ul>
+<p>  </p>
+<p>前者是获取目标 SerializedObject 的指定属性，后者是获取目标 SerializedProperty 的子属性。 </p>
+<p>子属性是在 SerializedObject 嵌套的时候使用的概念。例如，当一个物体（称为【obj】）成为另一个物体（称为【anotherObj】）的属性时，我们可以通过 anotherObj.FindProperty(“obj”) 找到这个物体（保存到【obj】变量），再通过 obj.FindPropertyRelative(“属性名称”) 获取到这个物体自身的属性</p>
+<p>序列化属性是对所有类型的属性的抽象，它并不关心自己保存的值的类型。你可以通过这样一系列的C#接口（其实，在C#中，它们也称为【属性】，为了避免混淆才这么称呼的）来获取或写入它的实际值：    </p>
+<blockquote>
+<p>哦当然，你自己心里肯定是清楚这个属性“实际上是什么类型的”，才调用对应的 xxxValue 的</p>
+<h5 id="PropertyField-与指定属性控件"><a href="#PropertyField-与指定属性控件" class="headerlink" title="PropertyField 与指定属性控件"></a>PropertyField 与指定属性控件</h5></blockquote>
+<p>EditorGUILayout.PropertyField这个方法将会让Unity自己去找合适的 PropertyDrawer 并绘制指定的 SerializedProperty；同时，在这个值被用户修改的时候自动保存到 SerializedProperty 去。</p>
+<p>这个方法相对特殊，因为 EditorGUILayout 提供的其他控件使用起来会略微更复杂一丢丢： </p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">//</span> 找到 serializedObject 对应的 serializedProperty，即 speed 属性var spd = serializedObject.FindProperty(<span class="string">&quot;speed&quot;</span>);<span class="regexp">//</span> 绘制属性编辑框EditorGUILayout.PropertyField(spd, new GUIContent(<span class="string">&quot;速度&quot;</span>));<span class="regexp">//</span> 用指定的控件绘制，效果一模一样spd.floatValue = EditorGUILayout.FloatField(new GUIContent(<span class="string">&quot;速度&quot;</span>), spd.floatValue);</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，我们使用了 EditorGUILayout.FloatField 绘制了一个一模一样的属性框。只不过，EditorGUILayout.FloatField 需要在绘制时给定一个数值，并且最终得到的结果不能自动更新到 spd 这个属性中去。 </p>
+<p>换句话说，EditorGUILayout.PropertyField 这个方法使用起来更方便，可以自动寻找合适的控件绘制，并自动更新数值；其他控件的泛用性更强，它们可以从其他地方读取数值，或者实现更灵活的功能。</p>
+<h2 id="4-自定义-PropertyDrawer"><a href="#4-自定义-PropertyDrawer" class="headerlink" title="4. 自定义 PropertyDrawer"></a>4. 自定义 PropertyDrawer</h2><p>自定义 Editor 会改变某一类物体在Inspector面板中显示的样式，而自定义 PropertyDrawer 则会改变某一种属性显示的样式。</p>
+<h3 id="4-1-还是先看看效果！"><a href="#4-1-还是先看看效果！" class="headerlink" title="4.1 还是先看看效果！"></a>4.1 还是先看看效果！</h3><p>为了避免干扰，如果你先完成了自定义 Editor里的内容，那么可以先把他删掉！  在Editor文件夹下创建 FloatDrawer.cs，复制粘贴以下代码：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">using UnityEngine;using UnityEditor;[CustomPropertyDrawer(typeof(<span class="built_in">float</span>))]<span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">FloatDrawer</span> : <span class="symbol">PropertyDrawer</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>编译后，看看 MyComponent 的面板怎么样了？</p>
+<p>干得好！</p>
+<p>所有的 float 类型的属性框都变成这样了</p>
+<h3 id="4-2-指定谁需要被自定义！"><a href="#4-2-指定谁需要被自定义！" class="headerlink" title="4.2 指定谁需要被自定义！"></a>4.2 指定谁需要被自定义！</h3><h4 id="4-2-1-指定一个类型"><a href="#4-2-1-指定一个类型" class="headerlink" title="4.2.1 指定一个类型"></a>4.2.1 指定一个类型</h4><p>上述代码的第4行指定了应当被下方代码绘制的数据类型：[CustomPropertyDrawer(typeof(float))]  这告诉了 Unity：所有的 float 类型的属性都要按照我的规则绘制！</p>
+<p>很好，相信聪明的你已经发现哪里不对劲了：又不是只有 MyComponent 才有 float 类型的属性啊？</p>
+<p>哦豁，其他的组件遭殃了！</p>
+<p>这并不是预期的功能：我们希望只为 MyComponent 的属性框改变标签。  咋办呢？</p>
+<h4 id="4-2-2-指定一个-Attribute"><a href="#4-2-2-指定一个-Attribute" class="headerlink" title="4.2.2 指定一个 Attribute"></a>4.2.2 指定一个 Attribute</h4><p>Attribute 本身是C#的语法特性，可以看看官方文档！</p>
+<p>[CustomPropertyDrawer(Type)] 不仅可以接受一个特殊的类型，也可以接受一个 Attribute </p>
+<p>如果指定了后者，那么Unity会筛选出所有 具有这个Attribute的任意类型的属性 并按照规则绘制。</p>
+<p>让我们编写这样一个Attribute:TitleAttribute.cs （它并不是编辑器拓展的一部分，不要放到Editor文件夹里）</p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;<span class="keyword">using</span> UnityEngine;[AttributeUsage(AttributeTargets.Field, AllowMultiple = <span class="literal">false</span>)]<span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TitleAttribute</span> : PropertyAttribute&#125;</span><br></pre></td></tr></table></figure>
+<p>可以观察到，这个 Attribute 本质上只接受一个 string 类型的变量，并保存在其中以供调用。</p>
+<p>有了它，我们就可以改写先前的效果了：删除 FloatDrawer.cs 并在同位置创建 TitleDrawer.cs，编写（复制粘贴）如下内容：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">[CustomPropertyDrawer(typeof(TitleAttribute))]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">TitleDrawer</span> : <span class="symbol">PropertyDrawer</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>修改 MyComponent.cs 成这样：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">MyComponent</span> : <span class="symbol">MonoBehaviour</span></span><br></pre></td></tr></table></figure>
+<p>于是…</p>
+<p>好耶！</p>
+<p>让我们再看看 TitleDrawer 的代码:  在 TitleDrawer.cs 的 OnGUI(Rect, SerializedProperty, GUIContent) 回调中，相比于之前多了一行代码，是用来获取 TitleAttribute 里保存的字符串的：  label.text &#x3D; ((TitleAttribute)attribute).Label;</p>
+<p>其中，attribute 是 PropertyDrawer 基类中提供的成员，它代表了当前正在被自定义绘制的Attribute  将它转型成 TitleAttribute 就能读取我们想要的数据了！</p>
+<h3 id="4-3-Bigger-Better-Stronger！"><a href="#4-3-Bigger-Better-Stronger！" class="headerlink" title="4.3 Bigger, Better, Stronger！"></a>4.3 Bigger, Better, Stronger！</h3><p>截至目前，我们自定义的PropertyDrawer只能绘制一行内容。有没有办法让他绘制多行呢？很简单：重写 GetPropertyHeight(SerializedProperty, GUIContent)</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">[CustomPropertyDrawer(typeof(TitleAttribute))]</span><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">TitleDrawer</span> : <span class="symbol">PropertyDrawer</span></span><br><span class="line"></span><br><span class="line">    // 看这里！    <span class="symbol">public</span> <span class="symbol">override</span> <span class="symbol">float</span> <span class="symbol">GetPropertyHeight</span>(<span class="symbol">SerializedProperty</span> <span class="symbol">property, <span class="symbol">GUIContent</span></span> <span class="symbol">label</span>)    &#125;</span><br></pre></td></tr></table></figure>
+<p>这样，Unity会为这个属性留出两行的空间 ，供你绘制其他控件。  要想在多出来的这两行绘制控件也很简单：创建一个新的 Rect 对象，使之的位置比 OnGUI 给出的 position 向下偏移一个 EditorGUIUtility.singleLineHeight 即可：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">[CustomPropertyDrawer(typeof(TitleAttribute))]</span><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">TitleDrawer</span> : <span class="symbol">PropertyDrawer</span>    // 看这里！    <span class="symbol">public</span> <span class="symbol">override</span> <span class="symbol">float</span> <span class="symbol">GetPropertyHeight</span>(<span class="symbol">SerializedProperty</span> <span class="symbol">property, <span class="symbol">GUIContent</span></span> <span class="symbol">label</span>)    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="5-应用：SceneName"><a href="#5-应用：SceneName" class="headerlink" title="5. 应用：SceneName"></a>5. 应用：SceneName</h2><p>在游戏搭建的过程中，策划往往需要配置【场景如何跳转】。然而，万恶的Unity只能使用场景的名称，或者在 Build Settings 里的下标指定要加载的场景！</p>
+<p>那么，如果开发写一个【场景切换器】，他只能暴露一个 string 类型的变量，让策划找到场景的名字并填写进去。这样容易出错！  万一策划打错了一个字没有发现，那么就直接产生了一个bug！  就算策划没有输入错误，那场景名称比较长时，搭建的效率也降低了。怎么办呢？</p>
+<p>思路：拓展PropertyDrawer，使之将【需要输入场景名称的 string 属性输入框】绘制成一个 【选择器】 ，让策划选择场景而非输入名称。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">CustomPropertyDrawer</span>(typeof(<span class="type">SceneNameAttribute</span>))]<span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SceneNamePropertyDrawer</span> : <span class="title class_ inherited__">PropertyDrawer</span>).<span class="title class_ inherited__">ToList</span>();        // 将列表中场景名称转换成 <span class="title class_ inherited__">GUIContent</span>        <span class="keyword">var</span> display = l.<span class="title class_ inherited__">Select</span>(i =&gt; new <span class="title class_ inherited__">GUIContent</span>(i)).<span class="title class_ inherited__">ToList</span>();                // 提示策划，如果找不到想要的场景，可能是没有在 <span class="title class_ inherited__">Build</span> <span class="title class_ inherited__">Settings</span> 里添加        display.<span class="title class_ inherited__">Add</span>(new <span class="title class_ inherited__">GUIContent</span>(&quot;找不到? 去<span class="title class_ inherited__">BuildSettings添加对应场景</span>&quot;));        // 绘制选择框 <span class="title class_ inherited__">PopUp，并将前面得到的列表作为选项列表输入</span>        int sel = <span class="title class_ inherited__">EditorGUI</span>.<span class="title class_ inherited__">Popup</span>(position, label,                            l.<span class="title class_ inherited__">IndexOf</span>(property.string<span class="title class_ inherited__">Value</span>) == -1 ? 0 : l.<span class="title class_ inherited__">IndexOf</span>(property.string<span class="title class_ inherited__">Value</span>),                            display.<span class="title class_ inherited__">ToArray</span>());                // 不让策划选择最后一个，即上面那一句提示        property.string<span class="title class_ inherited__">Value</span> = sel &lt; l.<span class="title class_ inherited__">Count</span> ? l[sel] : l[0];    &#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>他的效果：  </p>
+<p>好极了！</p>
+<h2 id="6-写在最后"><a href="#6-写在最后" class="headerlink" title="6. 写在最后"></a>6. 写在最后</h2><p>开发和策划、美术的交流是一个非常大的问题。希望上面这些内容可以稍微缓解一下！</p>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/5624c11c/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">PGO: 为你的Go程序提效5%</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/30a1a3e1/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">怎么做简单的公众号推文排版</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

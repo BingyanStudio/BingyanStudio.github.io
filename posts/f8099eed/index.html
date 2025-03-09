@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>利用Spine制作简单2D骨骼动画 - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="利用Spine制作简单2D骨骼动画 - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/f8099eed/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2022-11-04T02:43:41.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">利用Spine制作简单2D骨骼动画</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>November</span>
+            <span>4,</span>
+            <span>2022</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <p>hi！</p>
+<p>这里是一个关于游戏中2D骨骼动画的小小分享。</p>
+<p>  在2D游戏中，我们经常可以看见各式各样的角色动画。动画能给游戏带来生机和灵气。创作一段美妙的动画，不仅需要强大的软件工具，更需要一套完善的工作流程。Spine 是一款针对游戏开发的 2D 骨骼动画编辑工具。Spine 可以提供更高效和简洁 的工作流程，以创建游戏所需的动画。</p>
+<p> 下面，我将介绍spine与它的工作流程。</p>
+<p>为什么选择骨骼动画？</p>
+<p>在 Spine 中通过将图片绑定到骨骼上，然后再控制骨骼实现动画。2D 骨骼动画相对于传统的逐帧动画有以下优势:</p>
+<ul>
+<li><p>最小的体积: 传统的动画需要提供每一帧图片。而 Spine 动画只保存骨骼的动画数据，它所占用的空间非常小，并能为你的游戏提供独一无二的动画。</p>
+</li>
+<li><p>美术需求: Spine 动画需要的美术资源更少，能为您节省出更多的人力物力更好地投入到游戏开发中去。</p>
+</li>
+<li><p>流畅性: Spine 动画使用差值算法计算中间帧，这能让你的动画总是保持流畅的效果。</p>
+</li>
+<li><p>装备附件: 图片绑定在骨骼上来实现动画。如果你需要可以方便地更换角色的装备满足不同的需求。甚至改变角色的样貌来达到动画重用的效果。</p>
+</li>
+<li><p>混合: 动画之间可以进行混合。比如一个角色可以开枪射击，同时也可以走、跑、跳或者游泳。</p>
+</li>
+<li><p>程序动画: 可以通过代码控制骨骼，比如可以实现跟随鼠标的射击，注视敌人，或者上坡时的身体前倾等效果。</p>
+</li>
+</ul>
+<p>Spine的工作流程</p>
+<p>骨骼</p>
+<p>  下面，我将以我制作的一个小小动画为例。</p>
+<p>  这里是一个机器人“小垃圾”，我们在绘画软件中完成对游戏人物的绘制后，将其导入至Spine。</p>
+<p>  在上文中，我们提到，骨骼动画和传统动画不同的地方是，骨骼动画并非逐帧绘制，而是将图片绑定到骨骼上，然后再控制骨骼实现动画。因此，在人物绘制时，我们不能“一个图层干到底”，要根据人物运动的需求，区分好人物的身体各个结构的图层。</p>
+<p>如图，小机器人的身体被分为了不同的部件  在导入素材后，我们就要进行创建骨骼的工作了。通常情况下，父骨骼带动子骨骼运动，即为FK(Forward Kinematics)正向动力学。以手臂的弯曲为例子，小臂的弯曲会带动手掌运动，而不是手掌停留在原地。</p>
+<p>如图，小机器人的小臂带动了手掌运动</p>
+<p>   那么，我们接下来为素材创建骨骼，就要确定父子集关系，进行骨骼集合的排列组合。</p>
+<p>如图，小臂是大臂的子级，躯干是大臂的父级。</p>
+<p>在完成了全身的骨骼建立后，我们将图片（插槽）指定给骨骼，基础的绑定就完成了</p>
+<p>小机器人的全身骨骼，下方脚部为IK（Inverse Kinematics）即反向动力学的节点，同FK相反，IK用于实现</p>
+<p>由下向上的运动（如俯卧撑，就是手掌用力撑起身体，而非身体用力带动手掌）</p>
+<p>网格与权重</p>
+<p>  权重用于将网格顶点绑定到一个或多个骨骼，调整骨骼时，顶点也会调整，使得网格跟随骨骼自动变形。</p>
+<p>小机器人的手臂网格与权重</p>
+<p>  在完成骨骼与权重的设置后，移动骨骼，软件就会自动计算素材引发的扭曲与变化，从而实现动画。</p>
+<p>动画</p>
+<p>  在动画制作阶段，对骨骼在时间轴上添加关键帧，做出形变和位移等操作，诸多。</p>
+<p>  在完成动画后，调整曲线（动画各个阶段播放速度）等许多可选项，我们的小机器人走路动画就完成了。</p>
+<p>  相对起骨骼绑定，网格与权重设置，在2D骨骼动画中，具体的动画制作无疑是相对更具有挑战性的过程，在制作过程中需要考虑到的因素也更加的多，我们在本期推文中不再过多介绍。</p>
+<p>  感谢您可以看到这里，希望本期推文可以分享到一些干货，谢谢！！！</p>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/d5c8fab0/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">浅谈明日方舟肉鸽</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/74dce755/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">Pinia</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

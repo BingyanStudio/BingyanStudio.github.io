@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>Pinia - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="Pinia - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/74dce755/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2022-11-03T05:20:17.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">Pinia</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>November</span>
+            <span>3,</span>
+            <span>2022</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <p>Pinia（菠萝）是Vue官方团队推荐替代Vuex的轻量级状态管理解决方案。设计理念是让Vue拥有Composition API 风格的状态管理库，支持Vue3的setup Composition API，并完整支持ts，探索 Vuex 的下一次迭代。</p>
+<h2 id="对比vuex"><a href="#对比vuex" class="headerlink" title="对比vuex"></a>对比vuex</h2><ul>
+<li><p>提供了更简单、符合组合式 API 风格的 API</p>
+</li>
+<li><p>弃用mutations；actions中可以异步操作或者同步修改state，可以作为常规的函数调用，而不是使用dispatch或者MapAction</p>
+</li>
+<li><p>完整的TS支持，友好的devTools支持</p>
+</li>
+<li><p>不再有嵌套结构的模块modules，支持多个stores，pinia提供的是一个扁平的stores结构，但仍然能够嵌套调用 stores 空间。</p>
+</li>
+</ul>
+<p><img src="https://mmbiz.qpic.cn/mmbiz/rxLIic6e5g8RFZkn2cplFhCKRXGkwY5EicmddyUnnCRaIYyLQaj5cYj1JDtZpc1bnFh9N0ficF6vwWMcicWibfNMloA/640?wx_fmt=other">## stores</p>
+<h3 id="Options-API"><a href="#Options-API" class="headerlink" title="Options API"></a>Options API</h3><figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// options storesexport <span class="keyword">const</span> useCounterStore = defineStore(<span class="string">&quot;counter&quot;</span>, ;  &#125;,  // 也可以这样定义  // <span class="keyword">state</span>: () =&gt; ()  getters: ,  &#125;,  actions: ,  &#125;,&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="Composition-API"><a href="#Composition-API" class="headerlink" title="Composition API"></a>Composition API</h3><p>对应关系：</p>
+<ul>
+<li><p>state–ref</p>
+</li>
+<li><p>getter–computed</p>
+</li>
+<li><p>action–functions</p>
+</li>
+</ul>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">//</span> setup storesimport  <span class="keyword">from</span> <span class="string">&quot;vue&quot;</span>;<span class="keyword">export</span> const useCounterStore = defineStore(<span class="string">&quot;counter&quot;</span>, <span class="function"><span class="params">()</span> =&gt;</span> );  function increment()   <span class="keyword">return</span> ;&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">//</span> 调用其它stores的数据<span class="keyword">export</span> const useCounterStore = defineStore(<span class="string">&quot;counter&quot;</span>, <span class="function"><span class="params">()</span> =&gt;</span> );  <span class="keyword">return</span> ;&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="在组件中使用"><a href="#在组件中使用" class="headerlink" title="在组件中使用"></a>在组件中使用</h2><figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  <span class="keyword">from</span> <span class="string">&#x27;./pinia/index.js&#x27;</span>;<span class="regexp">//</span> 直接获取对象const counter = useCounterStore();let func = <span class="function"><span class="params">()</span> =&gt;</span> </span><br></pre></td></tr></table></figure>
+<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// 解构获取<span class="keyword">state</span>, getters, actions// store是一个reactive包装的对象<span class="keyword">const</span>  = storeToRefs(counter);// action 可以直接提取<span class="keyword">const</span>  = counter;let func = () =&gt; </span><br></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">counter.<span class="variable">$patch</span>();counter.<span class="variable">$reset</span>();</span><br></pre></td></tr></table></figure>
+<h2 id="mutations"><a href="#mutations" class="headerlink" title="mutations"></a>mutations</h2><p>在vuex中，我们通过提交 mutation 的方式，而非直接改变 store.state.count，是因为我们想要更明确地追踪到状态的变化。</p>
+<p>此外，这样也让我们有机会去实现一些能记录每次状态改变，保存状态快照的调试工具。有了它，我们甚至可以实现如时间穿梭般的调试体验。</p>
+<h3 id="vuex为什么要区分mutations和actions"><a href="#vuex为什么要区分mutations和actions" class="headerlink" title="vuex为什么要区分mutations和actions"></a>vuex为什么要区分mutations和actions</h3><p>官方文档说明：“在 mutations 中混合异步调用会导致你的程序很难调试。例如，当你能调用了两个包含异步回调的 mutations 来改变状态，你怎么知道什么时候回调和哪个先回调呢？这就是为什么我们要区分这两个概念。在 Vuex 中，我们将全部的改变都用同步方式实现。我们将全部的异步操作都放在 Actions 中。”</p>
+<p>事实上在 vuex 里面 actions 只是一个架构性的概念，并不是必须的，说到底只是一个函数，你在里面想干嘛都可以，只要最后触发 mutations 就行。vuex 真正限制你的只有 mutations 必须是同步的这一点（在 redux 里面就好像 reducer 必须同步返回下一个状态一样）。</p>
+<p>同步的意义在于这样每一个 mutations 执行完成后都可以对应到一个新的状态（和 reducer 一样），这样 devtools 就可以打个 snapshot 存下来，然后就可以随便 time-travel 了。</p>
+<p>如果你开着 devtool 调用一个异步的 actions，你可以清楚地看到它所调用的 mutations 是何时被记录下来的，并且可以立刻查看它们对应的状态。</p>
+<hr>
+<p>所以只要能知道什么时候改变state （commit mutation） 然后去 snapshot 那个时候的 state，就能追踪到状态的变化，就不需要mutations，只需要保留一个用来异步操作的action.</p>
+<hr>
+<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/48759748/answer/112823337">https://www.zhihu.com/question/48759748/answer/112823337</a></p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/q/1010000008640002">https://segmentfault.com/q/1010000008640002</a></p>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/f8099eed/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">利用Spine制作简单2D骨骼动画</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/225b7680/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">Hook模型</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

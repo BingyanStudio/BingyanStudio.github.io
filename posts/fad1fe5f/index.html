@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>游戏引擎分层架构 - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="游戏引擎分层架构 - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/fad1fe5f/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2022-04-19T03:59:19.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">游戏引擎分层架构</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>April</span>
+            <span>19,</span>
+            <span>2022</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <h2 id=""><a href="#" class="headerlink" title=""></a></h2><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>一个游戏引擎是会非常复杂的，面对动辄几十万几百万行的代码往往会无从下手。学习这样一个复杂系统，我们首先要将其抽丝剥茧，将其整体架构搞明白，这样才能更加清晰地学习如何构造游戏引擎。</p>
+<h2 id="总体分层"><a href="#总体分层" class="headerlink" title="总体分层"></a>总体分层</h2><p>游戏引擎由工具架构和运行时组件组成（Tool+RunTime），继续细分又可以把运行时组件分为4层。故总体是五层架构。</p>
+<h3 id="Tool-Layer"><a href="#Tool-Layer" class="headerlink" title="Tool Layer"></a>Tool Layer</h3><p>当我们打开游戏引擎，首先接触到的就是各种各样的编辑器,是我们使用引擎时直接能看到和应用的部分。</p>
+<h3 id="Function-Layer"><a href="#Function-Layer" class="headerlink" title="Function Layer"></a>Function Layer</h3><p>工具层主要是用于游戏开发者编辑游戏所用，而如果想要让游戏动起来，则是功能层的任务。功能层是游戏的核心部分，使游戏变得可以可视，可动，可游玩。</p>
+<h4 id="Rendering"><a href="#Rendering" class="headerlink" title="Rendering"></a>Rendering</h4><p>将3D游戏世界里面的图像绘制到2D的屏幕上面</p>
+<h4 id="Animation"><a href="#Animation" class="headerlink" title="Animation"></a>Animation</h4><p>使游戏里面的各种角色物品动起来</p>
+<h4 id="Physics"><a href="#Physics" class="headerlink" title="Physics"></a>Physics</h4><p>使游戏里面的世界有各种符合现实世界物理的效果</p>
+<h4 id="Camera-HUD-and-Input"><a href="#Camera-HUD-and-Input" class="headerlink" title="Camera,HUD and Input"></a>Camera,HUD and Input</h4><p>重要的人机交互界面，是表现游戏内容的重要形式</p>
+<h4 id="Script-FSM-and-AI"><a href="#Script-FSM-and-AI" class="headerlink" title="Script,FSM and AI"></a>Script,FSM and AI</h4><p>脚本，状态机，人工智能，为游戏中的NPC添加丰富的行为</p>
+<h3 id="Resource-Layer"><a href="#Resource-Layer" class="headerlink" title="Resource Layer"></a>Resource Layer</h3><p>一个游戏的运行，少不了各种美术，动画，音频资源的参与，对于游戏引擎而言，如果功能层需要通过资源层调用各种游戏资源。资源层的任务，主要是处理为游戏提供的各种资源，将其转换成Function层可以直接使用的资源。</p>
+<h3 id="Core-Layer"><a href="#Core-Layer" class="headerlink" title="Core Layer"></a>Core Layer</h3><p>核心层是一个游戏引擎的心脏，功能层想要流畅地运行，就需要游戏引擎有一个强大的核心层。核心层是最核心的代码层，为Function层提供多种多样的方法。</p>
+<h3 id="Platform-Layer"><a href="#Platform-Layer" class="headerlink" title="Platform Layer"></a>Platform Layer</h3><p>当今的游戏都有移植到不同的平台的需求。然而对于不同的平台，他们的操作系统，软件甚至硬件架构都不同。如果游戏引擎不能很好的兼容各个平台，那么移植游戏对于游戏开发者而言无异于重做一个新游戏，因此平台层也是游戏引擎极其重要的组成部分。</p>
+<h3 id="3rd-Party-Libraries"><a href="#3rd-Party-Libraries" class="headerlink" title="3rd Party Libraries"></a>3rd Party Libraries</h3><p>很多情况下，游戏开发者对于特殊的功能有着特别的需求，这就需要一些第三方组件的使用。第三方组件是游戏引擎的重要组成部分，提供强大的特定功能。可以插入到游戏引擎的任意一层。</p>
+<h2 id="对于一些层实现的具体办法"><a href="#对于一些层实现的具体办法" class="headerlink" title="对于一些层实现的具体办法"></a>对于一些层实现的具体办法</h2><h3 id="Resource-Layer-1"><a href="#Resource-Layer-1" class="headerlink" title="Resource Layer"></a>Resource Layer</h3><h4 id="资源的导入"><a href="#资源的导入" class="headerlink" title="资源的导入"></a>资源的导入</h4><h5 id="引擎化"><a href="#引擎化" class="headerlink" title="引擎化"></a>引擎化</h5><p>各种资源的格式都是不同的，而且类似 Maya 的数据，里面有很多引擎不需要的，只是为了方便在 Maya 里操作的信息，因此我们需要一次转换，将这些数据转换成引擎能够使用的高效的数据，成为资产（Asset）。</p>
+<p>资源层需要在导入时将原有的文件中的一些有用的内容导入到文件中，而剔除无用的，从而提高引擎处理资源的能力。</p>
+<h5 id="资产关联"><a href="#资产关联" class="headerlink" title="资产关联"></a>资产关联</h5><p>如对一个可以动起来的模型，其上面的网格，贴图，材质，动画等资源都是关联到一起的，我们可以定义另外一种资产进行管理指定（Composite asset）。</p>
+<h5 id="GUID"><a href="#GUID" class="headerlink" title="GUID"></a>GUID</h5><p>资源层还会给每个资产一个独特的识别号（GUID）便于查找，防止路径改变后无法识别相关资产。</p>
+<h4 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h4><p>资源层需要负责管理资源的生命周期。</p>
+<p>垃圾回收也是重要一环，资源层需要合理加载和卸载资源，防止由于大量的资源操作导致游戏卡顿。</p>
+<p>很多游戏中使用的延迟加载也是由资源层控制的，玩家离场景越近，加载的纹理更精致。</p>
+<h3 id="Function-Layer-1"><a href="#Function-Layer-1" class="headerlink" title="Function Layer"></a>Function Layer</h3><h4 id="tick"><a href="#tick" class="headerlink" title="tick"></a>tick</h4><p>每过一个tick要执行一遍要做所有事情。每个游戏引擎都会有一个tick函数，我们可以从tick看起学习游戏引擎是如何运作的。</p>
+<p>tick可以被分成两个部分tickLogic and tickRender，先tickLogic再tickRender，要将其分开。</p>
+<h4 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h4><p>Fixed Thread</p>
+<p>在游戏引擎的初期，会将整个引擎的运行分为三个线程：Logic，Render，Simulation。</p>
+<p>Thread Fork&#x2F;Join</p>
+<p>主流引擎中，会把特别容易并行的东西，如物理等，fork出来，分散到别的线程去做</p>
+<p>JOB System 不浪费任何资源换的线程调用</p>
+<p>未来的引擎中，把任务变成原子的，把每个处理器都吃满。</p>
+<p>对于未来的引擎，难点在于不同部分之间的内容通信，和处理的先后顺序处理。</p>
+<h3 id="Core-Layer-1"><a href="#Core-Layer-1" class="headerlink" title="Core Layer"></a>Core Layer</h3><h4 id="数学库"><a href="#数学库" class="headerlink" title="数学库"></a>数学库</h4><p>除了物理以外其他使用大学程度的线性代数就可以解决。</p>
+<p>难点在于Real Time，游戏引擎为了在1帧的时间内计算出整个游戏世界的所有内容，需要很高的效率，往往会为了提高效率使用各种邪道方法。</p>
+<p>对于游戏引擎中使用的数据结构和各种容器，需要游戏引擎开发者手动实现高效的数据结构，从而得到一系列不会产生内存碎片和效率较高的数据结构</p>
+<h4 id="游戏引擎内存处理的三个原则"><a href="#游戏引擎内存处理的三个原则" class="headerlink" title="游戏引擎内存处理的三个原则"></a>游戏引擎内存处理的三个原则</h4><p>1.尽可能把要处理的数据放到一起</p>
+<p>2.按照数据本身的物理顺序去处理</p>
+<p>3.要按照区块的规模处理数据</p>
+<h3 id="Platform-Layer-1"><a href="#Platform-Layer-1" class="headerlink" title="Platform Layer"></a>Platform Layer</h3><p>无论是面对Windows系统和Mac系统，还是面对DirectX和OpenGL，亦或是硬件层次的差异，都需要游戏引擎强大的平台层兼容。</p>
+<h3 id="Tool-Layer-1"><a href="#Tool-Layer-1" class="headerlink" title="Tool Layer"></a>Tool Layer</h3><p>工具层是整个游戏引擎中最后实现的一层，也是面对所有开发者的游戏引擎的”面子“。往往在工具层的代码量是最多的，对于一个好的游戏引擎而言，应该可以让任何人都能做游戏！</p>
+<h2 id="为什么要分层构造"><a href="#为什么要分层构造" class="headerlink" title="为什么要分层构造"></a>为什么要分层构造</h2><p>和现代城市结构相似</p>
+<ul>
+<li><p>封装解耦，每一层只关注自己的事情，减低复杂度；</p>
+</li>
+<li><p>底层提供基础服务；</p>
+</li>
+<li><p>顶层不需要知道底层的具体实现；</p>
+</li>
+<li><p>顶层部分迭代频繁，底层相对稳定；</p>
+</li>
+<li><p>一般只允许上层调用下层，避免出现循环依赖；</p>
+</li>
+</ul>
+<p>本文内容源自GAMES104_Lecture2所讲内容</p>
+<p>本文图片引用GAMES104_Lecture2</p>
+<p>欢迎大家学习GAMES104，课程网址：<a target="_blank" rel="noopener" href="https://games-cn.org/games104">https://games-cn.org/games104</a> </p>
+<p>Thanks for reading</p>
+<h2 id="-1"><a href="#-1" class="headerlink" title=""></a></h2>
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/c31688a8/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">SVG交互图文基础介绍及实现</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/189fec9a/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">写实人物渲染的秘密</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

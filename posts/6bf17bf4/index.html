@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>CSS 变量 - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="CSS 变量 - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/6bf17bf4/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2022-05-13T06:04:14.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">CSS 变量</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>May</span>
+            <span>13,</span>
+            <span>2022</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <p>自定义属性（CSS 变量或者层叠 variables）是由 CSS 作者定义的实体，这些实体在一个 document 内可以被重用。其目的是可重用性并减少 CSS 值中的冗余。</p>
+<p>一般按照自定义属性的符号设置 （比如，–main-color: black；） 然后使用 var()函数使用 （例如 color: var(–main-color)）</p>
+<ul>
+<li>CSS 变量可以访问 DOM，这意味着可以创建具有局部或全局范围的变量，使用 JavaScript 来修改变量，以及基于媒体查询来修改变量。</li>
+</ul>
+<h3 id="CSS变量的好处"><a href="#CSS变量的好处" class="headerlink" title="CSS变量的好处"></a>CSS变量的好处</h3><ol>
+<li>可维护性 在一个Web开发项目中，我们经常重复使用一个特定的CSS属性值：<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">h1</span> <span class="selector-tag">p</span> <span class="selector-tag">img</span> <span class="selector-class">.callout</span> </span><br></pre></td></tr></table></figure>
+复杂的网站有大量的 CSS，通常会有很多重复的值。例如，同一个颜色可能会被在几百个地方都用到，可以</li>
+</ol>
+<p>当需要改变某些属性值时，问题就会暴露出来了。如果我们手动地改变属性值，尤其是当CSS文件很大时，不仅会花费大量时间，还可能会犯一些错误。</p>
+<p>同样的，如果我们从全局搜索去一次性替换掉理论上可行，但如果只需改变特定地点的颜色,全局搜索就可能会无意中影响其他样式规则。</p>
+<p>我们可以使用CSS变量重写：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-pseudo">:root</span> <span class="selector-tag">h1</span> <span class="selector-tag">p</span> <span class="selector-tag">img</span> <span class="selector-class">.callout</span> </span><br></pre></td></tr></table></figure>
+<p>假设客户需求说由于文本颜色太亮，导致文本难以阅读，想要改变文本颜色，此时，我们只需要更新一行CSS规则：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">--text-color</span>: black;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>提高CSS的可读性 自定义属性会使样式表更加易读，也会使CSS属性声明更有语义。将这个声明<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">background-color</span>: yellow;<span class="attribute">font-size</span>: <span class="number">18px</span>;</span><br></pre></td></tr></table></figure>
+和下面的声明比较</li>
+</ol>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">background</span>-<span class="built_in">color</span>: <span class="built_in">var</span>( --highlight-<span class="built_in">color</span> );<span class="built_in">font</span>-size: <span class="built_in">var</span>( --base-<span class="built_in">font</span>-size );</span><br></pre></td></tr></table></figure>
+<p>像yellow和18px一类的属性值并没有给我们任何有用的上下文信息. 但是当我们阅读如–base-font-size和–highlight-color一样的属性名时，即便在其他人的代码，我们都能马上知道这个属性值是在做什么,尤其是这个值在其他的上下文中也存在时。。</p>
+<h3 id="命名变量"><a href="#命名变量" class="headerlink" title="命名变量"></a>命名变量</h3><p>与编程语言命名变量相似，CSS 变量的有效命名应包含字母数字字符，下划线和破折号。另外，CSS 变量区分大小写。</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-pseudo">:root</span> <span class="selector-class">.box</span> <span class="selector-class">.circle</span> </span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 合法命名 */</span><span class="selector-pseudo">:root</span> <span class="comment">/* 非法命名 */</span><span class="selector-pseudo">:root</span> </span><br></pre></td></tr></table></figure>
+<h3 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h3><p>CSS 变量也有自己的作用域，这个概念类似于其他编程语言。</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-pseudo">:root</span> <span class="selector-class">.section-title</span> </span><br></pre></td></tr></table></figure>
+<p>–primary-color 全局变量可以从文档中的任何地方访问。若变量–primary-color 在.section-title 定义，在作用域.section-title 中新定义的会覆盖全局的定义。</p>
+<h3 id="eg1：控制组件的大小"><a href="#eg1：控制组件的大小" class="headerlink" title="eg1：控制组件的大小"></a>eg1：控制组件的大小</h3><p>在设计系统中，按钮通常有多种尺寸。通常，按钮可以具有三种尺寸（Small, normal, large）。使用 CSS 变量来实现：</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">.button</span> <span class="string">.button--small</span> <span class="string">.button--large</span> </span><br></pre></td></tr></table></figure>
+<p>通过在按钮组件作用域内更改变量–unit，我们创建了按钮的不同变体。</p>
+<h3 id="eg2：CSS-变量和-HSB-颜色"><a href="#eg2：CSS-变量和-HSB-颜色" class="headerlink" title="eg2：CSS 变量和 HSB 颜色"></a>eg2：CSS 变量和 HSB 颜色</h3><p>HSB(Hue-saturation-brightness) 代表色调，饱和度，亮度。色相的值决定了颜色，饱和度和亮度值可以控制颜色的深浅。</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">:root .button /* 使背景更暗 */.button:hover</span> </span><br></pre></td></tr></table></figure>
+<p>可通过减小变量–primary-b 使按钮变暗。</p>
+<h3 id="eg3：动态应用于CSS-Grid"><a href="#eg3：动态应用于CSS-Grid" class="headerlink" title="eg3：动态应用于CSS Grid"></a>eg3：动态应用于CSS Grid</h3><p>CSS 变量对于网格非常有用。假设希望网格容器根据定义的首选宽度显示其子项。与为每个变体创建类并复制CSS相比，使用变量更容易做到这一点。</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.<span class="keyword">wrapper</span> .<span class="keyword">wrapper</span><span class="number">-2</span> </span><br></pre></td></tr></table></figure>
+<p>这样，我们可以创建一个完整的网格系统，该系统灵活，易于维护，并且可以在其他项目中使用。可以将相同的概念应用于grid-gap属性。</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.wwrapper</span> <span class="selector-class">.wwrapper</span><span class="selector-class">.gap-1</span> </span><br></pre></td></tr></table></figure>
+<p>事实上，若是不介意用一点行内样式表，可以省去一个类的添加显得更加精简</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="keyword">div</span> <span class="built_in">class</span>=<span class="string">&quot;wrapper&quot;</span> style=<span class="string">&quot;--item-width: 250px;&quot;</span>&gt;  &lt;<span class="keyword">div</span>&gt;<span class="keyword">div</span>&gt;  &lt;<span class="keyword">div</span>&gt;<span class="keyword">div</span>&gt;  &lt;<span class="keyword">div</span>&gt;<span class="keyword">div</span>&gt;<span class="keyword">div</span>&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.<span class="keyword">wrapper</span> </span><br></pre></td></tr></table></figure>
+<h3 id="eg4-全值声明，CSS-渐变"><a href="#eg4-全值声明，CSS-渐变" class="headerlink" title="eg4:全值声明，CSS 渐变"></a>eg4:全值声明，CSS 渐变</h3><p>以全值表示，例如，类似渐变的东西。如果整个系统中使用渐变或背景，可将其存储到CSS变量中。</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-pseudo">:root</span> <span class="selector-class">.element</span> </span><br></pre></td></tr></table></figure>
+<p>或者我们可以存储一个值。以角度为例:</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.element</span> <span class="selector-class">.element</span><span class="selector-class">.inverted</span> </span><br></pre></td></tr></table></figure>
+<h3 id="eg5-在明暗模式之间切换"><a href="#eg5-在明暗模式之间切换" class="headerlink" title="eg5: 在明暗模式之间切换"></a>eg5: 在明暗模式之间切换</h3><p>纯CSS实现，不必借助js的读取与修改,不必专门复制粘贴写多个类进行类名的转换 (夜间模式的实现)</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-pseudo">:root</span> <span class="comment">/* 添加到``元素的类*/</span><span class="selector-class">.dark-mode</span> </span><br></pre></td></tr></table></figure>
+<h3 id="eg6-图片大小调整与CSS里的计算"><a href="#eg6-图片大小调整与CSS里的计算" class="headerlink" title="eg6:图片大小调整与CSS里的计算"></a>eg6:图片大小调整与CSS里的计算</h3><p>假设我们需要四种不同大小的图片，并且只能使用一个变量来控制其大小。</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src<span class="operator">=</span><span class="string">&quot;user.jpg&quot;</span> alt<span class="operator">=</span><span class="string">&quot;&quot;</span> class<span class="operator">=</span><span class="string">&quot;c-avatar&quot;</span> style<span class="operator">=</span><span class="string">&quot;--size: 1&quot;</span> /&gt;&lt;img src<span class="operator">=</span><span class="string">&quot;user.jpg&quot;</span> alt<span class="operator">=</span><span class="string">&quot;&quot;</span> class<span class="operator">=</span><span class="string">&quot;c-avatar&quot;</span> style<span class="operator">=</span><span class="string">&quot;--size: 2&quot;</span> /&gt;&lt;img src<span class="operator">=</span><span class="string">&quot;user.jpg&quot;</span> alt<span class="operator">=</span><span class="string">&quot;&quot;</span> class<span class="operator">=</span><span class="string">&quot;c-avatar&quot;</span> style<span class="operator">=</span><span class="string">&quot;--size: 3&quot;</span> /&gt;&lt;img src<span class="operator">=</span><span class="string">&quot;user.jpg&quot;</span> alt<span class="operator">=</span><span class="string">&quot;&quot;</span> class<span class="operator">=</span><span class="string">&quot;c-avatar&quot;</span> style<span class="operator">=</span><span class="string">&quot;--size: 4&quot;</span> /&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">.c-avatar </span></span><br></pre></td></tr></table></figure>
+<p>计算值 要查看CSS变量的计算值，只要将鼠标悬停或单击即可。</p>
+<h3 id="eg7-媒体查询"><a href="#eg7-媒体查询" class="headerlink" title="eg7:媒体查询"></a>eg7:媒体查询</h3><p>根据视口大小更改其间距 如下例当浏览器的宽度为 450px 或更宽时，将 –fontsize 变量值设置为 50px，将 –blue 变量值设置为 lightblue。</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span> <span class="keyword">@media</span> screen <span class="keyword">and</span> (<span class="attribute">min-width</span>: <span class="number">450px</span>)   :root &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="eg8-继承"><a href="#eg8-继承" class="headerlink" title="eg8:继承"></a>eg8:继承</h3><p>如果父元素中定义了CSS变量，那么子元素将继承相同的CSS变量。.child元素可以访问变量–size，因为它从父元素继承了它。</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div <span class="keyword">class</span>=&quot;<span class="symbol">parent</span>&quot;&gt;  &lt;<span class="symbol">p</span> <span class="symbol">class</span>=&quot;<span class="symbol">child</span>&quot;&gt;<span class="symbol">p</span>&gt;<span class="symbol">div</span>&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">.parent</span> <span class="string">.child</span> </span><br></pre></td></tr></table></figure>
+<p>假设有一组以下需求的操作项</p>
+<ul>
+<li>改变一个变量就可以改变所有项的大小</li>
+<li>间距是动态的<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div <span class="keyword">class</span>=&quot;<span class="symbol">actions</span>&quot;&gt;  &lt;<span class="symbol">div</span> <span class="symbol">class</span>=&quot;<span class="symbol">actions__item</span>&quot;&gt;<span class="symbol">div</span>&gt;  &lt;<span class="symbol">div</span> <span class="symbol">class</span>=&quot;<span class="symbol">actions__item</span>&quot;&gt;<span class="symbol">div</span>&gt;  &lt;<span class="symbol">div</span> <span class="symbol">class</span>=&quot;<span class="symbol">actions__item</span>&quot;&gt;<span class="symbol">div</span>&gt;<span class="symbol">div</span>&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">.actions</span> <span class="string">.actions--m</span> <span class="string">.actions__item</span> </span><br></pre></td></tr></table></figure>
+子代盒子类action__item继承父亲的–size变量 也可以应用在动画里 不需要定义@keyframes多次，它将继承.big和.small元素的定制CSS 变量</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@keyframes</span> breath   to &#125;<span class="selector-class">.big</span> <span class="selector-class">.small</span> </span><br></pre></td></tr></table></figure>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div <span class="keyword">class</span>=&quot;<span class="symbol">big</span>&quot; &gt;<span class="symbol">biggerdiv</span>&gt;&lt;<span class="symbol">div</span> <span class="symbol">class</span>=&quot;<span class="symbol">small</span>&quot; &gt;<span class="symbol">smallerdiv</span>&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="回退方案"><a href="#回退方案" class="headerlink" title="回退方案"></a>回退方案</h3><p>这里的回退不是不支持 CSS 变量的回退，而是 CSS 变量可以支持回退方案。</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">.section-title </span></span><br></pre></td></tr></table></figure>
+<p>注意，var()有多个值。第二个#222 只在变量–primary-color 由于某种原因没有定义的情况下有效。不仅如此，我们还可以将 var()嵌套到另一个 var()中。</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">.section-title </span></span><br></pre></td></tr></table></figure>
+<p>在变量值依赖于某个动作的情况下，该特性非常有用。当变量没有值时，为它提供一个回退很重要。</p>
+<h5 id="无效值处理"><a href="#无效值处理" class="headerlink" title="无效值处理"></a>无效值处理</h5><p>谨防给CSS属性分配错误类型的值。在下面的示例中，由于自定义属性–small-button被赋予一个长度单位，它被用在.small-button样式中作为color的属性值是无效的</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-pseudo">:root</span> <span class="selector-class">.small-button</span> </span><br></pre></td></tr></table></figure>
+<p>避免这种情况的一个好方式是想出具有描述性的自定义属性名称。例如将上面的自定义属性命名为–small-button-width</p>
+<p>当var()函数中的CSS变量无效时，浏览器将根据所使用的属性用初始值或继承值替换。由于color属性是继承的，因此浏览器将执行以下操作：</p>
+<ul>
+<li><p>该属性是否可继承？</p>
+</li>
+<li><p>是的，继承该值</p>
+</li>
+<li><p>否:设置为初始值</p>
+</li>
+<li><p>如果是，父节点是否拥有该属性?</p>
+</li>
+<li><p>否:设置为初始值</p>
+</li>
+</ul>
+<h3 id="网址值"><a href="#网址值" class="headerlink" title="网址值"></a>网址值</h3><p>考虑将链接的URL值存储在CSS变量中。语义化提高可读性特征明显，哪个位置引入哪个链接。便于引入外部资源。</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-pseudo">:root</span> <span class="selector-class">.section</span> </span><br></pre></td></tr></table></figure>
+<h3 id="存储多个值"><a href="#存储多个值" class="headerlink" title="存储多个值"></a>存储多个值</h3><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-pseudo">:root</span> <span class="selector-class">.section-title</span> </span><br></pre></td></tr></table></figure>
+<p>在示例中，我们有一个rgba()函数，并且RGB值存储在CSS变量中，以逗号分隔。如果我们想根据元素调整alpha值，这样做可以提供灵活性。</p>
+<h3 id="JavaScript-操作"><a href="#JavaScript-操作" class="headerlink" title="JavaScript 操作"></a>JavaScript 操作</h3><p>css与js的联动</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">//</span> 设置变量document.body.style.setProperty(<span class="string">&#x27;--primary&#x27;</span>, <span class="string">&#x27;#000&#x27;</span>);<span class="regexp">//</span> 读取变量document.body.style.getPropertyValue(<span class="string">&#x27;--primary&#x27;</span>);<span class="regexp">//</span> <span class="string">&#x27;#000&#x27;</span><span class="regexp">//</span> 删除变量document.body.style.removeProperty(<span class="string">&#x27;--primary&#x27;</span>);<span class="regexp">//</span> 从行内样式中中获取变量element.style.getPropertyValue(<span class="string">&quot;--my-var&quot;</span>);<span class="regexp">//</span> 从任何地方获取到变量getComputedStyle(element).getPropertyValue(<span class="string">&quot;--my-var&quot;</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="兼容性和查看浏览器的支持问题"><a href="#兼容性和查看浏览器的支持问题" class="headerlink" title="兼容性和查看浏览器的支持问题"></a>兼容性和查看浏览器的支持问题</h3><p>可以通过css语法来检测浏览器是否支持css变量 通过@supports性能查询语法来检测：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@supports</span> (--a: <span class="number">0</span>)&#125;<span class="meta">@supports(not(--a: 0))</span>&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/ff437dc6/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">关于UI动效</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/6ac0245d/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">敏捷开发的一点点</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

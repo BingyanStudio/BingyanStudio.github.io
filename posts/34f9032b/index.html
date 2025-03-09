@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>基于视觉的非接触式手势交互 - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="基于视觉的非接触式手势交互 - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/34f9032b/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2023-11-22T06:07:36.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">基于视觉的非接触式手势交互</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>November</span>
+            <span>22,</span>
+            <span>2023</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <p>随着计算机技术的进步,人机交互正在朝着人性化与简单化的方向不断发展,非接触式手势交互逐渐成为人机交互的一个重要方式。与鼠标、键盘、触摸屏等接触式的操作方式相比,非接触式的手势交互更加符合人的自然行为。近年来,随着计算机视觉和图像处理技术的发展,基于机器视觉的手势与计算机交互的方式正在成为新型人机交互方式的主流。</p>
+<p>01</p>
+<p>交互设计发展历程</p>
+<p>从简单的二维动作识别发展到复杂的三维空间跟踪</p>
+<ul>
+<li>命令行界面（CLI）：早期的计算机使用命令行界面，用户通过键入命令与计算机交互。</li>
+</ul>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8Qo6dDhlP6ichtw5TRfnaDt3dCBd72YliceicicMiaCAyt9Yib8k83Zrn4X6GQw5Rd1WTE51nb5Ep6LapSA/640?wx_fmt=png&from=appmsg"></p>
+<ul>
+<li>图形用户界面（GUI）：随着技术的进步，图形用户界面取代了命令行界面，交互行为更加直观。</li>
+</ul>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/rxLIic6e5g8Qo6dDhlP6ichtw5TRfnaDt3BCpCtbNqr4ojSoa1LUCd6mlpS5DUqsdkPROVViazBtp3sVfnwtb60xQ/640?wx_fmt=jpeg&from=appmsg">by Dimest</p>
+<ul>
+<li>自然用户界面（NUI）：用户直接通过触摸屏幕来操作设备，手势控制进一步提升了交互的自然性。</li>
+</ul>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_gif/rxLIic6e5g8Qo6dDhlP6ichtw5TRfnaDt3xrdqUHdc3ABqw1Wic1By3bsfSKVhzMe6fAibLPxVZlB653lv2MLPENvQ/640?wx_fmt=gif&from=appmsg">by Johny vino™</p>
+<p>手势识别技术的演变：</p>
+<p>二维动作识别：最初的手势识别技术主要基于二维图像分析，能够识别简单的手势动作。</p>
+<p>三维空间跟踪：随着传感器技术的发展，手势识别可以进行三维空间跟踪，识别更复杂的手势和动作。</p>
+<p>“什么是手势？为什么说手势交互是自然交互？”</p>
+<p>手势是指人类用语言中枢建立起来的一套用手掌和手指位置、形状的特定语言系统。普遍研究认为，在人类历史中，手势先于语言被发明，且是语言出现的先决条件。其实人们在一直使用手势与他人和世界交互，使用手势早已成为人们的自然行为。</p>
+<p>02</p>
+<p>空间手势控制技术</p>
+<ul>
+<li>常见传感设备</li>
+</ul>
+<p>Microsoft Kinect：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8Qo6dDhlP6ichtw5TRfnaDt3iavB98ryA3Hju3EqlCQdOicyWo26IWN1LkkdUeaAfTK5YJPsfWU67DFg/640?wx_fmt=png&from=appmsg"><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8Qo6dDhlP6ichtw5TRfnaDt3SLkDrMRH0fiamYB86BbmiaEic3VpZLiakxpwPInosSUx3zibGEZTws9CrAg/640?wx_fmt=png&from=appmsg"></p>
+<p>              Leap Motion：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8Qo6dDhlP6ichtw5TRfnaDt3k3039olTVns8mgISOQl8qzQ4eHlMqeK45ickdzRUWibUkq3ibV3B1gkvA/640?wx_fmt=png&from=appmsg">小型手势控制设备，能非常精确地跟踪用户的手和指尖动作。它在医疗、教育和设计等领域的应用展示了手势控制技术的多样性和潜力。</p>
+<ul>
+<li>基本控制技术</li>
+</ul>
+<p>光学传感器：</p>
+<p>工作原理：使用摄像头捕捉光线反射和中断，通过图像处理算法识别手势。</p>
+<p>应用实例：智能手机和平板电脑的前置摄像头。</p>
+<p>红外传感器：</p>
+<p>工作原理：发射红外线并捕捉其反射信号，通过变化来识别物体的运动和距离。</p>
+<p>应用实例：微软Kinect，用于游戏控制和交互式媒体。</p>
+<p>超声波传感器：</p>
+<p>工作原理：发射超声波并接收其回声，通过分析回声来确定物体的位置和运动。</p>
+<p>应用实例：汽车倒车辅助系统。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8Qo6dDhlP6ichtw5TRfnaDt3ueOCibLhEczVY1zBXcUqap0P15icFwtXYsiaWvicqbFibpMYzOp93mEC6mw/640?wx_fmt=png&from=appmsg">            数据手套：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8Qo6dDhlP6ichtw5TRfnaDt3a8sMxWbxPWZppAE4WTHsYUElVbmW62UGyImH3icPFXUar487vutjr3Q/640?wx_fmt=png&from=appmsg"></p>
+<ul>
+<li>高级手势识别算法</li>
+</ul>
+<p>深度学习：</p>
+<p>描述：使用神经网络模型，特别是卷积神经网络（CNN），来学习和识别复杂的手势模式。</p>
+<p>优势：能够处理大量数据，提高识别准确性，适应不同的环境和用户。</p>
+<p>机器视觉：</p>
+<p>描述：结合多种图像处理技术，如边缘检测、特征提取和物体分类，来识别手势。</p>
+<p>优势：在复杂背景下仍能保持较高的识别率，适用于多种应用场景。</p>
+<ul>
+<li><p>应用前景</p>
+</li>
+<li><p>无接触操作</p>
+</li>
+</ul>
+<p>无需物理接触设备即可进行操作，如自动取款机、电梯按钮</p>
+<ul>
+<li>虚拟现实（VR）和增强现实（AR)</li>
+</ul>
+<p>手势控制操作灯光、调节温度、控制媒体播放等。</p>
+<ul>
+<li>车载系统</li>
+</ul>
+<p>减少驾驶员操作界面的次数，从而降低驾驶时分心的风险。</p>
+<ul>
+<li>辅助技术</li>
+</ul>
+<p>为残障人士提供无障碍的交互</p>
+<ul>
+<li><p>教育和培训</p>
+</li>
+<li><p>游戏和娱乐</p>
+</li>
+</ul>
+<p>丰富和沉浸的游戏体验。</p>
+<ul>
+<li>人机交互研究</li>
+</ul>
+<p>03</p>
+<p>空间手势设计要点</p>
+<p>隔空手势设计</p>
+<p>隔空手势交互有以下优点：有些手势的发出比语音指令的发出还要快；在安静的环境下，隔空手势能替代语音交互发出指令，也比走到设备跟前交互快。</p>
+<ol>
+<li>了解设备捕捉手势的范围</li>
+</ol>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8Qo6dDhlP6ichtw5TRfnaDt3CLS94ZZVXh0k7bKYFvJmYDfoRHGNZVuC8R5RYLkVUkRDsFDicpuJIibg/640?wx_fmt=png&from=appmsg"> meta quest2 的摄像头布局在四角，当手的位置过低时，则无法识别</p>
+<ol start="2">
+<li>使用低负荷、高心理预期的交互方式</li>
+</ol>
+<p>多使用手腕摆动和手指摆动的手势，来减少肌肉负荷。</p>
+<p>始终考虑用户的舒适度。以尽量减少以下交互：</p>
+<p>进行大而剧烈的运动</p>
+<p>长时间保持手臂抬起</p>
+<p>将手臂举过肩膀</p>
+<p>完全伸展手臂</p>
+<ol start="3">
+<li>减少手势的数量、减少用户记忆和学习成本</li>
+</ol>
+<p>在一个应用、系统、或是一组体验环节中，尽量使用少的手势来完成交互。用户能记住的手势数量都非常有限：实验证明人们通常最多可以记住一组6个手势。</p>
+<ol start="4">
+<li>配合视听觉反馈，来增强手势交互体验</li>
+</ol>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8Qo6dDhlP6ichtw5TRfnaDt3TFial8gdHGM0nU7PwVjAfaL8XzBfFNOKmJX8ZakhYGmrl8u734rx7Ow/640?wx_fmt=png&from=appmsg">微软HoloLens的按钮反馈，丰富的反馈提供优质的体验</p>
+<ol start="5">
+<li>谨慎考虑手势的地域性</li>
+</ol>
+<p>在不同的文化族群中，同一个手势往往有着截然相反的含义。比如“✌🏻”，这个手势在中国、美国可能表示“2”或者“胜利”，但在英联邦国家中，则有侮辱的含义。“👍🏻”手势在很多国家是赞扬的意思，在一些中东国家则是粗口手势。</p>
+<ol start="6">
+<li>防止遮挡</li>
+</ol>
+<p>当一只手位于另一只手和相机之间时，相机无法正确跟踪手的情况，手部重叠需要避免。</p>
+<p>shi（注：meta实验室已经公布了新的手势算法，在手部遮挡的情况下也能识别，希望该技术日后可以被普及）</p>
+<ol start="7">
+<li>适宜的交互区域</li>
+</ol>
+<p>可交互的元素，应该摆放在合适的位置、合适的角度，同时也应当根据位置情况设置成适合手部交互的大小。</p>
+<p>比如，根据微软和leap motion提供的数据，适用于近场交互的距离在45-60cm左右，意味着按钮、模型等可交互物体，需要放在此位置，来保证手能直接触达到。同时在45cm处的按钮大小，微软推荐至少要有1.6x1.6cm，来保证适合触摸。在设计时，可以以微软提供的数据作为参考。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8Qo6dDhlP6ichtw5TRfnaDt3etEZ0AujK6lGAHKlA6wTN45FyHfwTgLuaFeAAdawaKCTOhZHxqJwew/640?wx_fmt=png&from=appmsg"></p>
+<ol start="8">
+<li>手势缺乏触觉的一种解决方案——伪触觉反馈</li>
+</ol>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8Qo6dDhlP6ichtw5TRfnaDt3j2Q9Ig01uHwmnCdqIQUrlHEL2XmH6ajVic41Sw9quzOooAVe6BfgtDA/640?wx_fmt=png&from=appmsg">摩擦阻力：让用户远程操控立方体在一个有摩擦力地面上滑动时，控制&#x2F;显示比（control&#x2F;display ratio）发生变化，用户会有一种需要更用力、更大幅度的操作，才能继续操控立方体。（阻尼感）</p>
+<p>刚度：对正在触摸的物体的变形难易程度，来展示虚拟物体的硬度或柔软度。leap motion 对手物边界的设计研究中，通过关节射线与物体的距离建立视觉动画，使用户感知物体的柔软度。通过这种方式缓解虚拟现实中不可避免的穿模问题</p>
+<p>质量：抛两个不同质量的球，根据小球的运动轨迹和回弹，可以让用户感知到这个球的质量大小。再次捡起时，就会产生质量上的心理预期</p>
+<p>表面形状：根据虚拟物体的表面形状设置交互，如图所示：当手握到一定程度时（非闭合状态），视觉上物体就被拿起来了，这时候会有伪触觉反馈。leap motion 对手物边界的设计研究中，手在抓取物体时，手部模型不穿模，最多附着在表面边界上，通过此方式构建物理边界认知。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8Qo6dDhlP6ichtw5TRfnaDt3VgUx6OswMp9PUTCC9wySQ1SorwKkwsbssIibwCibPMIppR2kic1PZ1pAQ/640?wx_fmt=png&from=appmsg"></p>
+<p>04</p>
+<p>未来发展</p>
+<p>增强现实（AR）与手势控制的结合：</p>
+<p>在AR环境中使用手势进行导航和交互，提供更自然的用户体验。</p>
+<p>预测：随着AR技术的成熟，手势控制将成为AR眼镜和应用中的标准交互方式。</p>
+<p>微型化和低功耗传感器的发展：</p>
+<p>发展更小型、更节能的传感器，使手势控制技术更易于集成到便携设备中。</p>
+<p>预测：未来的可穿戴设备将广泛采用手势控制，从智能手表到健康监测设备。</p>
+<p>自适应和学习型手势控制系统：</p>
+<p>系统能够学习用户的手势习惯，并自动调整识别算法以提供个性化体验。</p>
+<p>预测：手势控制系统将通过机器学习变得更加智能，能够预测和适应用户的行为模式。</p>
+<p>References</p>
+<ol>
+<li><p>薛志荣《前瞻交互——从语音、手势设计到多模融合》</p>
+</li>
+<li><p>王锦. 基于视觉的非接触式手势交互技术研究[D].北京工业大学,2017.</p>
+</li>
+</ol>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/b68e0da/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">WebAssembly 简介</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/28d95575/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">CSS背景</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

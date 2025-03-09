@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>WebAssembly 简介 - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="WebAssembly 简介 - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/b68e0da/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2023-11-24T04:50:33.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">WebAssembly 简介</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>November</span>
+            <span>24,</span>
+            <span>2023</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <blockquote>
+<p>大家好啊，今天我来介绍一种很新的技术：WebAssembly（wasm），并简单尝试使用 Golang 写点 wasm 有意思的小东西。</p>
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2></blockquote>
+<h2 id="-1"><a href="#-1" class="headerlink" title=""></a></h2><h2 id="Wasm-是什么"><a href="#Wasm-是什么" class="headerlink" title="Wasm 是什么"></a>Wasm 是什么</h2><p>WebAssembly（缩写为 Wasm）是一种基于堆栈的虚拟机的二进制指令格式。Wasm 被设计为编程语言的可移植编译目标，可以在浏览器或其他提供了 wasm 支持的环境中运行。</p>
+<ul>
+<li><p>基于栈的虚拟机中：计算和操作的过程主要依赖于栈数据结构，指令通常包括将数据压入栈、从栈中弹出数据并执行操作，然后将结果再次压入栈中的操作。这种模型简单而高效，适用于许多不同类型的计算，多用于跨平台、安全受限等场景。我们熟悉的 JVM 也是这种。另一种常见的虚拟机是基于寄存器的。</p>
+</li>
+<li><p>二进制指令格式：二进制是固定指令集的表示，无需做词法分析和语法分析，就能直接在 wasm 虚拟机上解释执行。</p>
+</li>
+<li><p>可移植性：代码无需修改即可在不同的平台和环境中运行，wasm 程序可以在任何支持其标准的环境中运行，而无需对其进行修改或重新编译。最初 wasm 设计是在 Web 浏览器上执行，但现在我们有了 WASI（WebAssembly System Interface），一个模块化的系统接口来在 Web 之外运行 wasm，例如访问文件、网络链接等能力。</p>
+</li>
+</ul>
+<h2 id="有什么用呢"><a href="#有什么用呢" class="headerlink" title="有什么用呢"></a>有什么用呢</h2><p>Wasm 目前已经在浏览器端的图像处理、音视频处理、游戏、IDE、可视化、科学计算等，以及非浏览器端的Serverless、区块链、IoT 等领域有一定的应用，一些现实中的应用例子有：</p>
+<ul>
+<li><p>视频播放：爱奇艺直播WebAssembly优化之路 (qq.com)</p>
+</li>
+<li><p>网页应用：Figma is powered by WebAssembly | Figma Blog</p>
+</li>
+<li><p>游戏：Play | WASM-4 (wasm4.org)</p>
+</li>
+<li><p>容器：Wasm workloads (Beta) | Docker Docs</p>
+</li>
+<li><p>Serverless：WebAssembly serverless functions in AWS Lambda | Cloud Native Computing Foundation (cncf.io)</p>
+</li>
+<li><p>区块链：WebAssembly &amp; The Future of Blockchain Computing | by Raul Jordan | Medium</p>
+</li>
+<li><p>云原生：基于 WebAssembly 实现 Envoy 与 Istio 的功能扩展 | cloudnative.to</p>
+</li>
+<li><p>……</p>
+</li>
+</ul>
+<p>甚至，还能和之前说的 ebpf 结合，太神奇啦：eunomia-bpf&#x2F;wasm-bpf: WebAssembly library, toolchain and runtime for eBPF programs (github.com)## </p>
+<h2 id="运行时架构"><a href="#运行时架构" class="headerlink" title="运行时架构"></a>运行时架构</h2><p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8S48GpJrBu3D0icydcQLOVNe9t0rznPtfG3yw6UJRa6HmfAsKSYGUIhDicrT89pp8b2IFYWFM0cGe5g/640?wx_fmt=png&from=appmsg">* 模块加载和解析器：负责将 WebAssembly 二进制文件加载到内存中，按照规范定义的属性文法进行解码，验证和实例化，生成 WebAssembly 模块对象和运行时数据区域。</p>
+<ul>
+<li>执行引擎：负责执行 WebAssembly 模块中的字节码指令，管理运行时状态，包括栈解释器，线性内存管理和垃圾回收等功能。</li>
+<li>WebAssembly 接口：负责定义一组可移植、模块化、独立于运行时的 WebAssembly API，使得 WebAssembly 代码可以与外界交互。</li>
+</ul>
+<h3 id="-2"><a href="#-2" class="headerlink" title=""></a></h3><h3 id="垃圾回收"><a href="#垃圾回收" class="headerlink" title="垃圾回收"></a>垃圾回收</h3><p>对 WebAssembly 而言，初期的主要设计目标是提供一个底层的高效二进制格式及其对应的运行环境，并将静态强类型语言直接静态编译到字节码，避免在语言层面的额外开销，从而提升性能。因此，WebAssembly 没有垃圾收集器，它只提供了一块可以按字节寻址的线性内存。对于基础数据类型，wasm 可以在内存中高效地访问和传递，而对于结构体、数组等复杂的数据结构，需要手动负责对象创建和回收对象或者采用优化的内存分配器来完成内存的管理工作。目前，对这方面的讨论还在激烈进行中，不支持 GC 的人认为没必要，而支持 GC 的人认为：* 采用垃圾收集器，WebAssembly 可以以更快的执行性能，更小的体积支持更广泛的现代高级语言。</p>
+<ul>
+<li>解放了开发人员对内存管理，提高了内存的安全性。</li>
+<li>WebAssembly 很多场景本质上是一个异构的多语言环境，统一的垃圾收集器可以实现多种语言之间无缝互操作。<br>而在 2023 年 10 月末，Chrome 已经将使用 GC 设置为默认选项：WebAssembly Garbage Collection (WasmGC) now enabled by default in Chrome - Chrome for Developers。他们的文章里还提到使用 GC 可以优化大小，虽然 C&#x2F;C++、Rust 不需要 GC，但仍然需要许多代码来管理内存，使得编译产物的体积更大。## 来点例子</li>
+</ul>
+<p>在 Golang 中写 wasm，首先我们需要一个编译的工具：TinyGo（事实上 Go 自己也能直接编译 wasm，但是目前的支持似乎还不太好），其次，要在本地运行 wasm，我们还需要一个运行环境：Wasmer: Run, Publish &amp; Deploy any code, anywhere安装完成后就可以开始试试下面的代码啦！### Hello world</p>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">// main.gopackage mainfunc main() </span></span><br></pre></td></tr></table></figure>
+<p>编译：&#96;&#96;&#96;</p>
+<p>*<br>tinygo build -o main.wasm -target&#x3D;wasm main.go</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">运行：* </span><br></pre></td></tr></table></figure>
+<p>wasmer run main.wasm</p>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8S48GpJrBu3D0icydcQLOVNebM66eLBs3rzIe9PGHfmiceH2V6Db3gdVndmsNOmKaVmY3fctf0ud3vA/640?wx_fmt=png&from=appmsg">### </p>
+<h3 id="不写-js-也能写前端"><a href="#不写-js-也能写前端" class="headerlink" title="不写 js 也能写前端"></a>不写 js 也能写前端</h3><p>还是上面这段代码，我们可以通过一些方法让它在浏览器里运行：创建一个 index.html：&#96;&#96;&#96;</p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>*<br>          Go wasm              </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">把需要的文件复制过来```</span><br><span class="line">* </span><br><span class="line"><span class="built_in">cp</span> <span class="string">&quot;<span class="subst">$(tinygo env TINYGOROOT)</span>/targets/wasm_exec.js&quot;</span> ./wasm_exec.js</span><br></pre></td></tr></table></figure>
+<p>在浏览器里打开，就能看到程序输出的结果啦<img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8S48GpJrBu3D0icydcQLOVNeHG75W7Qibq2q7iaglxLQtZRyia2ialpHK7ohMVrVvZ1mmwibd0KAxppqhicw/640?wx_fmt=png&from=appmsg">另外 Go 内置的 syscall&#x2F;js 提供了一些方法来调用 js 函数，我们可以用它实现一些操作，比如：&#96;&#96;&#96;</p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>* </p>
+<p>*<br>package mainimport (    “syscall&#x2F;js”    “time”)func GenshinImpact()     js.Global().Get(“location”).Call(“replace”, “<a target="_blank" rel="noopener" href="https://ys.mihoyo.com/%22)%7Dfunc">https://ys.mihoyo.com/&quot;)}func</a> main() }</p>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">![](https:<span class="comment">//mmbiz.qpic.cn/mmbiz_gif/rxLIic6e5g8S48GpJrBu3D0icydcQLOVNeKMnB5qvNEbSEibaxYZb6pPQ9jM3wPwEt0SFbtUEHiatLoR07PndemJTw/640?wx_fmt=gif&amp;from=appmsg)另外还有把不写 js 贯彻到底的项目：Vugu: A modern UI library for Go+WebAssembly，虽然看起来已经很久没更新了...### 插件系统</span></span><br><span class="line"></span><br><span class="line">参考 wasmerio/wasmer-go: WebAssembly runtime <span class="keyword">for</span> Go 里的例子：```</span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line">package mainimport (    <span class="string">&quot;fmt&quot;</span>    wasmer <span class="string">&quot;github.com/wasmerio/wasmer-go/wasmer&quot;</span>    <span class="string">&quot;os&quot;</span>)func main() </span><br></pre></td></tr></table></figure>
+<p>这下我们可以动态加载各种 wasm 模块了，而且插件不限制编写语言，可以在各种平台上运行，比 Go 自带的 plugin 好太多啦！## </p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>总的来说，WebAssembly 作为一种新兴的技术，具有广泛的应用前景，并且在不断演进和完善中，期待它未来的发展！## 参考文章</p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/mp/appmsgalbum?__biz=Mzg2ODQ1OTExOA==&action=getalbum&album_id=2847372805888589825&scene=173&from_msgid=2247503361&from_itemidx=1&count=3&nolastread=1#wechat_redirect">#走进 WebAssembly 的世界 (qq.com)</a><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8TQYPhYwz4Mia5MTNaSIMMjiavB7IcbGAiafKYAhdUicrN6rQuibncGVPicIiaAYWTH3iaZicT3ApAia5VFq8SA/640?wx_fmt=png"></p>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/7961c6c1/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">关于用户需求和痛点捕捉</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/34f9032b/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">基于视觉的非接触式手势交互</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

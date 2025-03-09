@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>Binder与AIDL - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="Binder与AIDL - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/fd4d6c8b/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2024-05-19T08:29:11.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">Binder与AIDL</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>May</span>
+            <span>19,</span>
+            <span>2024</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <h1 id="Binder-是什么"><a href="#Binder-是什么" class="headerlink" title="Binder 是什么"></a>Binder 是什么</h1><p>也许你已经看过许多篇文章讲 AIDL、Binder 是什么但是仍然摸不着头脑，也搞不清楚什么 Stub、Proxy、IBinder等等是什么，但是一提到 App 与服务器通信的接口与接口风格，你也许马上能够想到 RESTful、GraphQL、gRPC 等一系列内容，下文将通过与 gRPC 类比的带你理解 Binder 中各部分分别是什么。</p>
+<h1 id="gRPC-与-Protobuf"><a href="#gRPC-与-Protobuf" class="headerlink" title="gRPC 与 Protobuf"></a>gRPC 与 Protobuf</h1><p>在介绍 Binder 之前，我想先简单介绍一下 gRPC 是什么，这对于后续的类比介绍十分重要。如果你已经知道 gRPC 与 protobuf，那么这一节可以直接跳过。</p>
+<p>简单来说，gRPC (Google Remote Procedure Call) 是Google开发的一个 RPC 框架，用于客户端直接调用服务端提供的函数，说白了就是一种 API 接口的设计方法，跟 RESTful、GraphQL 一样都只是一个 API 接口框架，gRPC 的优势是使用 ProtoBuf  作为接口描述、数据交换的格式（RESTful 风格的接口通常使用的是 JSON），而 ProtoBuf 的优势是快、小、平台无关，相较于 JSON 来说数据使用二进制格式封装，结构更紧凑，更易解析，同时通过 protobuf 只需要描述接口与对象，即可自动生成所需语言的数据类与接口，服务端只需要实现生成代码中的接口即可提供服务，客户端只需要初始化时指定服务器的 URL 即可像调用本地函数一样调用服务器的接口。</p>
+<p>下面引用 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/zhangmingcheng/p/16329237.html">https://www.cnblogs.com/zhangmingcheng/p/16329237.html</a> 的例子：</p>
+<p>我们可以简单定义一个 protobuf 文件</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">syntax = <span class="string">&quot;proto3&quot;</span>;// 这部分的内容是关于最后生成的go文件是处在哪个目录哪个包中，../pb代表在当前目录的上一级pb目录中生成，<span class="keyword">message</span>代表了生成的go文件的包名是<span class="keyword">message</span>。<span class="keyword">option</span> go_package = <span class="string">&quot;../pb;pb&quot;</span>; <span class="keyword">message</span> MessageResponse  <span class="keyword">message</span> MessageRequest  service MessageSender &#125;</span><br></pre></td></tr></table></figure>
+<p>很容易可以看出，我们定义了一个service，称为MessageSender，这个服务中有一个rpc方法，名为Send。这个方法会发送一个MessageRequest，然后返回一个MessageResponse。</p>
+<p>随后我们可以使用 protobuf 提供的命令行工具自动生成代码，代码生成以后服务端只需要实现以下代码：</p>
+<figure class="highlight vhdl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// grpc-practice/pkg/serviceImpl/MessageSenderServerImpl.gopackage serviceImpl import (    <span class="string">&quot;context&quot;</span>    <span class="string">&quot;grpc-practice/pkg/pb&quot;</span>    <span class="string">&quot;log&quot;</span>) <span class="keyword">type</span> MessageSenderServerImpl struct  func (MessageSenderServerImpl) Send(<span class="keyword">context</span> <span class="keyword">context</span>.<span class="keyword">Context</span>, request *pb.MessageRequest) (*pb.MessageResponse, <span class="literal">error</span>)     resp.ResponseSomething = <span class="string">&quot;roger that!&quot;</span>    <span class="keyword">return</span> resp, nil&#125;  </span><br></pre></td></tr></table></figure>
+<figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// grpc-practice/pkg/service/main.go package main import (    <span class="string">&quot;google.golang.org/grpc&quot;</span>    <span class="string">&quot;grpc-practice/pkg/pb&quot;</span>    <span class="string">&quot;grpc-practice/pkg/serviceImpl&quot;</span>    <span class="string">&quot;log&quot;</span>    <span class="string">&quot;net&quot;</span>) <span class="keyword">func</span> <span class="title function_">main</span><span class="params">()</span> )    <span class="title function_">listener</span>, <span class="title function_">err</span> := <span class="title function_">net</span>.<span class="title function_">Listen</span><span class="params">(<span class="string">&quot;tcp&quot;</span>, <span class="string">&quot;:8002&quot;</span>)</span>    <span class="title function_">if</span> <span class="title function_">err</span> != <span class="title function_">nil</span>      <span class="title function_">err</span> = <span class="title function_">srv</span>.<span class="title function_">Serve</span><span class="params">(listener)</span>    <span class="title function_">if</span> <span class="title function_">err</span> != <span class="title function_">nil</span> &#125;</span><br></pre></td></tr></table></figure>
+<p>即可创建一个简单的 gRPC 服务器，而客户端使用该 protobuf 文件也可以快速生成代码，能够让客户端调用接口如同调用本地方法一样：</p>
+<figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// grpc-practice/pkg/client/main.go package main import (    <span class="string">&quot;context&quot;</span>    <span class="string">&quot;google.golang.org/grpc&quot;</span>    <span class="string">&quot;grpc-practice/pkg/pb&quot;</span>    <span class="string">&quot;log&quot;</span>) <span class="keyword">func</span> <span class="title function_">main</span><span class="params">()</span>     <span class="title function_">defer</span> <span class="title function_">conn</span>.<span class="title function_">Close</span><span class="params">()</span>     <span class="title function_">client</span> := <span class="title function_">pb</span>.<span class="title function_">NewMessageSenderClient</span><span class="params">(conn)</span>    <span class="title function_">resp</span>, <span class="title function_">err</span> := <span class="title function_">client</span>.<span class="title function_">Send</span><span class="params">(context.Background()</span>, &amp;<span class="title function_">pb</span>.<span class="title function_">MessageRequest</span>)    <span class="title function_">if</span> <span class="title function_">err</span> != <span class="title function_">nil</span>     <span class="title function_">log</span>.<span class="title function_">Println</span><span class="params">(<span class="string">&quot;receive message:&quot;</span>, resp.GetResponseSomething()</span>)&#125;</span><br></pre></td></tr></table></figure>
+<p>使用其他语言也是一样，如使用客户端使用 Rust：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#[tokio::main]</span><span class="keyword">async</span> <span class="keyword">fn</span> <span class="title function_">main</span>() <span class="punctuation">-&gt;</span> <span class="type">Result</span>&lt;(), <span class="type">Box</span>&lt;<span class="keyword">dyn</span> std::error::Error&gt;&gt; );    <span class="keyword">let</span> <span class="variable">response</span> = client.<span class="title function_ invoke__">send</span>(request).<span class="keyword">await</span>?;    <span class="built_in">println!</span>(<span class="string">&quot;response: &quot;</span>, response.<span class="title function_ invoke__">into_inner</span>());        <span class="title function_ invoke__">Ok</span>(())&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到使用 gRPC 不需要使用大量的代码构建 HTTP 请求，解析响应，整套请求流程与调用对象的函数几乎一样，大大简化了客户端与服务器通信接口的实现（这一切主要靠 protobuf 自动生成的代码来实现）</p>
+<h1 id="Binder-与-AIDL"><a href="#Binder-与-AIDL" class="headerlink" title="Binder 与 AIDL"></a>Binder 与 AIDL</h1><p>简单来说，Binder是 Android 进程间通信 IPC (Inter-Process Communication) 的一种协议&#x2F;机制，可以理解为进程间通信中的 gRPC。而 AIDL(Android Interface Definition Language) 就是 Binder 中的 protobuf，负责定义接口。</p>
+<ol>
+<li>我们可以使用 AIDL 定义一个接口，相当于 gRPC 使用 protobuf 定义接口：</li>
+</ol>
+<p>    package my.package;    interface IFoo <br>2. 接着 Rebuild 一下项目后 IDE 就会自动生成 aidl 文件对应的中间代码，相当于 gRPC 中通过 protobuf 文件生成接口定义文件和抽象，其生成的代码大致为以下结构：</p>
+<p>public interface IFooService extends android.os.IInterface     &#x2F;&#x2F; Stub是一个Binder，相当于上一章中的GradeBinder  public static abstract class Stub extends android.os.Binder implements IFooService         android.os.IInterface iin &#x3D; obj.queryLocalInterface(DESCRIPTOR);        if (((iin !&#x3D; null) &amp;&amp; (iin instanceof IFooService)))         &#x2F;&#x2F; 跨进程则返回Binder的代理对象        return new IFooService.Stub.Proxy(obj);      }            @Override      public boolean onTransact(int code, android.os.Parcel data, android.os.Parcel reply, int flags)             @Override       public android.os.IBinder asBinder()   }    private static class Proxy implements IFooService         @Override     public int doFoo() throws android.os.RemoteException                  @Override     public android.os.IBinder asBinder()   }}<br>3. 服务端继承实现 IFoo.Stub 抽象类，等价于 gRPC 实现接口具体的处理</p>
+<p>    import my.package.IFoo;    public class MyFoo extends IFoo.Stub     }<br>4. 编写服务</p>
+<p>public class MyService extends Service }<br>5. 注册服务，等价于 gRPC 服务端监听端口提供服务</p>
+<p>import android.os.ServiceManager;&#x2F;&#x2F; registeringServiceManager.addService(“service-name”, myService);<br>6. 客户端绑定 Service 并调用，绑定 Service 相当于 gRPC 中客户端连接服务端</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AidlActivity</span> <span class="keyword">extends</span> <span class="title class_">BaseViewBindingActivity</span>&lt;ActivityBinderBinding&gt;         <span class="meta">@Override</span>        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onServiceDisconnected</span><span class="params">(ComponentName componentName)</span>     &#125;;    <span class="meta">@Override</span>    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">onCreate</span><span class="params">(Bundle savedInstanceState)</span>       <span class="comment">// 绑定服务    private void bindGradeService()       private void getFoo()  catch (RemoteException e)     &#125;&#125;</span></span><br></pre></td></tr></table></figure>
+<p>以上代码基本将 Binder 与 gRPC 中的内容对应起来，相信对于理解 Binder 以及 AIDL 是什么，怎么用已经有了一个初步的认识，接下来就是 AIDL 中生成的代码中各内容是什么</p>
+<h1 id="AIDL-生成的都是些什么"><a href="#AIDL-生成的都是些什么" class="headerlink" title="AIDL 生成的都是些什么"></a>AIDL 生成的都是些什么</h1><p>那么 AIDL 生成的代码中的IFooService, IInterface, Stub, Proxy…都是些什么呢？</p>
+<h2 id="IFooService"><a href="#IFooService" class="headerlink" title="IFooService"></a>IFooService</h2><p>IFooService 应该是最清晰的一个，他就是由我们定义的 AIDL 代码中的 interface IFoo，里面有我们定义的接口 int doFoo();，而 IFooService 继承了 IInterface，而他的定义很简单：</p>
+<figure class="highlight vbnet"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/** * Base <span class="keyword">class</span> <span class="keyword">for</span> Binder interfaces.  <span class="keyword">When</span> defining a <span class="built_in">new</span> <span class="keyword">interface</span>, * you must derive it <span class="keyword">from</span> IInterface. */<span class="keyword">public</span> <span class="keyword">interface</span> IInterface</span><br></pre></td></tr></table></figure>
+<p>只定义了一个 asBinder 方法，而该方法在 Stub 类和 Proxy 类中分别实现，用于使接口能返回相关联的 Binder。</p>
+<h2 id="Stub"><a href="#Stub" class="headerlink" title="Stub"></a>Stub</h2><p>Stub 是一个抽象类，继承了 Binder，实现了 IFooService，用户实际的接口代码也是后续通过继承 Stub 实现的，所以实现 IFooService 接口是很自然的，Stub 中生成的 asInterface 方法用于客户端中将获取到的实现了 IBinder 接口的对象强制转型为(可以理解为反序列化)为实现了 IFooService 的对象</p>
+<h2 id="Binder-与-IBinder"><a href="#Binder-与-IBinder" class="headerlink" title="Binder 与 IBinder"></a>Binder 与 IBinder</h2><p>Binder 类实现了 IBinder 接口，其中最关键的代码是实现了 transact 方法：</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">public</span> <span class="keyword">class</span> Binder implements IBinder         // 简单判断后调用 onTransact        <span class="type">boolean</span> r = onTransact(code, data, reply, flags);        <span class="keyword">if</span> (reply != <span class="keyword">null</span>)         <span class="keyword">return</span> r;    &#125;        protected <span class="type">boolean</span> onTransact(<span class="type">int</span> code, @NonNull Parcel data, @Nullable Parcel reply,            <span class="type">int</span> flags) throws RemoteException  <span class="keyword">else</span> <span class="keyword">if</span> (code == DUMP_TRANSACTION)  finally             &#125;            // <span class="keyword">Write</span> the StrictMode <span class="keyword">header</span>.            <span class="keyword">if</span> (reply != <span class="keyword">null</span>)  <span class="keyword">else</span>             <span class="keyword">return</span> <span class="keyword">true</span>;        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (code == SHELL_COMMAND_TRANSACTION)             &#125; finally  <span class="keyword">else</span>             &#125;            <span class="keyword">return</span> <span class="keyword">true</span>;        &#125;        <span class="keyword">return</span> <span class="keyword">false</span>;    &#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>而 transact 方法实际上在 Proxy 类的 doFoo 方法中调用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Proxy</span> <span class="keyword">implements</span> <span class="title class_">IFooService</span>           _reply.readException();          _result = _reply.readInt();        &#125; <span class="keyword">finally</span>         <span class="keyword">return</span> _result;    &#125;        <span class="meta">@Override</span>     <span class="keyword">public</span> android.os.IBinder <span class="title function_">asBinder</span><span class="params">()</span>   &#125;</span><br></pre></td></tr></table></figure>
+<p>而当跨进程调用时客户端通过 asInterface 获取到的 IFooService 对象正是 Proxy：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">Stub</span> <span class="keyword">extends</span> <span class="title class_">android</span>.os.Binder <span class="keyword">implements</span> <span class="title class_">IFooService</span>         android.os.<span class="type">IInterface</span> <span class="variable">iin</span> <span class="operator">=</span> obj.queryLocalInterface(DESCRIPTOR);        <span class="keyword">if</span> (((iin != <span class="literal">null</span>) &amp;&amp; (iin <span class="keyword">instanceof</span> IFooService)))         <span class="comment">// 跨进程则返回Binder的代理对象        return new IFooService.Stub.Proxy(obj);      &#125;  &#125;</span></span><br></pre></td></tr></table></figure>
+<p>至此，全流程已经跑通了。IBinder 的作用更像是建立了一个进程间的连接，所有的调用都经过 Proxy 类中的方法序列化(使用 Parcel)，然后由 IBinder 这个连接所提供的 transact 方法传递到服务端，服务端通过 Stub 方法的 onTransact 进行反序列化，并调用 Stub 方法下的 doFoo() 方法获取返回结果（该方法为抽象方法，需服务端继承实现），最后将返回值通过 transact 方法返回到客户端，由客户端 Proxy.doFoo 完成后续的返回值反序列化，最终返回给客户端。</p>
+<p>全流程图：</p>
+<h1 id="Binder-原理"><a href="#Binder-原理" class="headerlink" title="Binder 原理"></a>Binder 原理</h1><p>相信到这里你已经对 Binder 是什么以及其工作流程图已经有了大概的了解，此时再回过头去看 Binder 的实现原理也会更加轻松，有很多其他文章讲解原理已经十分清晰了，这里就不再赘述，可以参考这篇文章：</p>
+<p>Android : 跟我学Binder — (1) 什么是Binder IPC？为何要使用Binder机制？</p>
+<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><ol>
+<li>AIDL 后端</li>
+<li>不得不说的 Android Binder 机制与 AIDL</li>
+<li>Android跨进程通信：图文详解 Binder 机制原理</li>
+</ol>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/fb1a87b/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">从“假装XX存钱法”看年轻人的消费观和自我投射</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/18251008/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">运营人和产品相爱相杀的那些年</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

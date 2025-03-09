@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>PGO: 为你的Go程序提效5% - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="PGO: 为你的Go程序提效5% - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/5624c11c/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2023-10-26T19:45:40.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">PGO: 为你的Go程序提效5%</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>October</span>
+            <span>26,</span>
+            <span>2023</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <p>原文：<a target="_blank" rel="noopener" href="https://go.dev/blog/pgo[1]">https://go.dev/blog/pgo[1]</a></p>
+<p>2023 年初，Go 1.20 发布了配置文件引导优化（PGO）预览版供用户测试。在解决了预览版中的已知限制，并通过社区反馈和贡献进行了额外的改进后，Go 1.21 中的 PGO 支持已准备好用于一般生产用途！请参阅配置文件引导优化用户指南以获取完整文档。</p>
+<p>下面我们将通过一个使用 PGO 来提高应用程序性能的示例。在此之前，我们先来了解一下“配置文件引导优化”到底是什么？</p>
+<p>当您构建 Go 二进制文件时，Go 编译器会执行优化，尝试生成性能最佳的二进制文件。例如，常量传播可以在编译时评估常量表达式，从而避免运行时评估成本。逃逸分析避免了本地范围对象的堆分配，从而避免了 GC 开销。内联将简单函数的主体复制到调用者中，通常可以在调用者中进行进一步优化（例如额外的常量传播或更好的逃逸分析）。去虚拟化将对类型可以静态确定的接口值的间接调用转换为对具体方法的直接调用（这通常可以实现调用的内联）。</p>
+<p>Go 在各个版本之间不断改进优化，但这样做并不是一件容易的事。有些优化是可调的，但编译器不能在每次优化时都“将其调至 11”，因为过于激进的优化实际上会损害性能或导致构建时间过长。其他优化要求编译器对函数中的“常见”和“不常见”路径做出判断。编译器必须基于静态启发式做出最佳猜测，因为它无法知道哪些情况在运行时会常见。</p>
+<p>或者可以吗？</p>
+<p>由于没有关于如何在生产环境中使用代码的明确信息，编译器只能对包的源代码进行操作。但我们确实有一个评估生产行为的工具：profile。如果我们向编译器提供配置文件，它可以做出更明智的决策：更积极地优化最常用的函数，或更准确地选择常见情况。</p>
+<p>使用应用程序行为配置文件进行编译器优化称为配置文件引导优化 (PGO)（也称为反馈定向优化 (FDO)）。</p>
+<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><p>让我们构建一个将 Markdown 转换为 HTML 的服务：用户将 Markdown 源上传到&#x2F;render，它返回 HTML 转换。我们可以使用<code>gitlab.com/golang-commonmark/markdown</code>[2]它来轻松实现这一点。</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">go</span> <span class="keyword">mod</span> init example.<span class="keyword">com</span>/markdown$ <span class="keyword">go</span> <span class="built_in">get</span> gitlab.<span class="keyword">com</span>/golang-commonmark/markdown@bf3e522c626a</span><br></pre></td></tr></table></figure>
+<p>创建 main.go 文件：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> mainimport (    <span class="string">&quot;bytes&quot;</span>    <span class="string">&quot;io&quot;</span>    <span class="string">&quot;log&quot;</span>    <span class="string">&quot;net/http&quot;</span>    _ <span class="string">&quot;net/http/pprof&quot;</span>    <span class="string">&quot;gitlab.com/golang-commonmark/markdown&quot;</span>)<span class="function"><span class="keyword">func</span> <span class="title">render</span><span class="params">(w http.ResponseWriter， r *http.Request)</span></span>     src， err := io.ReadAll(r.Body)    <span class="keyword">if</span> err != <span class="literal">nil</span>     md := markdown.New(        markdown.XHTMLOutput(<span class="literal">true</span>)，        markdown.Typographer(<span class="literal">true</span>)，        markdown.Linkify(<span class="literal">true</span>)，        markdown.Tables(<span class="literal">true</span>)，    )    <span class="keyword">var</span> buf bytes.Buffer    <span class="keyword">if</span> err := md.Render(&amp;buf， src); err != <span class="literal">nil</span>     <span class="keyword">if</span> _， err := io.Copy(w， &amp;buf); err != <span class="literal">nil</span> &#125;<span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> </span><br></pre></td></tr></table></figure>
+<p>构建并运行这个服务：</p>
+<figure class="highlight erlang"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">$ </span>go build -o markdown.nopgo<span class="string">$ </span>./markdown.nopgo2023/<span class="number">08</span>/<span class="number">23</span> <span class="number">03</span>:<span class="number">55</span>:<span class="number">51</span> Serving on port <span class="number">8080</span>...</span><br></pre></td></tr></table></figure>
+<p>让我们尝试从另一个终端发送一些 Markdown。我们可以使用 Go 项目中的 README.md 作为示例文档：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ curl -<span class="keyword">o</span> README.md -L <span class="string">&quot;https://raw.githubusercontent.com/golang/go/c16c2c49e2fa98ae551fc6335215fadd62d33542/README.md&quot;</span>$ curl --data-binary @README.md http://localhos<span class="variable">t:8080</span>/render# The Go Programming Language</span><br><span class="line"></span><br><span class="line">Go <span class="keyword">is</span> <span class="keyword">an</span> <span class="keyword">open</span> <span class="keyword">source</span> programming <span class="keyword">language</span> that makes it easy <span class="keyword">to</span> build simple，reliable， <span class="built_in">and</span> efficient software.</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h2 id="获取-profile"><a href="#获取-profile" class="headerlink" title="获取 profile"></a>获取 profile</h2><p>现在我们已经有了一个可以运行的服务，让我们收集一个配置文件并使用 PGO 进行重建，看看是否可以获得更好的性能。</p>
+<p>在 中main.go，我们导入了net&#x2F;http&#x2F;pprof[3]，它会自动&#x2F;debug&#x2F;pprof&#x2F;profile向服务器添加一个端点以获取 CPU 配置文件。</p>
+<p>通常，您希望从生产环境中收集配置文件，以便编译器获得生产中行为的代表性视图。由于此示例没有“生产”环境，因此我创建了一个简单的程序[4]来在收集配置文件时生成负载。获取并启动负载生成器（确保服务器仍在运行！）：</p>
+<figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ go <span class="built_in">run</span> github.com/prattmic/markdown-pgo/load<span class="symbol">@latest</span></span><br></pre></td></tr></table></figure>
+<p>在负载生成器运行时，从服务器下载一个性能分析:</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$</span> <span class="built_in">curl</span> <span class="literal">-o</span> cpu.pprof <span class="string">&quot;http://localhost:8080/debug/pprof/profile?seconds=30&quot;</span></span><br></pre></td></tr></table></figure>
+<p>一旦 profile 下载完成，终止负载生成器和服务器。</p>
+<h2 id="使用-profile"><a href="#使用-profile" class="headerlink" title="使用 profile"></a>使用 profile</h2><p>当 Go 工具链找到default.pgo主包目录中指定的配置文件时，它将自动启用 PGO。或者，该-pgo标志go build采用用于 PGO 的配置文件的路径。</p>
+<p>我们建议将default.pgo文件提交到您的存储库。将配置文件与源代码一起存储可确保用户只需获取存储库（通过版本控制系统或通过go get）即可自动访问配置文件，并且构建保持可重现。</p>
+<p>让我们构建它：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ mv cpu</span>.pprof <span class="keyword">default</span>.pgo<span class="variable">$ go build </span>-o markdown.withpgo</span><br></pre></td></tr></table></figure>
+<p>我们可以通过 go version 检查 PGO 是否在构建中被启用:</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ go <span class="keyword">version</span> -m markdown.withpgo.<span class="string">/markdown.withpgo</span>: go1.21.0.<span class="string">..</span>        build   -pgo=<span class="string">/tmp/pgo121/default.pgo</span></span><br></pre></td></tr></table></figure>
+<h2 id="评估"><a href="#评估" class="headerlink" title="评估"></a>评估</h2><p>我们将使用负载生成器的 Go 基准版本来评估 PGO 对性能的影响。</p>
+<p>首先，我们将对没有 PGO 的服务器进行基准测试。启动该服务器：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$</span><span class="language-bash"> ./markdown.nopgo</span></span><br></pre></td></tr></table></figure>
+<p>当它运行时，运行几个基准迭代：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">go</span> <span class="built_in">get</span> github.<span class="keyword">com</span>/prattmic/markdown-pgo@latest$ <span class="keyword">go</span> test github.<span class="keyword">com</span>/prattmic/markdown-pgo/load -bench=. -<span class="built_in">count</span>=<span class="number">40</span> -<span class="keyword">source</span> $(<span class="keyword">pwd</span>)/README.md &gt; nopgo.txt</span><br></pre></td></tr></table></figure>
+<p>完成后，终止原始服务器并使用 PGO 启动该版本：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$</span><span class="language-bash"> ./markdown.withpgo</span></span><br></pre></td></tr></table></figure>
+<p>当它运行时，运行几个基准迭代：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$</span><span class="language-bash"> go <span class="built_in">test</span> github.com/prattmic/markdown-pgo/load -bench=. -count=40 -<span class="built_in">source</span> $(<span class="built_in">pwd</span>)/README.md &gt; withpgo.txt</span></span><br></pre></td></tr></table></figure>
+<p>完成后，让我们比较一下结果：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ go install golang.org/x/perf/<span class="keyword">cmd</span><span class="language-bash">/benchstat@latest$ benchstat nopgo.txt withpgo.txtgoos: linuxgoarch: amd64pkg: github.com/prattmic/markdown-pgo/loadcpu: Intel(R) Xeon(R) W-2135 CPU @ 3.70GHz        │  nopgo.txt  │            withpgo.txt             │        │   sec/op    │   sec/op     vs base               │Load-12   374.5µ ± 1%   360.2µ ± 0%  -3.83% (p=0.000 n=40)</span></span><br></pre></td></tr></table></figure>
+<p>新版本速度提高了约 3.8%！在 Go 1.21 中，启用 PGO 后工作负载的 CPU 使用率通常会提高 2% 到 7%。配置文件包含大量有关应用程序行为的信息，Go 1.21 刚刚开始通过使用这些信息进行一组有限的优化来探索表面。随着编译器的更多部分利用 PGO，未来的版本将继续提高性能。</p>
+<h1 id="后续步骤"><a href="#后续步骤" class="headerlink" title="后续步骤"></a>后续步骤</h1><p>在此示例中，收集配置文件后，我们使用原始构建中使用的完全相同的源代码重建了我们的服务器。在现实世界中，总是有持续的发展。因此，我们可以从生产中收集运行上周代码的配置文件，并使用它来构建今天的源代码。那完全没问题！Go 中的 PGO 可以毫无问题地处理源代码的微小更改。当然，随着时间的推移，源代码会越来越漂移，因此偶尔更新配置文件仍然很重要。</p>
+<p>有关使用 PGO、最佳实践和注意事项的更多信息，请参阅 配置文件引导优化用户指南[5]。如果您对幕后发生的事情感到好奇，请继续阅读！</p>
+<h1 id="原理剖析"><a href="#原理剖析" class="headerlink" title="原理剖析"></a>原理剖析</h1><p>为了更好地理解是什么让这个应用程序变得更快，让我们深入了解一下性能有何变化。我们将看一下两种不同的 PGO 驱动的优化。</p>
+<h2 id="内联"><a href="#内联" class="headerlink" title="内联"></a>内联</h2><p>为了观察内联改进，让我们分析这个带有和不带有 PGO 的 Markdown 应用程序。</p>
+<p>我将使用一种称为差异分析的技术来对此进行比较，其中我们收集两个配置文件（一个带有 PGO，一个没有）并进行比较。对于差异分析，重要的是两个配置文件代表相同的工作量，而不是相同的时间量，因此我调整了服务器以自动收集配置文件，并将负载生成器调整为发送固定数量的请求，然后退出服务器。</p>
+<p>我对服务器所做的更改以及收集的配置文件可以在<a target="_blank" rel="noopener" href="https://github.com/prattmic/markdown-pgo%E6%89%BE%E5%88%B0%E3%80%82%E8%B4%9F%E8%BD%BD%E7%94%9F%E6%88%90%E5%99%A8%E4%BD%BF%E7%94%A8">https://github.com/prattmic/markdown-pgo找到。负载生成器使用</a> 运行-count&#x3D;300000 -quit。</p>
+<p>作为快速一致性检查，让我们看一下处理所有 300k 请求所需的总 CPU 时间：</p>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ go tool pprof -<span class="built_in">top</span> cpu.nopgo.pprof | <span class="type">grep</span> <span class="string">&quot;Total samples&quot;</span>Duration: <span class="number">116.92</span>s， Total samples = <span class="number">118.73</span>s (<span class="number">101.55</span>%)$ go tool pprof -<span class="built_in">top</span> cpu.withpgo.pprof | <span class="type">grep</span> <span class="string">&quot;Total samples&quot;</span>Duration: <span class="number">113.91</span>s， Total samples = <span class="number">115.03</span>s (<span class="number">100.99</span>%)</span><br></pre></td></tr></table></figure>
+<p>CPU 时间从约 118 秒下降到约 115 秒，即约 3%。这与我们的基准结果一致，这是一个好兆头，表明这些配置文件具有代表性。</p>
+<p>现在我们可以打开差异配置文件来寻找节省的空间：</p>
+<figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ go tool pprof -diff_base cpu.nopgo.pprof cpu.withpgo.pprofFile: markdown.profile.withpgo.exeType: cpuTime: Aug <span class="number">28</span>， <span class="number">2023</span> <span class="built_in">at</span> <span class="number">10</span>:<span class="number">26</span>pm (EDT)Duration: <span class="number">230</span>.<span class="number">82</span>s， Total samples = <span class="number">118</span>.<span class="number">73</span>s (<span class="number">51</span>.<span class="number">44</span><span class="variable">%)Entering interactive mode (type &quot;help&quot; for commands， &quot;o&quot; for options)(pprof) top -cumShowing nodes accounting for -0.10s， 0.084%</span> of <span class="number">118</span>.<span class="number">73</span>s totalDropped <span class="number">268</span> nodes (cum &lt;= <span class="number">0</span>.<span class="number">59</span>s)Showing top <span class="number">10</span> nodes out of <span class="number">668</span>      flat  flat<span class="variable">%   sum%</span>        cum   cum<span class="variable">%    -0.03s 0.025%</span> <span class="number">0</span>.<span class="number">025</span><span class="variable">%     -2.56s  2.16%</span>  gitlab.com/golang-commonmark/markdown.ruleLinkify     <span class="number">0</span>.<span class="number">04</span>s <span class="number">0</span>.<span class="number">034</span><span class="variable">% 0.0084%</span>     -<span class="number">2</span>.<span class="number">19</span>s  <span class="number">1</span>.<span class="number">84</span><span class="variable">%  net/http.(*conn).serve     0.02s 0.017%</span> <span class="number">0</span>.<span class="number">025</span><span class="variable">%     -1.82s  1.53%</span>  gitlab.com/golang-commonmark/markdown.(*Markdown).Render     <span class="number">0</span>.<span class="number">02</span>s <span class="number">0</span>.<span class="number">017</span><span class="variable">% 0.042%</span>     -<span class="number">1</span>.<span class="number">80</span>s  <span class="number">1</span>.<span class="number">52</span><span class="variable">%  gitlab.com/golang-commonmark/markdown.(*Markdown).Parse    -0.03s 0.025%</span> <span class="number">0</span>.<span class="number">017</span><span class="variable">%     -1.71s  1.44%</span>  runtime.mallocgc    -<span class="number">0</span>.<span class="number">07</span>s <span class="number">0</span>.<span class="number">059</span><span class="variable">% 0.042%</span>     -<span class="number">1</span>.<span class="number">62</span>s  <span class="number">1</span>.<span class="number">36</span><span class="variable">%  net/http.(*ServeMux).ServeHTTP     0.04s 0.034%</span> <span class="number">0</span>.<span class="number">0084</span><span class="variable">%     -1.58s  1.33%</span>  <span class="built_in">net</span>/http.serverHandler.ServeHTTP    -<span class="number">0</span>.<span class="number">01</span>s <span class="number">0</span>.<span class="number">0084</span><span class="variable">% 0.017%</span>     -<span class="number">1</span>.<span class="number">57</span>s  <span class="number">1</span>.<span class="number">32</span><span class="variable">%  main.render     0.01s 0.0084%</span> <span class="number">0</span>.<span class="number">0084</span><span class="variable">%     -1.56s  1.31%</span>  <span class="built_in">net</span>/http.HandlerFunc.ServeHTTP    -<span class="number">0</span>.<span class="number">09</span>s <span class="number">0</span>.<span class="number">076</span><span class="variable">% 0.084%</span>     -<span class="number">1</span>.<span class="number">25</span>s  <span class="number">1</span>.<span class="number">05</span><span class="variable">%  runtime.newobject(pprof) topShowing nodes accounting for -1.41s， 1.19%</span> of <span class="number">118</span>.<span class="number">73</span>s totalDropped <span class="number">268</span> nodes (cum &lt;= <span class="number">0</span>.<span class="number">59</span>s)Showing top <span class="number">10</span> nodes out of <span class="number">668</span>      flat  flat<span class="variable">%   sum%</span>        cum   cum<span class="variable">%    -0.46s  0.39%</span>  <span class="number">0</span>.<span class="number">39</span><span class="variable">%     -0.91s  0.77%</span>  runtime.scanobject    -<span class="number">0</span>.<span class="number">40</span>s  <span class="number">0</span>.<span class="number">34</span><span class="variable">%  0.72%</span>     -<span class="number">0</span>.<span class="number">40</span>s  <span class="number">0</span>.<span class="number">34</span><span class="variable">%  runtime.nextFreeFast (inline)     0.36s   0.3%</span>  <span class="number">0</span>.<span class="number">42</span><span class="variable">%      0.36s   0.3%</span>  gitlab.com/golang-commonmark/markdown.performReplacements    -<span class="number">0</span>.<span class="number">35</span>s  <span class="number">0</span>.<span class="number">29</span><span class="variable">%  0.72%</span>     -<span class="number">0</span>.<span class="number">37</span>s  <span class="number">0</span>.<span class="number">31</span><span class="variable">%  runtime.writeHeapBits.flush     0.32s  0.27%</span>  <span class="number">0</span>.<span class="number">45</span><span class="variable">%      0.67s  0.56%</span>  gitlab.com/golang-commonmark/markdown.ruleReplacements    -<span class="number">0</span>.<span class="number">31</span>s  <span class="number">0</span>.<span class="number">26</span><span class="variable">%  0.71%</span>     -<span class="number">0</span>.<span class="number">29</span>s  <span class="number">0</span>.<span class="number">24</span><span class="variable">%  runtime.writeHeapBits.write    -0.30s  0.25%</span>  <span class="number">0</span>.<span class="number">96</span><span class="variable">%     -0.37s  0.31%</span>  runtime.deductAssistCredit     <span class="number">0</span>.<span class="number">29</span>s  <span class="number">0</span>.<span class="number">24</span><span class="variable">%  0.72%</span>      <span class="number">0</span>.<span class="number">10</span>s <span class="number">0</span>.<span class="number">084</span><span class="variable">%  gitlab.com/golang-commonmark/markdown.ruleText    -0.29s  0.24%</span>  <span class="number">0</span>.<span class="number">96</span><span class="variable">%     -0.29s  0.24%</span>  runtime.(*mspan).base (inline)    -<span class="number">0</span>.<span class="number">27</span>s  <span class="number">0</span>.<span class="number">23</span><span class="variable">%  1.19%</span>     -<span class="number">0</span>.<span class="number">42</span>s  <span class="number">0</span>.<span class="number">35</span>%  bytes.(*Buffer).WriteRune</span><br></pre></td></tr></table></figure>
+<p>指定pprof -diff_base 时，pprof 中显示的值是两个配置文件之间的差异。例如，runtime.scanobject使用 PGO 时比不使用 PGO 时使用的 CPU 时间少 0.46 秒。另一方面，gitlab.com&#x2F;golang-commonmark&#x2F;markdown.performReplacements多使用了 0.36 秒的 CPU 时间。在差异分析中，我们通常希望查看绝对值（flat和cum列），因为百分比没有意义。</p>
+<p>top -cum显示累积变化的最大差异。也就是说，函数和该函数的所有传递被调用者的 CPU 差异。这通常会显示程序调用图中的最外层框架，例如main或另一个 goroutine 入口点。在这里我们可以看到大部分节省来自ruleLinkify处理 HTTP 请求的部分。</p>
+<p>top显示最大的差异仅限于函数本身的变化。这通常会显示程序调用图中的内部框架，其中大部分实际工作都在其中发生。在这里我们可以看到，个人储蓄主要来自runtime职能。</p>
+<p>那些是什么？让我们查看一下调用堆栈，看看它们来自哪里：</p>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(pprof) peek scanobject$Showing nodes accounting for -3.72s， 3.13% of 118.73s total----------------------------------------------------------+-------------      flat  flat%   sum%        cum   cum%   calls calls% + context----------------------------------------------------------+-------------                                            -0.86s 94.51% |<span class="string">   runtime.gcDrain                                            -0.09s  9.89% </span>|<span class="string">   runtime.gcDrainN                                             0.04s  4.40% </span>|<span class="string">   runtime.markrootSpans    -0.46s  0.39%  0.39%     -0.91s  0.77%                </span>|<span class="string"> runtime.scanobject                                            -0.19s 20.88% </span>|<span class="string">   runtime.greyobject                                            -0.13s 14.29% </span>|<span class="string">   runtime.heapBits.nextFast (inline)                                            -0.08s  8.79% </span>|<span class="string">   runtime.heapBits.next                                            -0.08s  8.79% </span>|<span class="string">   runtime.spanOfUnchecked (inline)                                             0.04s  4.40% </span>|<span class="string">   runtime.heapBitsForAddr                                            -0.01s  1.10% </span>|<span class="string">   runtime.findObject----------------------------------------------------------+-------------(pprof) peek gcDrain$Showing nodes accounting for -3.72s， 3.13% of 118.73s total----------------------------------------------------------+-------------      flat  flat%   sum%        cum   cum%   calls calls% + context----------------------------------------------------------+-------------                                               -1s   100% </span>|<span class="string">   runtime.gcBgMarkWorker.func2     0.15s  0.13%  0.13%        -1s  0.84%                </span>|<span class="string"> runtime.gcDrain                                            -0.86s 86.00% </span>|<span class="string">   runtime.scanobject                                            -0.18s 18.00% </span>|<span class="string">   runtime.(*gcWork).balance                                            -0.11s 11.00% </span>|<span class="string">   runtime.(*gcWork).tryGet                                             0.09s  9.00% </span>|<span class="string">   runtime.pollWork                                            -0.03s  3.00% </span>|<span class="string">   runtime.(*gcWork).tryGetFast (inline)                                            -0.03s  3.00% </span>|<span class="string">   runtime.markroot                                            -0.02s  2.00% </span>|<span class="string">   runtime.wbBufFlush                                             0.01s  1.00% </span>|<span class="string">   runtime/internal/atomic.(*Bool).Load (inline)                                            -0.01s  1.00% </span>|<span class="string">   runtime.gcFlushBgCredit                                            -0.01s  1.00% </span>|<span class="string">   runtime/internal/atomic.(*Int64).Add (inline)----------------------------------------------------------+-------------</span></span><br></pre></td></tr></table></figure>
+<p>所以runtime.scanobject最终是来自于runtime.gcBgMarkWorker。Go GC 指南[6]告诉我们，这runtime.gcBgMarkWorker是垃圾收集器的一部分，所以runtime.scanobject节省的一定是 GC 节省的。还有nextFreeFast其他runtime功能呢？</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="params">(pprof)</span> peek nextFreeFast$Showing nodes accounting for -3.72s， 3.13% of 118.73s total<span class="params">----------------------------------------------------------</span>+<span class="params">-------------</span>      flat  flat%   sum%        cum   cum%   calls calls% + context<span class="params">----------------------------------------------------------</span>+<span class="params">-------------</span>                                            -0.40s   100% |   runtime.mallocgc <span class="params">(inline)</span>    -0.40s  0.34%  0.34%     -0.40s  0.34%                | runtime.nextFreeFast<span class="params">----------------------------------------------------------</span>+<span class="params">-------------</span><span class="params">(pprof)</span> peek writeHeapBitsShowing nodes accounting for -3.72s， 3.13% of 118.73s total<span class="params">----------------------------------------------------------</span>+<span class="params">-------------</span>      flat  flat%   sum%        cum   cum%   calls calls% + context<span class="params">----------------------------------------------------------</span>+<span class="params">-------------</span>                                            -0.37s   100% |   runtime.heapBitsSetType                                                 0     0% |   runtime.<span class="params">(*mspan)</span><span class="string">.initHeapBits</span>    -0.35s  0.29%  0.29%     -0.37s  0.31%                | runtime.writeHeapBits.flush                                            -0.02s  5.41% |   runtime.arenaIndex <span class="params">(inline)</span><span class="params">----------------------------------------------------------</span>+<span class="params">-------------</span>                                            -0.29s   100% |   runtime.heapBitsSetType    -0.31s  0.26%  0.56%     -0.29s  0.24%                | runtime.writeHeapBits.write                                             0.02s  6.90% |   runtime.arenaIndex <span class="params">(inline)</span><span class="params">----------------------------------------------------------</span>+<span class="params">-------------</span><span class="params">(pprof)</span> peek heapBitsSetType$Showing nodes accounting for -3.72s， 3.13% of 118.73s total<span class="params">----------------------------------------------------------</span>+<span class="params">-------------</span>      flat  flat%   sum%        cum   cum%   calls calls% + context<span class="params">----------------------------------------------------------</span>+<span class="params">-------------</span>                                            -0.82s   100% |   runtime.mallocgc    -0.12s   0.1%   0.1%     -0.82s  0.69%                | runtime.heapBitsSetType                                            -0.37s 45.12% |   runtime.writeHeapBits.flush                                            -0.29s 35.37% |   runtime.writeHeapBits.write                                            -0.03s  3.66% |   runtime.readUintptr <span class="params">(inline)</span>                                            -0.01s  1.22% |   runtime.writeHeapBitsForAddr <span class="params">(inline)</span><span class="params">----------------------------------------------------------</span>+<span class="params">-------------</span><span class="params">(pprof)</span> peek deductAssistCredit$Showing nodes accounting for -3.72s， 3.13% of 118.73s total<span class="params">----------------------------------------------------------</span>+<span class="params">-------------</span>      flat  flat%   sum%        cum   cum%   calls calls% + context<span class="params">----------------------------------------------------------</span>+<span class="params">-------------</span>                                            -0.37s   100% |   runtime.mallocgc    -0.30s  0.25%  0.25%     -0.37s  0.31%                | runtime.deductAssistCredit                                            -0.07s 18.92% |   runtime.gcAssistAlloc<span class="params">----------------------------------------------------------</span>+<span class="params">-------------</span></span><br></pre></td></tr></table></figure>
+<p>看起来nextFreeFast前 10 名中的其他一些最终来自runtime.mallocgc，GC 指南告诉我们的是内存分配器。</p>
+<p>GC 和分配器成本的降低意味着我们总体分配的数量更少。让我们看一下堆配置文件以了解更多信息：</p>
+<figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ go tool pprof -sample_index=alloc_objects -diff_base heap.nopgo.pprof heap.withpgo.pprofFile: markdown.profile.withpgo.exeType: alloc_objectsTime: Aug <span class="number">28</span>， <span class="number">2023</span> <span class="built_in">at</span> <span class="number">10</span>:<span class="number">28</span>pm (EDT)Entering interactive <span class="built_in">mode</span> (<span class="built_in">type</span> &quot;<span class="built_in">help</span>&quot; <span class="keyword">for</span> commands， &quot;o&quot; <span class="keyword">for</span> options)(pprof) topShowing nodes accounting <span class="keyword">for</span> -<span class="number">12044903</span>， <span class="number">8</span>.<span class="number">29</span><span class="variable">% of 145309950 totalDropped 60 nodes (cum &lt;= 726549)Showing top 10 nodes out of 58      flat  flat%</span>   sum<span class="variable">%        cum   cum%</span>  -<span class="number">4974135</span>  <span class="number">3</span>.<span class="number">42</span><span class="variable">%  3.42%</span>   -<span class="number">4974135</span>  <span class="number">3</span>.<span class="number">42</span><span class="variable">%  gitlab.com/golang-commonmark/mdurl.Parse  -4249044  2.92%</span>  <span class="number">6</span>.<span class="number">35</span><span class="variable">%   -4249044  2.92%</span>  gitlab.com/golang-commonmark/mdurl.(*URL).String   -<span class="number">901135</span>  <span class="number">0</span>.<span class="number">62</span><span class="variable">%  6.97%</span>    -<span class="number">977596</span>  <span class="number">0</span>.<span class="number">67</span><span class="variable">%  gitlab.com/golang-commonmark/puny.mapLabels   -653998  0.45%</span>  <span class="number">7</span>.<span class="number">42</span><span class="variable">%    -482491  0.33%</span>  gitlab.com/golang-commonmark/markdown.(*StateInline).PushPending   -<span class="number">557073</span>  <span class="number">0</span>.<span class="number">38</span><span class="variable">%  7.80%</span>    -<span class="number">557073</span>  <span class="number">0</span>.<span class="number">38</span><span class="variable">%  gitlab.com/golang-commonmark/linkify.Links   -557073  0.38%</span>  <span class="number">8</span>.<span class="number">18</span><span class="variable">%    -557073  0.38%</span>  strings.genSplit   -<span class="number">436919</span>   <span class="number">0</span>.<span class="number">3</span><span class="variable">%  8.48%</span>    -<span class="number">232152</span>  <span class="number">0</span>.<span class="number">16</span><span class="variable">%  gitlab.com/golang-commonmark/markdown.(*StateBlock).Lines   -408617  0.28%</span>  <span class="number">8</span>.<span class="number">77</span><span class="variable">%    -408617  0.28%</span>  <span class="built_in">net</span>/textproto.readMIMEHeader    <span class="number">401432</span>  <span class="number">0</span>.<span class="number">28</span><span class="variable">%  8.49%</span>     <span class="number">499610</span>  <span class="number">0</span>.<span class="number">34</span><span class="variable">%  bytes.(*Buffer).grow    291659   0.2%</span>  <span class="number">8</span>.<span class="number">29</span><span class="variable">%     291659   0.2%</span>  bytes.(*Buffer).String (inline)</span><br></pre></td></tr></table></figure>
+<p>-sample_index&#x3D;alloc_objects选项向我们显示分配的数量，无论大小如何。这很有用，因为我们正在调查 CPU 使用率的下降，而这往往与分配计数而不是大小相关。这里有相当多的减少，但让我们关注最大的减少，mdurl.Parse。</p>
+<p>作为参考，让我们看看没有 PGO 的情况下该函数的总分配计数：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ go<span class="built_in"> tool </span>pprof <span class="attribute">-sample_index</span>=alloc_objects -top heap.nopgo.pprof | grep mdurl.Parse   4974135  3.42% 68.60%    4974135  3.42%  gitlab.com/golang-commonmark/mdurl.Parse</span><br></pre></td></tr></table></figure>
+<p>之前的总计数是 4974135，这意味着mdurl.Parse已经消除了 100% 的分配！</p>
+<p>让我们收集更多背景信息：</p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(pprof) peek mdurl.ParseShowing nodes accounting for -<span class="number">12257184</span>， <span class="number">8</span>.<span class="number">44</span>% of <span class="number">145309950</span> total----------------------------------------------------------+-------------      flat  flat%   sum%        cum   cum%   calls calls% + context----------------------------------------------------------+-------------                                          -<span class="number">2956806 59</span>.<span class="number">44</span>% |   gitlab.com/golang-commonmark/markdown.normalizeLink                                          -<span class="number">2017329 40</span>.<span class="number">56</span>% |   gitlab.com/golang-commonmark/markdown.normalizeLinkText  -<span class="number">4974135</span>  <span class="number">3</span>.<span class="number">42</span>%  <span class="number">3</span>.<span class="number">42</span>%   -<span class="number">4974135</span>  <span class="number">3</span>.<span class="number">42</span>%                | gitlab.com/golang-commonmark/mdurl.Parse----------------------------------------------------------+-------------</span><br></pre></td></tr></table></figure>
+<p>调用 mdurl.Parse 的是来自 markdown.normalizeLink 和 markdown.normalizeLinkText。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(pprof) list mdurl.<span class="type">ParseTotal</span>: 145309950ROUTINE <span class="operator">========================</span> gitlab.com<span class="regexp">/golang-commonmark/</span>mdurl.<span class="type">Parse</span> <span class="keyword">in</span> <span class="regexp">/usr/</span>local<span class="regexp">/google/</span>home<span class="regexp">/mpratt/</span>go<span class="regexp">/pkg/</span>mod<span class="regexp">/gitlab.com/</span>golang<span class="operator">-</span>commonmark<span class="regexp">/mdurl@v0.0.0-20191124015652-932350d1cb84/</span>parse.go  <span class="operator">-</span><span class="number">4974135</span>   <span class="operator">-</span><span class="number">4974135</span> (flat， cum)  <span class="number">3.42</span><span class="operator">%</span> of <span class="type">Total</span>         .          .     <span class="number">60</span>:<span class="keyword">func</span> <span class="title function_">Parse</span>(rawurl string) (<span class="operator">*</span><span class="type">URL，</span> error)          .          .     <span class="number">65</span>:  <span class="operator">-</span><span class="number">4974135</span>   <span class="operator">-</span><span class="number">4974135</span>     <span class="number">66</span>:   <span class="keyword">var</span> url <span class="type">URL</span>         .          .     <span class="number">67</span>:   rest :<span class="operator">=</span> rawurl         .          .     <span class="number">68</span>:   hostless :<span class="operator">=</span> <span class="literal">false</span>         .          .     <span class="number">69</span>:   <span class="keyword">if</span> n <span class="operator">&gt;</span> <span class="number">0</span>  <span class="keyword">else</span> </span><br></pre></td></tr></table></figure>
+<p>也就是说，我们为最有可能出现的具体类型添加运行时检查，如果是这样，则使用具体调用，否则回退到标准间接调用。这里的优点是公共路径（使用*os.File）可以内联并应用额外的优化，但我们仍然保留后备路径，因为配置文件并不能保证始终如此。</p>
+<p>在我们对 Markdown 服务器的分析中，我们没有看到 PGO 驱动的去虚拟化，但我们也只关注了受影响最大的区域。PGO（以及大多数编译器优化）通常会在许多不同地方进行非常小的改进的总和中产生好处，因此可能发生的事情不仅仅是我们所看到的。</p>
+<p>内联和去虚拟化是 Go 1.21 中提供的两种 PGO 驱动的优化，但正如我们所见，这些通常会解锁额外的优化。此外，Go 的未来版本将继续通过额外的优化来改进 PGO。</p>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p>[1]<a target="_blank" rel="noopener" href="https://go.dev/blog/pgo">https://go.dev/blog/pgo</a>: <a target="_blank" rel="noopener" href="https://go.dev/blog/pgo">https://go.dev/blog/pgo</a></p>
+<p>[2]gitlab.com&#x2F;golang-commonmark&#x2F;markdown: <a target="_blank" rel="noopener" href="https://pkg.go.dev/gitlab.com/golang-commonmark/markdown">https://pkg.go.dev/gitlab.com/golang-commonmark/markdown</a></p>
+<p>[3]net&#x2F;http&#x2F;pprof: <a target="_blank" rel="noopener" href="https://pkg.go.dev/net/http/pprof">https://pkg.go.dev/net/http/pprof</a></p>
+<p>[4]简单的程序: <a target="_blank" rel="noopener" href="https://github.com/prattmic/markdown-pgo/blob/main/load/main.go">https://github.com/prattmic/markdown-pgo/blob/main/load/main.go</a></p>
+<p>[5]配置文件引导优化用户指南: <a target="_blank" rel="noopener" href="https://go.dev/doc/pgo">https://go.dev/doc/pgo</a></p>
+<p>[6]GC指南: <a target="_blank" rel="noopener" href="https://go.dev/doc/gc-guide#Identiying_costs">https://go.dev/doc/gc-guide#Identiying_costs</a></p>
+<p>[7]mdurl.Parse: <a target="_blank" rel="noopener" href="https://gitlab.com/golang-commonmark/mdurl/-/blob/bd573caec3d827ead19e40b1f141a3802d956710/parse.go#L60">https://gitlab.com/golang-commonmark/mdurl/-/blob/bd573caec3d827ead19e40b1f141a3802d956710/parse.go#L60</a></p>
+<p>[8]markdown.normalizeLink: <a target="_blank" rel="noopener" href="https://gitlab.com/golang-commonmark/markdown/-/blob/fd7971701a0cab12e9347109a4c889f5c0a1a479/util.go#L53">https://gitlab.com/golang-commonmark/markdown/-/blob/fd7971701a0cab12e9347109a4c889f5c0a1a479/util.go#L53</a></p>
+<p>[9]markdown.normalizeLinkText: <a target="_blank" rel="noopener" href="https://gitlab.com/golang-commonmark/markdown/-/blob/fd7971701a0cab12e9347109a4c889f5c0a1a479/util.go#L68">https://gitlab.com/golang-commonmark/markdown/-/blob/fd7971701a0cab12e9347109a4c889f5c0a1a479/util.go#L68</a></p>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/aa2e369/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">《Pentiment》中的字体设计</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/cefb3615/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">Unity编辑器拓展：Editor与PropertyDrawer</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>mini-react（一） - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="mini-react（一） - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/4757500b/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2022-05-27T07:07:41.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">mini-react（一）</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>May</span>
+            <span>27,</span>
+            <span>2022</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <p>一个简单的 react 应用长这个样子：</p>
+<figure class="highlight nim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="type">React</span> <span class="keyword">from</span> <span class="string">&quot;react&quot;</span>;<span class="keyword">import</span> <span class="type">ReactDOM</span> <span class="keyword">from</span> <span class="string">&quot;react-dom&quot;</span>;<span class="keyword">import</span> <span class="string">&quot;./index.css&quot;</span>;<span class="keyword">const</span> hello = (  &lt;<span class="keyword">div</span>&gt;    &lt;h1&gt;helloh1&gt;    &lt;h2&gt;reacth2&gt;  <span class="keyword">div</span>&gt;);<span class="type">ReactDOM</span>.render(hello, document.getElementById(<span class="string">&quot;root&quot;</span>));</span><br></pre></td></tr></table></figure>
+<p>前几天刚更新的 react 18 不再推荐使用ReactDOM.render(hello, document.getElementById(“root”));这种写法，但是由于我还没看过 react 18 都更新了啥，所以我们还是基于 react 17 来写 hhh</p>
+<p>现在我们尝试来手动实现类似的效果</p>
+<h1 id="1-JSX"><a href="#1-JSX" class="headerlink" title="1. JSX"></a>1. JSX</h1><p>jsx 是 react 中的独特语法，粗略地讲的话：bable 将上面代码中的 hello 编译成 react 函数调用，该函数返回普通的 js 对象，然后 react 在 render 中调用浏览器的 api，递归地创建 DOM 元素。</p>
+<p>例如，上面的 hello 会被编译为这样的 js：</p>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> hello = React.createElement(  <span class="string">&quot;div&quot;</span>,  <span class="literal">null</span>,  React.createElement(<span class="string">&quot;h1&quot;</span>, <span class="literal">null</span>, <span class="string">&quot;hello&quot;</span>),  React.createElement(<span class="string">&quot;h2&quot;</span>, <span class="literal">null</span>, <span class="string">&quot;react&quot;</span>));</span><br></pre></td></tr></table></figure>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8Scr88ggnib25xq6msOnASG1YNbudJ1QQD7zkZSUBbdSkxZmObiaica75lZYdzWmMw5SH5Wzj6N0YExA/640?wx_fmt=png">打印 hello 会出现如下对象：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8Scr88ggnib25xq6msOnASG1p3u9QrUOg2QZz5tO3a6tQEtqsP9NHDQLW9T75fqGxWiaWvn63dGpOew/640?wx_fmt=png">其实 babel 对 jsx 的编译有新旧两种模式，旧版即编译为 React.createElement，但这就要求必须引入 React，新版则使用 react 17 新增的入口函数，具体见这里</p>
+<p>在这里我们就先略过 babel 如何将 jsx 编译为 js，先来实现一个编译后使用的React.createElement</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">type</span> <span class="title class_">VDom</span> =  |  &amp; ;    &#125;  | <span class="built_in">string</span>;<span class="keyword">function</span> <span class="title function_">createElement</span>(<span class="params">  <span class="attr">type</span>: keyof <span class="title class_">HTMLElementTagNameMap</span>,  <span class="attr">props</span>: <span class="title class_">Record</span>&lt;<span class="built_in">string</span>, <span class="built_in">any</span>&gt;,  ...<span class="attr">children</span>: <span class="title class_">VDom</span>[]</span>): <span class="title class_">VDom</span> ,  &#125;;&#125;<span class="comment">// 把我们自己的mini-react叫做Recat :Dconst Recat = ;</span></span><br></pre></td></tr></table></figure>
+<p>接下来是如何由 createElement 返回的对象创建 dom，也就是 render 函数的工作，实现一个 render 函数：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title class_">Recat</span> = ;<span class="keyword">const</span> hello = <span class="title class_">Recat</span>.<span class="title function_">createElement</span>(  <span class="string">&quot;div&quot;</span>,  <span class="literal">null</span>,  <span class="title class_">Recat</span>.<span class="title function_">createElement</span>(<span class="string">&quot;h1&quot;</span>, <span class="literal">null</span>, <span class="string">&quot;hello&quot;</span>),  <span class="title class_">Recat</span>.<span class="title function_">createElement</span>(<span class="string">&quot;h2&quot;</span>, <span class="literal">null</span>, <span class="string">&quot;react&quot;</span>));<span class="keyword">function</span> <span class="title function_">createDOMElement</span>(<span class="params">vDom: VDom</span>): <span class="title class_">HTMLElement</span> | <span class="title class_">Text</span>   <span class="keyword">const</span> node = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(vDom.<span class="property">type</span>);  <span class="keyword">for</span> (<span class="keyword">const</span> key <span class="keyword">in</span> vDom.<span class="property">props</span>) );    <span class="keyword">else</span> <span class="keyword">if</span> (key.<span class="title function_">startsWith</span>(<span class="string">&quot;on&quot;</span>))  <span class="keyword">else</span> node.<span class="title function_">setAttribute</span>(key, vDom.<span class="property">props</span>[key]);  &#125;  <span class="keyword">return</span> node;&#125;<span class="keyword">function</span> <span class="title function_">render</span>(<span class="params">vDom: VDom, container: HTMLElement</span>) <span class="title class_">Recat</span>.<span class="title function_">render</span>(hello, <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;#root&quot;</span>));</span><br></pre></td></tr></table></figure>
+<p>但是这样会有一个问题，上面的 render 操作无法中断，当 vDom 的结构很大很复杂的时候，会长时间的占用主线程进行 render，导致页面卡顿，这也就是 react 16 以前面临的问题，那如何解决这个问题呢</p>
+<h1 id="2-Fiber"><a href="#2-Fiber" class="headerlink" title="2. Fiber"></a>2. Fiber</h1><p>先来介绍一些前置知识：</p>
+<p>浏览器会 1 秒刷新 60 次，也就是近似每 16ms 刷新一次来保证用户所感受到的流畅性，而间隔的这 16ms 中又有一些时间是浏览器用来绘制内容的，所以交给 js 执行的时间大约只有 10ms 左右，如果 js 执行时间过长，用户就会感受到页面的卡顿。</p>
+<p>像前面说的，上面的 render 一次性执行完成会阻塞主线程，那只要将这个任务分成一个又一个小部分就行，每部分执行完成后检查一下剩下的时间还够不够再执行一个任务，如果时间还够就继续执行，不然就将控制权交还给浏览器，等下一个空闲时间再执行。</p>
+<p>思路有了，但是还要面临两个问题：</p>
+<ol>
+<li>如果还按照前面的数据结构，我们从中途暂停让出控制权后，是没有办法完成所有节点的渲染任务的</li>
+<li>如何寻找浏览器的剩余时间<br>对于第一个问题，react 构建了一种叫做 fiber 的数据结构，我们来对比一下这两种结构：</li>
+</ol>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8Scr88ggnib25xq6msOnASG1hdIZy0IJHrEwXgNUVyBibVRXIe1RicGicxvRk4qFqmzlyBb3jB7lnpPkA/640?wx_fmt=png">fiber使用 fiber 的结构，我们就可以在遍历的途中随时暂停，暂停时只要保存当前节点即可。</p>
+<p>先定义一下 fiber 的结构</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">//</span> 这和真实的fiber结构还是有很大出入的，在此为了方便我们将其修改为下面的简单结构<span class="regexp">//</span> 对于普通文本节点也不能仅 string 了事，文本节点也需要有<span class="keyword">return</span>等指向<span class="keyword">export</span> const TEXT_ELEMENT = <span class="string">&quot;TEXT_ELEMENT&quot;</span>;<span class="keyword">export</span> type Fiber =  | ((      |             | <span class="literal">null</span>;          child: Fiber;          stateNode: HTMLElement | <span class="literal">null</span>; <span class="regexp">//</span> fiber对应的dom元素，create之前都是<span class="literal">null</span>        &#125;      |     ) &amp; )  | <span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
+<p>然后需要将 vDom 转化成 fiber，这个问题我们留到下面跟着第二个问题一起解决</p>
+<p>第一个问题解决了，第二个问题就更简单了，浏览器提供了这么一个 api，requestIdleCallback 接收一个回调函数，该回调函数会在浏览器空闲时执行。</p>
+<p>React 实际使用的并不是这个接口，一方面是为了兼容性考虑，另一方面是这个 api 每 50ms 才会执行一次，远不能达到 react 的要求，react 最终是基于requestAnimationFrame实现了 Scheduler 来完成这个功能</p>
+<p>继续修改之前的代码，由于代码量变大了，我稍微拆分一下文件，下面是 Recat 的主体部分：</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  <span class="keyword">from</span> <span class="string">&quot;./typings/Fiber&quot;</span>;<span class="keyword">import</span>  <span class="keyword">from</span> <span class="string">&quot;./typings/VDom&quot;</span>;<span class="keyword">export</span> <span class="keyword">const</span> Recat = ;<span class="keyword">function</span> createElement(  type: keyof HTMLElementTagNameMap,  props: Record&lt;string, any&gt;,  ...children: VDom[]): VDom ,  &#125;;&#125;<span class="regexp">// createDOMElement不再深度create，只创建当前fiber的dom元素function createDOMElement(fiber: Fiber): HTMLElement | Text   const node = document.createElement(fiber.type);  for (const key in fiber.props || &#123;&#125;)     node.setAttribute(key, fiber.props[key]);  &#125;  return node;&#125;//</span> 下一个处理的fiber节点，render时对其进行初始化修改<span class="keyword">let</span> nextUnitOfWork: Fiber = <span class="literal">null</span>;<span class="keyword">function</span> render(vDom: VDom, container: HTMLElement) ,    return: <span class="literal">null</span>,    sibling: <span class="literal">null</span>,    stateNode: container,  &#125;;  <span class="regexp">// 开始创建节点  requestIdleCallback(workLoop);&#125;function workLoop(deadline: IdleDeadline)   requestIdleCallback(workLoop); //</span> 再次添加回调，等下一次浏览器空闲时执行&#125;<span class="comment">/** 负责完成当前任务，并返回下一任务 */</span><span class="keyword">function</span> performUnitOfWork(fiber: Fiber | <span class="literal">null</span>): Fiber | <span class="literal">null</span>   <span class="keyword">if</span> (fiber.<span class="keyword">return</span>)   <span class="keyword">if</span> (fiber.type !== <span class="string">&quot;TEXT_ELEMENT&quot;</span>)   <span class="keyword">let</span> nextFiber = fiber;  <span class="keyword">while</span> (nextFiber)   <span class="keyword">return</span> <span class="literal">null</span>;&#125;<span class="comment">/** 将 fiber 节点的 children 进行 fiber 化 */</span><span class="keyword">function</span> createChildrenFiber(fiber: Fiber) ;    &#125; <span class="keyword">else</span> ;    &#125;    <span class="regexp">// 第 0 个作为父亲的 child，其他的则用 sibling 连接    if (!index) fiber.child = newFiber;    else preSibling.sibling = newFiber;    preSibling = newFiber;  &#125;);&#125;</span></span><br></pre></td></tr></table></figure>
+<p>index.ts 中存放 vDom与 render 函数：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  from <span class="string">&quot;./recat&quot;</span>;<span class="keyword">const</span> hello = Recat.createElement(  <span class="string">&quot;div&quot;</span>,  <span class="keyword">null</span>,  Recat.createElement(<span class="string">&quot;h1&quot;</span>, <span class="keyword">null</span>, <span class="string">&quot;hello&quot;</span>),  Recat.createElement(<span class="string">&quot;h2&quot;</span>, <span class="keyword">null</span>, <span class="string">&quot;react&quot;</span>));Recat.render(hello, <span class="built_in">document</span>.<span class="built_in">querySelector</span>(<span class="string">&quot;#root&quot;</span>));</span><br></pre></td></tr></table></figure>
+<h1 id="3-render-commit"><a href="#3-render-commit" class="headerlink" title="3. render &amp; commit"></a>3. render &amp; commit</h1><p>上面的代码能正常跑了，但是依然存在一些问题，在 performUnitOfWork 中，我们直接操作了 dom 元素，但是如果后面控制权被交出去执行了别的事，用户可能会看到渲染了一半的页面，现在需要解决这个问题。</p>
+<p>React 是怎么操作的呢？</p>
+<p>来扒一扒 react 的执行过程：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8Scr88ggnib25xq6msOnASG1cIl03TB4TwA6Ff58Vkibic58QTVZwvWEqD86icCKQ8qA8LJicxlsKkOptw/640?wx_fmt=png">这是浏览器在绘制页面之前执行的操作。react 将修改 fiber 树与将修改绘制到页面上分成两个阶段，分别叫 render 与 commit，其中 render 阶段可以打断，commit 阶段不可打断。react 将 render 阶段负责计算的 fiber 树叫做 workInProgress tree，commit 阶段将 workInProgress tree 渲染成 dom 树。</p>
+<p>修改之前的代码：</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import  from <span class="string">&quot;./typings/Fiber&quot;</span>;import  from <span class="string">&quot;./typings/VDom&quot;</span>;export const Recat = ;<span class="keyword">function</span> <span class="title">createElement</span>(  type: keyof HTMLElementTagNameMap,  props: Record&lt;string, any&gt;,  ...children: VDom[]): VDom ,  &#125;;&#125;// createDOMElement不再深度create，只创建当前fiber的dom元素<span class="keyword">function</span> <span class="title">createDOMElement</span>(fiber: Fiber): HTMLElement | Text   const node = document.createElement(fiber.type);  <span class="keyword">for</span> (const key <span class="keyword">in</span> fiber.props || &#123;&#125;)     node.setAttribute(key, fiber.props[key]);  &#125;  <span class="keyword">return</span> node;&#125;// 下一个处理的fiber节点，render时对其进行初始化修改let nextUnitOfWork: Fiber | null = null;// 需要渲染的树的根节点，render时进行初始化let wipRoot: Fiber = null;<span class="keyword">function</span> <span class="title">render</span>(vDom: VDom, container: HTMLElement) ,    <span class="keyword">return</span>: null,    sibling: null,    stateNode: container,  &#125;;  wipRoot = nextUnitOfWork;  // 开始创建节点  requestIdleCallback(workLoop);&#125;<span class="keyword">function</span> <span class="title">workLoop</span>(deadline: IdleDeadline)   if (!nextUnitOfWork &amp;&amp; wipRoot) commitRoot();  requestIdleCallback(workLoop); // 再次添加回调，等下一次浏览器空闲时执行&#125;/** 负责完成当前任务，并返回下一任务 */<span class="keyword">function</span> <span class="title">performUnitOfWork</span>(fiber: Fiber | null): Fiber | null   // if (fiber.<span class="keyword">return</span>)   if (fiber.type !== &quot;TEXT_ELEMENT&quot;)   let nextFiber = fiber;  while (nextFiber)   <span class="keyword">return</span> <span class="type">null</span>;&#125;/** 将 fiber 节点的 children 进行 fiber 化 */<span class="keyword">function</span> <span class="title">createChildrenFiber</span>(fiber: Fiber) ;    &#125; <span class="keyword">else</span> ;    &#125;    // 第 <span class="number">0</span> 个作为父亲的 child，其他的则用 sibling 连接    <span class="keyword">if</span> (!index) fiber.child = newFiber;    <span class="keyword">else</span> preSibling.sibling = newFiber;    preSibling = newFiber;  &#125;);&#125;<span class="keyword">function</span> <span class="title">commitRoot</span>() /** 递归操纵dom渲染页面，该过程不可打断 */<span class="keyword">function</span> <span class="title">commitWork</span>(fiber: Fiber) </span><br></pre></td></tr></table></figure>
+<p>至此我们完成了页面挂载时候的行为，下面来看当页面发生更新时的情况</p>
+<h1 id="4-update"><a href="#4-update" class="headerlink" title="4. update"></a>4. update</h1><p>react 在发生更新时，会进行一遍 dom diff，比较即将要渲染的部分与上次渲染的部分，仅针对变化的地方发生修改。</p>
+<p>更新的触发是通过再次调用 render 来实现的，在实际使用 react 时，我们只需要修改 state，react 会自动帮助我们调用 render，这部分我们放到后面来实现，现在我们先自己调用 render，用户端调用的代码如下：</p>
+<figure class="highlight openscad"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">import</span>  from <span class="string">&quot;./lib&quot;</span>;<span class="built_in">let</span> count = <span class="number">0</span>;<span class="function"><span class="keyword">function</span> <span class="title">add</span><span class="params">()</span> <span class="title">function</span> <span class="title">minus</span><span class="params">()</span> <span class="title">function</span> <span class="title">Hello</span><span class="params">()</span> , &quot;+&quot;),    <span class="title">Recat</span>.<span class="title">createElement</span><span class="params">(<span class="string">&quot;button&quot;</span>, , <span class="string">&quot;-&quot;</span>)</span>,    // 由于我忘记处理文本节点可能是<span class="title">number</span>的情况了，所以这里将就一下<span class="title">toString</span>好了。。    <span class="title">Recat</span>.<span class="title">createElement</span><span class="params">(<span class="string">&quot;h3&quot;</span>, null, count.toString<span class="params">()</span>)</span>,    <span class="title">Recat</span>.<span class="title">createElement</span><span class="params">(<span class="string">&quot;input&quot;</span>, null)</span>  );  <span class="title">return</span> <span class="title">hello</span>;&#125;<span class="title">Recat</span>.<span class="title">render</span><span class="params">(Hello<span class="params">()</span>, document.querySelector<span class="params">(<span class="string">&quot;#root&quot;</span>)</span>)</span>;</span></span><br></pre></td></tr></table></figure>
+<p>根据前面的代码，我们每次调用 render 时都会重新初始化 workInProgress tree，当触发更新调用 render 时，上次渲染的 fiber 树也就被覆盖了，而现在我们需要对比之前的 fiber 树与更新后的虚拟 DOM 树，然后生成一个记录了当前 fiber 节点如何变化的 fiber 树</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8Scr88ggnib25xq6msOnASG1krFyXbnfz6Uf4kuYEY38ScibUYjoZuAohvfnMydf1BASC5NC2eXqxjQ/640?wx_fmt=png">这一步骤发生在创建新 fiber 的过程里，也就是我们写的 createChildrenFiber，可以发现，diff 这一过程也是对 children 进行的，同时需要用到该父节点上一次渲染时的子 fiber，这就要求每一个节点都需要保存其上次渲染时的 fiber 节点。Fiber 类型中需增加新的属性 alternate</p>
+<p>此外，节点有可能发生的更新变化有以下四种：</p>
+<ol>
+<li>新增</li>
+</ol>
+<div>  <div>1div>div><div>  <div>1div>  <div>2div>div>
+2. 删除
+
+<div>  <div>1div>  <div>2div>div><div>  <div>1div>div>
+3. 更新，属性变化
+
+<div>  <div>1div>  <div>2div>div><div>  <div>1div>  <div>3div>div>
+4. 替换，标签 type 发生变化
+
+<div>  <div>1div>  <div>2div>div><div>  <div>1div>  <span>2span>div>
+基于上面两点，我们对 Fiber 类型做如下修改，新增两条属性：
+
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// 这和真实的fiber结构还是有很大出入的，在此为了方便我们将其修改为下面的简单结构// 对于普通文本节点也不能仅 string 了事，文本节点也需要有<span class="keyword">return</span>等指向export const TEXT_ELEMENT = &quot;TEXT_ELEMENT&quot;;<span class="keyword">type</span> EffectTag = &quot;UPDATE&quot; | &quot;REPLACE&quot; | &quot;DELETE&quot; | &quot;CREATE&quot; | &quot;NO_EFFECT&quot;;export <span class="keyword">type</span> Fiber =  | ((      |             | <span class="keyword">null</span>;          child: Fiber;          stateNode: HTMLElement | <span class="keyword">null</span>; // fiber对应的dom元素，<span class="keyword">create</span>之前都是<span class="keyword">null</span>        &#125;      |     ) &amp; )  | <span class="keyword">null</span>;</span><br></pre></td></tr></table></figure>
+<p>💡 由于代码越来越长，我不想贴全部代码了，在这里放上这部分完成后的代码，下面仅记录修改的部分（不过之前都是在本地写忘记搞 git 仓库了所以没有前面的 commit 了 hhh</p>
+<p>新增一个全局变量currentRoot，小小修改一下nextUnitOfWork的初始化</p>
+<figure class="highlight golo"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// 保存渲染前的fiber树<span class="keyword">let</span> currentRoot: Fiber = <span class="literal">null</span>;export <span class="keyword">function</span> render(vDom: VDom, container: HTMLElement) ,    <span class="keyword">return</span>: <span class="literal">null</span>,    sibling: <span class="literal">null</span>,    stateNode: container,    alternate: currentRoot,    effectTag: <span class="string">&quot;NO_EFFECT&quot;</span>,  &#125;;  wipRoot = nextUnitOfWork;  // 开始创建节点  requestIdleCallback(workLoop);&#125;</span><br></pre></td></tr></table></figure>
+<p>把前面的 createChildrenFiber 函数修改一下名字，改为 reconcileChildren，reconcile 详细说明可去React 官方文档看，懒得看也没关系，我们接下来要实现的就是这部分</p>
+<figure class="highlight sas"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** 负责完成当前任务，并返回下一任务 */</span>function performUnitOfWork(fiber: Fiber | <span class="keyword">null</span>): Fiber | <span class="keyword">null</span>   reconcileChildre<span class="meta">n</span>(fiber);  <span class="keyword">if</span> (fiber.type !== <span class="string">&quot;TEXT_ELEMENT&quot;</span>)   let nextFiber = fiber;  <span class="keyword">while</span> (nextFiber)   <span class="keyword">return</span> <span class="keyword">null</span>;&#125;<span class="comment">/** 将 fiber 节点的 children 进行 fiber 化，同时对 children 进行 diff */</span>function reconcileChildre<span class="meta">n</span>(fiber: Fiber)   let preSibling: Fiber = <span class="keyword">null</span>;  let <span class="keyword">index</span> = 0;  <span class="keyword">while</span> (<span class="keyword">index</span> &lt; curChildren.<span class="keyword">length</span> || oldFiber)  <span class="keyword">else</span> <span class="keyword">if</span> (curVDom !== undefined <span class="variable">&amp;&amp;</span> !oldFiber)  <span class="keyword">else</span> <span class="keyword">if</span> (curVDom === undefined <span class="variable">&amp;&amp;</span> oldFiber)  <span class="keyword">else</span>     <span class="keyword">if</span> (oldFiber) oldFiber = oldFiber.sibling;    // 第 0 个作为父亲的 child，其他的则用 sibling 连接    <span class="keyword">if</span> (!<span class="keyword">index</span>) fiber.child = newFiber;    <span class="keyword">else</span> preSibling.sibling = newFiber;    preSibling = newFiber;    <span class="keyword">index</span>++;  &#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>上面四个 getFiber 函数具体内容如下，其实又长没啥好看的。。以及，在 delete 时其实可以不用再生成一个新的 fiber 的，但那就需要在别的地方额外处理，由于我比较懒所以我还是多生成了一个节点</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import  <span class="keyword">from</span> <span class="string">&quot;../typings/Fiber&quot;</span>;import  <span class="keyword">from</span> <span class="string">&quot;../typings/VDom&quot;</span>;<span class="title function_ invoke__">export function getFiberInSameType</span>(<span class="attr">  curVDom</span>: VDom,<span class="attr">  oldFiber</span>: <span class="built_in">Fiber</span>,<span class="attr">  returnFiber</span>: <span class="built_in">Fiber</span>)     newFiber = ;  &#125; <span class="keyword">else</span> ;  &#125;  <span class="keyword">return</span> newFiber;&#125;<span class="title function_ invoke__">export function getFiberInCreate</span>(<span class="attr">curVDom</span>: VDom,<span class="attr"> returnFiber</span>: <span class="built_in">Fiber</span>) ;  &#125; <span class="keyword">else</span> ;  &#125;  <span class="keyword">return</span> newFiber;&#125;<span class="title function_ invoke__">export function getFiberInDelete</span>(<span class="attr">oldFiber</span>: <span class="built_in">Fiber</span>) ;  newFiber.effectTag = <span class="string">&quot;DELETE&quot;</span>;  <span class="keyword">return</span> newFiber;&#125;<span class="title function_ invoke__">export function getFiberInReplace</span>(<span class="attr">  curVDom</span>: VDom,<span class="attr">  oldFiber</span>: <span class="built_in">Fiber</span>,<span class="attr">  returnFiber</span>: <span class="built_in">Fiber</span>) ;  &#125; <span class="keyword">else</span> ;  &#125;  <span class="keyword">return</span> newFiber;&#125;</span><br></pre></td></tr></table></figure>
+<p>在把 fiber 树提交上去进行渲染时，对不同的变化做不同处理</p>
+<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import  <span class="keyword">from</span> <span class="string">&quot;../typings/Fiber&quot;</span>;import  <span class="keyword">from</span> <span class="string">&quot;./updateDom&quot;</span>;/** 递归操纵dom渲染页面，该过程不可打断 */export function commitWork(fiber: Fiber)       break;    <span class="keyword">default</span>:      break;  &#125;  // if (fiber.return) fiber.return.<span class="keyword">state</span>Node.appendChild(fiber.<span class="keyword">state</span>Node);  if (fiber.type !== <span class="string">&quot;TEXT_ELEMENT&quot;</span>) commitWork(fiber.child);  commitWork(fiber.sibling);&#125;</span><br></pre></td></tr></table></figure>
+<p>其中 update 时较为复杂，我们单独抽出来写：</p>
+<figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">updateDom</span><span class="params">(  dom: HTMLElement,  preProps: <span class="keyword">Record</span>&lt;<span class="keyword">string</span>, any&gt;,  curProps: <span class="keyword">Record</span>&lt;<span class="keyword">string</span>, any&gt;)</span> </span></span><br></pre></td></tr></table></figure>
+<p>至此 dom diff 与更新渲染完成（上面是没有 key 的情况，之后有时间我可能会补充有 key 情况下的 diff）</p>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/9befedba/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">硬表面建模与写实纹理绘制的分享</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/338256d5/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">Apple的产品哲学（一）</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

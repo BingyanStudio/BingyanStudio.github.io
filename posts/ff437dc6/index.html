@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>关于UI动效 - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="关于UI动效 - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/ff437dc6/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2022-05-15T01:28:53.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">关于UI动效</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>May</span>
+            <span>15,</span>
+            <span>2022</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <p>缘起-UI动效十二原理</p>
+<p>动画师 OllieJohnston 和 FrankThomas 在其 1981年首次发行的《TheIllusion of Life: Disney Animation》一书中引入了迪士尼动画的十二原则，它们总结了历史上迪士尼动画大师优秀作品的一些共性。</p>
+<p>这些原则在许多相关领域都有所作用，例如与动画关联密切的UI领域。它们作为动画能够合理自然流畅播放的基础，极大程度上影响了后来种类繁多的UI动效设计。</p>
+<p>而设计师Issara Willenskomer在迪士尼12动画原则的基础上进行进一步的提炼，使这些原则能更贴切地描述UI动效的设计规律。</p>
+<p>00. 实时与非实时动画</p>
+<p>|  |  |</p>
+<p>这一点是后续十二条原则的基础，交互带来的动画效果有实时与非实时之分，其中非实时的动画在达成触发条件后会锁死其他的操作，直至动画播放完成；而实时动画效果可以在播放的任意进度中打断，平滑的过渡成为打断动作所带来的动画效果。</p>
+<p>对于用户来说两者的区别是十分明显的，非实时动画播放时设备居于最高地位，用户的操作暂时被锁死，而实时动画播放时用户操作居于最高地位，即随时可打断，随时可操作。</p>
+<p>苹果打开app时的可打断动画</p>
+<ol>
+<li>缓动</li>
+</ol>
+<p>缓动&#x2F;非线性动画带来无比自然的体验，如今这是我们非常熟悉的一种效果。缓动效果应用于各种几乎所有动效中，即与其余的动画原则有大量重叠应用，此处不举例赘述。</p>
+<p>02. 偏移和延迟</p>
+<p>当新元素进入或旧元素退出时，通过一定的次序强调层级与重要性。即使没有层级之别，也可以通过错落的动效来防止重复元素显得单调</p>
+<p>上图右侧是有偏易延迟效果的切换，这使界面更有层次感</p>
+<p>正确地应用偏移与延迟动画能够有效地揭示界面层级与逻辑，而未经思索的动画设计往往会带来误导效果。</p>
+<p>|  |  |</p>
+<p>左图中三个按钮并没有重要性与层级之别，但是顺次出现的动画使画面更加有趣</p>
+<p>，也强调了三个按钮的独立性，这是合乎界面逻辑的。</p>
+<p>右图中每一行图标运动完全同步没有次序之分，这与他们独立的功能印象不符；下方的文字也按行分组同步运动，仿佛暗示着同行的文字是同一个物件，然而这也是反逻辑的；此外，文字与图标的不同步也使他们不相关，这样的逻辑会使用户感到困惑。</p>
+<ol start="3">
+<li>继承关系</li>
+</ol>
+<p>通过运动的联系展示控件和控制对象的关系，常见于各种滑块的交互中。继承动画&#x2F;随动将多个运动的物体联系起来。这使得设计师得以向用户传达对象之间的关系，控件与结果的关系等等逻辑。</p>
+<p>顶部物体作为子对象，它的位置与缩放属性受到父对象——底部物体的位置属性影响</p>
+<p>控件与被控制对象同步运动</p>
+<p>控件与被控制对象反向运动，这构成了进度条的逻辑</p>
+<p>04. 过渡</p>
+<p>在不同的交互状态切换时展示顺滑的形变，在大部分情形下，形变应当是简洁的，不需要展现弹性，黏软特性等过多的维度。优秀的过渡动画使得原本割裂的界面状态变为无缝的，这更符合用户的期待，便于用户思维上的跟进。</p>
+<p>05. 变量</p>
+<p>|  |  |</p>
+<p>数字与数字之间的过渡按照递增或递减顺序平滑变化，可以强调变化这一事实，数字变化前与变化后具有联系，这暗示着这是同一个元素在发生变化。而如果数字的变化不按照数字的递增递减顺序平滑变化，而是直接改变，则暗示着变化前后的是两个不同的，相互独立的元素。</p>
+<p>这里的数字是直接改变的，这揭示了变化前后数据是独立，无关的</p>
+<p>这里的数字按照递增递减规律变化，这揭示了它们描述的是同一个对象</p>
+<p>06. 遮罩</p>
+<p>遮罩为人所熟知，在UI动画中，遮罩可以限制显示内容的范围和形状，通过这些从而将同一个内容转变为不同的元素，在界面上承担起不同的作用。很多时候一个内容起到什么作用、作为什么元素正是由其所处的位置和边界决定的，好的遮罩动画正是利用了这一原理。</p>
+<p>例如，通过遮罩的改变动画，使得唱片圆盘转化为歌曲封面</p>
+<ol start="7">
+<li>叠加</li>
+</ol>
+<p>叠加动画使元素之间具有遮盖层级的立体动画效果。在UI动画中，单独的元素设计正在趋于扁平，而元素间的关系应当理解为拥有立体的层级。通过层级之间的遮盖与叠加，设计师可以最大化利用空间，将一些二级操作放在另一些界面下方，保持界面简洁的同时也可以提供清晰的操作逻辑。</p>
+<p>常见于社交软件中的操作动画正是巧妙应用了叠加</p>
+<p>08. 克隆</p>
+<p>克隆的本质是让新元素的诞生源自于旧元素。当新的元素产生时，通过从界面上原有的元素上分离出新的形状来达到自然而不突兀的效果。分离出的新元素和旧元素之间将存在某种逻辑联系，比如展开，扩展等。通过克隆动画，交互界面上发生的事件被清晰地叙述了出来。</p>
+<p>常见应用在智能手表上的克隆动画，展开应用菜单</p>
+<p>09. 虚化</p>
+<p>虚化动画通常表现为模糊化的蒙层，蒙层可以暂时遮住一部分界面，从而凸显主要的元素。这是一种比直接切换页面更“弱”的逻辑，被覆盖了模糊蒙层的部分并没有被切换而消失，而是与当前页面保持着一定的联系，从而使过渡更加自然。</p>
+<p>例如在手机应用界面打开文件夹，并不需要彻底改变界面内容这种强逻辑，而应使用更为弱的切换方式——模糊化其他元素。文件夹中的内容和桌面内容并非完全独立的两个页面，而是同属于用户访问应用的界面，在展示文件夹内容时，仍应与其他桌面应用保持一定的联系。</p>
+<p>苹果的应用文件夹打开动画</p>
+<p>10. 视差</p>
+<p>视差运动让设计更加完整丰富，在主要的运动内容之外增添了更完整的其他元素的运动。</p>
+<p>例如在切换页面时，不但将新页面切入，同时也让旧页面做退出的视差运动，进一步将被覆盖的页面向后推离，强化了切换这一概念。</p>
+<p>视差动画强化了切换效果，同时也使切换动画更加华丽</p>
+<ol start="11">
+<li>翻转</li>
+</ol>
+<p>翻转是使交互元素本身具有丰富的三维特性的动画，具有维度的动画使得交互叙事非常真实且有趣，但在当今的设计趋势来看比较容易增加用户的视觉负担，一般在特殊的场景下使用。</p>
+<p>常见的三维动画，通常表现为折叠与铰接等效果。</p>
+<p>一个翻转形式的翻页动画，通常出现在早期的Android应用上</p>
+<ol start="12">
+<li>缩放</li>
+</ol>
+<p>缩放也是十分常见的动画，对象的缩放可以理解为单纯的改变对象的大小，也可以理解为观察者镜头的移动，利用好这两点不同的，可以实现优秀的交互体验设计。</p>
+<p>例如，利用缩放效果（时间数字），产生观察者镜头移动的错觉，使得应用界面看上去是在锁屏界面的“上方”明确了层级间关系。</p>
+<p>苹果的锁屏界面使用了观察者镜头移动的缩放</p>
+<p>利用缩放改变大小，平滑过渡从而展示范围更广的相册图片内容。</p>
+<p>苹果的相册切换动画使用了改变对象大小的缩放</p>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/4a9801c4/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">浅谈一下拼贴诗</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/6bf17bf4/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">CSS 变量</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

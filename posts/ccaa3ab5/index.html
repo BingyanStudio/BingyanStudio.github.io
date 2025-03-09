@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>APP弹窗设计 - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="APP弹窗设计 - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/ccaa3ab5/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2022-10-22T03:58:18.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">APP弹窗设计</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>October</span>
+            <span>22,</span>
+            <span>2022</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <p>弹窗的定义与作用</p>
+<p>      弹窗是指当用户在页面操作后，系统会给予反馈、提示、引导用户的一种设计控件。</p>
+<p>      它可以告知用户关键的信息，要求用户去做决定，或者是涉及到多个操作。弹窗越来越广泛地被应用于软件、网页、以及移动设备中，它可以在不把用户从当前页面带走的情况下，指引用户去完成一个特定的操作。（以下我们主要研究下App中的弹窗如何使用）</p>
+<p>弹窗的分类</p>
+<p>弹窗在交互中一般分为两种形式：模态弹窗与非模态弹窗</p>
+<p>      模态弹窗会打断用户的正常操作，要求用户必须对其进行回应，否则不能继续其它操作行为；</p>
+<p>      非模态弹窗则不会影响用户的操作，用户可以不对其进行回应，非模态弹窗通常都有时间限制，出现一段时间后就会自动消失。非模态弹窗一般被设计成用来告诉用户信息内容，而模态弹窗除了告诉用户信息内容外还需要用户对其进行功能操作。</p>
+<p>模态弹窗</p>
+<p>1、 Dialog&#x2F;Alerts（警告框、对话框）</p>
+<p>       这种弹窗样式在安卓系统中将它成为警示框，苹果系统中将它成为对话框，这种弹窗样式，引导用户对于重要信息的操作，强制性比较高。</p>
+<p>如下是苹果的Alerts（对话框）实例：</p>
+<p>苹果的对话框</p>
+<ul>
+<li>设计注意</li>
+</ul>
+<p>      弹窗位置置于屏幕中心，告知用户特定的任务和重要信息，并请求用户进行操作反馈。使用场合广泛，易获取用户注意力，干扰度&#x2F;警示性最高。</p>
+<p>      此类的设计样式需要克制，不滥用尽可能少用，通常用于紧急不可逆场景的操作提示，需要用户确认该信息。标题不超过2行，描述内容不超过3行；按钮最多竖排3个，横排2个，建议使用文字按钮；一般用户最可能点击的按钮（主操作）放在右侧，取消按钮始终放在左侧。</p>
+<ul>
+<li>应用场景</li>
+</ul>
+<p>运营活动、版本升级、功能操作提示（确认、退出、删除、清空）、权限获取等</p>
+<p>2、Actionbar操作栏</p>
+<p>Actionbar主要分为Action Views（操作视图）和Action Sheets（操作列表），通常由底部弹出。</p>
+<ul>
+<li> Action Views操作视图</li>
+</ul>
+<p> </p>
+<p>这类弹窗通常占屏比较大，有全屏弹窗和半屏弹窗2中</p>
+<p>淘宝app</p>
+<ul>
+<li>Action Sheets 操作列表</li>
+</ul>
+<p> </p>
+<p>操作列表相对于操作视图更单一。主要以文字展示功能按钮为主，重要的操作功能一般会用主题色或者红色突出显示</p>
+<p>相册和网易云app</p>
+<ul>
+<li>应用场景</li>
+</ul>
+<p>一般用于功能的延伸，提供用户更多的功能选择。如点击分享，会出现多个目标的选择</p>
+<p>3、浮层</p>
+<p>浮层也属于弹窗的一种，主要样式可以细分为Popover&#x2F;Popup&#x2F;Filter&#x2F;Tips（气泡、弹出菜单、筛选、引导框）等四种样式</p>
+<ul>
+<li>Popover（浮出层）</li>
+</ul>
+<p> popover浮出层是当用户轻点某个控件或页面中的某一区域时浮出的临时视图，很少强制用户进行操作，是否设置遮罩取决于控件的重要属性。一般用于快捷功能的展开和收起。</p>
+<ul>
+<li>Popup（弹出菜单）</li>
+</ul>
+<p>一般用于侧边弹出菜单栏，相对于popover浮出层使用较少</p>
+<ul>
+<li>Tips（引导框）</li>
+</ul>
+<p>Tips相对于popover，用户操作强制比较高，是否设置遮罩同样取决于设计场景的重要性。一般多用于app启动之后的功能引导。</p>
+<ul>
+<li>Filter（筛选）</li>
+</ul>
+<p>一般用于筛选区域，针对不同维度关键词进行快捷搜索。</p>
+<p>非模态弹窗</p>
+<p>1、Toast&#x2F;Hud 提示框</p>
+<p>这种弹窗属于一种轻提示，给予用户及时反馈，让用户知道自己当前所处的状态。一般用来显示操作结果，或者应用状态的改变，如加载刷新中、已完成、失败等</p>
+<ul>
+<li>设计注意</li>
+</ul>
+<p>提示框出现的时间比较短，所以提示的文字信息尽量保持通俗易懂，有助于快速理解的提示的内容。设计形式上可以是：文字、文字+图标、动效等。</p>
+<p>2、 Snackbar（底部弹窗）</p>
+<p>Snackbar（底部弹窗）通常用于低干扰度的消息提示，该消息可被忽略且不会打断用户当前的操作。相对 Toast（提示框） 而言，Snackbar （底部弹窗）的优势在于可读性更强，还可以兼容 1-2 个次要操作，适用场景会更加广泛，比 Toast （提示框）好用太多了。</p>
+<ul>
+<li>应用场景</li>
+</ul>
+<p>      Snackbar出现时，用户仍然可以在屏幕上操作，但控件停留时间会有限制，固定时间会自动消失；若控件中带有点击事件按钮，也可以进行其他操作：如跳转页面、上滑退出。</p>
+<ul>
+<li>模态弹窗的特点</li>
+</ul>
+<p>     苹果的设计规范中对模态的定义是:帮助人们专注于一个独立的任务或一组紧密相关的选项，确保人们收到关键信息，并在必要时采取行动。</p>
+<p>因为模态弹框的这些特点，很多情况下使用非常有效</p>
+<p>首先，因为处于独占模式，弹框能够迅速抓住用户的注意力</p>
+<p>其次,层级清晰,半透明遮罩能让用户感觉自己没有离开原页面,清楚当前在哪里，接下来要去哪里</p>
+<p>另外，由于在当前页面弹出，所以可以避免新页面加载和页面跳转，能够快速向用户展示信息</p>
+<ul>
+<li>模态弹窗的缺点</li>
+</ul>
+<p>任何事物都有它的两面性，正是因为模态弹窗有这样那样的优点,所以，一旦使用不恰当将对产品的用户体验造成很大的影响。</p>
+<p>1、模态弹框打断了用户的操作流。</p>
+<p>好的体验应该能让用户在无意识的情况下进入“流”的状态。模态弹框正好相反,除非用户主动关闭或处理弹框,否则不能继续之前的操作,而关闭和处理这个有意识的处理过程则打断了用户的操作流。</p>
+<p>2、过多的弹框会养成用户直接关闭或忽略的习惯。</p>
+<p>不少APP很喜欢用弹框，处处用弹框提示，但当弹框频繁出现时,用户可能已经习惯了这种方式，感觉烦躁的同时习惯性的迅速关闭，而完全忽略内容。因此，当真正的危险情况出现时，用户可能根本注意不到;</p>
+<p>3、模态弹框有可能屏蔽内容的上下文。</p>
+<p>移动端屏幕尺寸有限，虽然仍停留在当前页面，但弹窗也占据了页面很大一块主要部分，而突然出现的弹框很可能让用户忘记了刚才的内容，被遮挡的信息也可能正好与弹框内容有强关联性。</p>
+<p>弹窗设计趋势</p>
+<p>1.视觉风格</p>
+<p>弹窗的风格主要与app风格一致，大多轻盈灵动。弹窗的颜色较为鲜艳、视觉冲击力较强。</p>
+<p>立体风格、扁平风、渐变风较为流行，为达到更好的效果会加入一些质感。</p>
+<p>立体风格</p>
+<p>扁平风</p>
+<p>渐变风</p>
+<p>2.文案精简易懂</p>
+<p>弹窗的“提示文案”越来越精简易懂，以一个大标题为主，加入少量的小标题，给用户传达精简的信息。</p>
+<p>3.主题性图案</p>
+<p>弹窗不再局限于传统的方框形状，而是使用各种与主题相关的图案来承载文字，增强界面氛围感，更加吸引用户、带来更好的体验。</p>
+<p>优惠券和红包</p>
+<p>书本和电视</p>
+<p>4.增加品牌感</p>
+<p>      设计时加入品牌元素可以在增强品牌感的同时，增加视觉的趣味性，给用户好的视觉体验。一般情况下大部分app都是通过增加品牌形象来提升品牌感，通过弹窗可以让品牌IP更好地露出。</p>
+<p>5.加入动效</p>
+<p>随着5G时代的到来，越来越多的app开始增加微动效的应用。微动效更能引导用户操作，产生共鸣，除此之外还可以缓解用户因弹窗被打断的负面情绪。</p>
+<p>6.情感化设计</p>
+<p>“情感化设计”其实可以理解为带有感情的设计，是一种设计心理学概念。</p>
+<p>在弹窗中情感化设计主要体现为增加与用户沟通的设计，展现产品的文化背景的设计。</p>
+<p>增加与用户沟通的设计</p>
+<p>文化背景带来的设计</p>
+<p>小结</p>
+<p>弹框虽是非常小的设计,但一个产品体验的好坏往往体现在这类细节的点上，对这些点的思考也体现了设计师的能力。当然,任何规范、原则和技巧都只是参考,更多思考、灵活运用、把握时代趋势才能达到更好的效果。</p>
+<p>参考文章：</p>
+<p><a target="_blank" rel="noopener" href="https://www.zcool.com.cn/article/ZMTE4NTI2OA==.html">https://www.zcool.com.cn/article/ZMTE4NTI2OA==.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.zcool.com.cn/article/ZNTE4NzQ0.html">https://www.zcool.com.cn/article/ZNTE4NzQ0.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.zcool.com.cn/article/ZMTQyMTQ2MA==.html">https://www.zcool.com.cn/article/ZMTQyMTQ2MA==.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.zcool.com.cn/article/ZMTE3ODc5Ng==.html">https://www.zcool.com.cn/article/ZMTE3ODc5Ng==.html</a></p>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/ac7fbafd/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">活动产品化分享</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/81174ae/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">preact 介绍</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

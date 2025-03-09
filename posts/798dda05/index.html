@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>浏览器脚本开发 - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="浏览器脚本开发 - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/798dda05/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2023-12-14T05:26:43.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">浏览器脚本开发</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>December</span>
+            <span>14,</span>
+            <span>2023</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><blockquote>
+<p>浏览器用户脚本一般是小型的 JavaScript 程序，可用于向网页添加新功能或修改现有功能，允许用户自定义并增强网页功能，</p>
+<p>当我们使用浏览器打开网页的时候，前端资源都会被下载到用户的电脑中，并通过浏览器解析展示出来。此时整个网页的前端部分已经与部署在服务器中的代码无关，可以在用户端随意修改（当然刷新一下就会被恢复）。因此，我们既可以通过f12打开浏览器开发者工具进行代码查看与修改，也可以通过执行 js 脚本在页面中实现各种各样的功能。</p>
+</blockquote>
+<h2 id="Tampermonkey"><a href="#Tampermonkey" class="headerlink" title="Tampermonkey"></a>Tampermonkey</h2><blockquote>
+<p>Tampermonkey 是一款免费的浏览器扩展和最为流行的用户脚本管理器，它适用于 Chrome, Microsoft Edge, Safari, Opera Next, 和 Firefox。</p>
+<h3 id="创建脚本"><a href="#创建脚本" class="headerlink" title="创建脚本"></a>创建脚本</h3></blockquote>
+<p>在安装 Tampermonkey 浏览器扩展后，（以Chrome为例）可以通过点击浏览器右上角的 Tampermonkey 图标打开界面，点击添加新脚本进入脚本编辑器。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8TvUzZiaxINncCJy2MTianpPoEEEiaRibAYoOSZpeHQJHkOficyMyT5bZN0pibRWDUPQuuDia6ZBZWlFaWKA/640?wx_fmt=png&from=appmsg">### 脚本配置</p>
+<p>在创建脚本之后，会默认生成一段初始代码。</p>
+<p>其中，顶部的注释用于声明脚本的配置信息</p>
+<p>比较重要的字段：</p>
+<ul>
+<li>@match | @include</li>
+</ul>
+<p>用于声明该脚本运行的网页</p>
+<p>&#x2F;&#x2F; @match   &#x2F;^https?://(www)?.?(juejin|zhihu).(com|cn)&#x2F;          使用正则匹配知乎或掘金</p>
+<ul>
+<li>@require</li>
+</ul>
+<p>用于在脚本运行前引用 js 第三方库</p>
+<p>&#x2F;&#x2F; @require <a target="_blank" rel="noopener" href="https://code.jquery.com/jquery-2.1.4.min.js">https://code.jquery.com/jquery-2.1.4.min.js</a></p>
+<ul>
+<li>@resource</li>
+</ul>
+<p>通过GM_getResourceURL 和 GM_getResourceText预加载可访问的资源</p>
+<p>&#x2F;&#x2F; @resource customCSS <a target="_blank" rel="noopener" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css//">https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css//</a> 引入bootstrap的css文件并加入html中const css &#x3D; GM_getResourceText(“customCSS”);GM_addStyle(css);</p>
+<ul>
+<li>@connect</li>
+</ul>
+<p>定义可以被GM_xmlhttpRequest访问的网站，用于调用一些API接口。</p>
+<p>&#x2F;&#x2F; @connect <em>:&#x2F;&#x2F;</em>.test.com&#x2F;</p>
+<ul>
+<li>@grant</li>
+</ul>
+<p>声明将会用到的GM_* API</p>
+<p>&#x2F;&#x2F; @grant  GM_addStyle&#x2F;&#x2F; @grant    GM_getResourceText</p>
+<ul>
+<li>@run-at</li>
+</ul>
+<p>声明脚本运行时机</p>
+<p>&#x2F;&#x2F; @run-at document-start   以最快速度注入脚本&#x2F;&#x2F; @run-at document-body 当body元素挂载时&#x2F;&#x2F; @run-at document-end  在DOMContentLoaded时&#x2F;后&#x2F;&#x2F; @run-at document-idle 在DOMContentLoaded后&#x2F;&#x2F; @run-at context-menu  点击了右键菜单</p>
+<h2 id="脚本开发"><a href="#脚本开发" class="headerlink" title="脚本开发"></a>脚本开发</h2><ul>
+<li>更改网页样式</li>
+</ul>
+<p>&#x2F;&#x2F; 使用原生js实现const heads &#x3D; document.querySelector(‘head’);const style &#x3D; document.createElement(‘style’);style.setAttribute(‘type’, ‘text&#x2F;css’);style.innerHTML &#x3D; <code>pre,code.signin</code>;heads.append(style);&#x2F;&#x2F; 使用GM api实现GM_addStyle(<code>pre,code.signin</code>)</p>
+<ul>
+<li>添加右键菜单栏功能</li>
+</ul>
+<p>GM_registerMenuCommand(“GitHub 搜索”, function () &#96;, );  }});</p>
+<h2 id="工程化开发"><a href="#工程化开发" class="headerlink" title="工程化开发"></a>工程化开发</h2><ul>
+<li><p>使用 vite-plugin-monkey 创建项目</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pnpm <span class="built_in">create</span> monkey# npm <span class="built_in">create</span> monkey# yarn <span class="built_in">create</span> monkey</span><br></pre></td></tr></table></figure>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_gif/rxLIic6e5g8TvUzZiaxINncCJy2MTianpPopZXPiaBnfPJvpYwNWhEiaibK4eCpiahGRhzRRz9w38C5Kn02NWsmAwIVuA/640?wx_fmt=gif&from=appmsg"></p>
+</li>
+<li><p>创建项目后，可以在 vite.config.ts 文件中配置 tampermonkey</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  <span class="keyword">from</span> <span class="string">&#x27;vite&#x27;</span>;<span class="keyword">import</span> react <span class="keyword">from</span> <span class="string">&#x27;@vitejs/plugin-react&#x27;</span>;<span class="keyword">import</span> monkey,  <span class="keyword">from</span> <span class="string">&#x27;vite-plugin-monkey&#x27;</span>;<span class="regexp">// https://</span>vitejs.dev/config/<span class="keyword">export</span> <span class="keyword">default</span> defineConfig(,      build: ,      &#125;,    &#125;),  ],&#125;);</span><br></pre></td></tr></table></figure></li>
+<li><p>与各种框架一样，拥有便捷的本地部署和模块热更新<br><img src="https://mmbiz.qpic.cn/mmbiz_gif/rxLIic6e5g8TvUzZiaxINncCJy2MTianpPo003TXM1H2BtTNuk5Z9aBiaEpVNWncdIbYTl9jlFAcShdm9EpjydMsBg/640?wx_fmt=gif&from=appmsg">### 使用 GM_ API</p>
+</li>
+<li><p>ESM 模块</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  <span class="keyword">from</span> <span class="string">&#x27;$&#x27;</span>;// $ <span class="keyword">is</span> the <span class="keyword">default</span> <span class="keyword">alias</span> <span class="keyword">of</span> vite-plugin-monkey/dist/client// <span class="keyword">if</span> you want use <span class="string">&#x27;others&#x27;</span>, <span class="keyword">set</span> monkeyConfig.clientAlias=<span class="string">&#x27;others&#x27;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>设置为全局变量</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// vite.config.tsimport  <span class="keyword">from</span> <span class="string">&#x27;vite&#x27;</span>;<span class="keyword">import</span> monkey <span class="keyword">from</span> <span class="string">&#x27;vite-plugin-monkey&#x27;</span>;export <span class="keyword">default</span> defineConfig(,    &#125;),  ],&#125;);// main.tsconsole.log(GM_cookie == globalThis.GM_cookie);console.log();</span><br></pre></td></tr></table></figure></li>
+<li><p>自动导入</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">//</span> 使用unplugin-auto-<span class="keyword">import</span>插件<span class="regexp">//</span> vite.config.tsimport  <span class="keyword">from</span> <span class="string">&#x27;vite&#x27;</span>;<span class="keyword">import</span> monkey,  <span class="keyword">from</span> <span class="string">&#x27;vite-plugin-monkey&#x27;</span>;<span class="keyword">import</span> AutoImport <span class="keyword">from</span> <span class="string">&#x27;unplugin-auto-import/vite&#x27;</span>;<span class="keyword">export</span> <span class="keyword">default</span> defineConfig(),    monkey(),  ],&#125;);<span class="regexp">//</span> main.tsconsole.log();</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/bc3ac544/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">给我一个支点，我能吸引多少用户？</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/423d54e2/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">怎么用产品思维开一家实体店</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

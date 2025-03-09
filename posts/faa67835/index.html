@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>Unsafe in Rust - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="Unsafe in Rust - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/faa67835/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2022-12-03T02:47:30.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">Unsafe in Rust</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>December</span>
+            <span>3,</span>
+            <span>2022</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <p>基本介绍## </p>
+<p>Unsafe Rust是Safe Rust的一个超集。在Unsafe Rust中，不会禁用Safe Rust中的安全检查。例如，在unsafe块中同时对变量a进行不可变借用和可变借用，依然会违反借用规则，编译器会报错。Unsafe Rust是指在进行以下五种操作的时候，不会提供任何安全检查：</p>
+<ul>
+<li>解引用裸指针；</li>
+<li>调用unsafe的函数或方法；</li>
+<li>访问或修改可变静态变量；</li>
+<li>实现unsafe trait；</li>
+<li>读写Union联合体中的字段；<br>由于Unsafe Rust不需要安全检查，意味着有一定的性能提升。</li>
+</ul>
+<h3 id="Unsafe语法"><a href="#Unsafe语法" class="headerlink" title="Unsafe语法"></a>Unsafe语法</h3><p>通过unsafe关键字和unsafe块就可以使用Unsafe Rust，他们的作用分别如下：</p>
+<ul>
+<li>unsafe关键字，用于声明函数、方法和trait</li>
+<li>unsafe块，用于执行Unsafe Rust允许的五种操作</li>
+</ul>
+<h4 id="unsafe关键字"><a href="#unsafe关键字" class="headerlink" title="unsafe关键字"></a>unsafe关键字</h4><p>Rust标准库中包含了很多被unsafe关键字标记的函数、方法和trait。如String中实现的以下函数：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="keyword">unsafe</span> <span class="keyword">fn</span> <span class="title function_">from_utf8_unchecked</span>(bytes: <span class="type">Vec</span>&lt;<span class="type">u8</span>&gt;) <span class="punctuation">-&gt;</span> <span class="type">String</span> &#125;</span><br></pre></td></tr></table></figure>
+<p>其函数签名中包含了unsafe关键字，该函数接受一个Vec类型的字节数组，返回一个String类型。虽然，该函数只是简单地返回一个String结构体实例，没有进行我们之前提到的Unsafe Rust中允许的五种操作中的任意一种，完全是正常的Safe Rust代码，而且也在编译器的安全检查之下。这里之所以使用unsafe关键字的原因在于，该函数并未对传入的参数进行合法性验证，如果传入的是一个非法的UTF-8字节序列，则会出现内存不安全的问题，也就是说使用该函数会引入一定风险。这就是此处使用unsafe关键字的含义，如果使用该函数的开发者传入的参数没有满足合法性要求，可以在unsafe标记的范围内排查问题，将风险限定在unsafe标记的范围内。</p>
+<p>除了标记函数或方法外，unsafe也可以用于标记trait。标准库中包含的unsafe trait有Send和Sync。编译器依赖Rust内置的类型和内部严格的规则，为开发者自定义的类型自动实现这两个trait，这是Rust保证并发安全的基石。使用unsafe对Send和Sync进行标记，意味着开发者手动实现会有一定风险。在实现unsafe trait的时候，也必须相应的使用unsafe impl。</p>
+<h4 id="unsafe块"><a href="#unsafe块" class="headerlink" title="unsafe块"></a>unsafe块</h4><p>被unsafe关键字标记的不安全函数或方法只能在unsafe块中被调用。强制使用unsafe块，意味着强制让开发者将unsafe函数的调用和安全代码隔离起来，便于排查错误。</p>
+<h3 id="访问和修改可变静态变量"><a href="#访问和修改可变静态变量" class="headerlink" title="访问和修改可变静态变量"></a>访问和修改可变静态变量</h3><p>静态变量是全局可访问的，Rust允许定义可变的静态变量。可变的静态变量，需要在unsafe块中进行操作。在和C语言进行交互时，可变静态变量非常有用。</p>
+<h3 id="Union联合体"><a href="#Union联合体" class="headerlink" title="Union联合体"></a>Union联合体</h3><p>Rust同样提供了类似于C语言那样的Union联合体，Union和Enum相似，Enum属于Tagged Union，优点在于其存储的Tag可以保证内存安全，但是Tag要占用多余的内存空间。而Union并不需要多余的Tag，如果想访问其中的字段，就必须靠程序逻辑来保证其安全性，如果访问错误，就会引发未定义行为。</p>
+<p>Union的内存布局和Enum相似，字段共用同一片内存空间，所以也被称为共用体。内存对齐方式也是按照字段中内存占用最大的类型为主。Rust里引入Union的主要问题还是方便了Rust和C语言打交道。</p>
+<p>当使用Union联合体时，#[repr(C)]属性是必须的，该属性会告诉Rust编译器，此联合体应该使用和C语言一样的内存布局。如果不加#[repr(C)]属性，则有可能发生未定义行为。</p>
+<h3 id="解引用原生指针"><a href="#解引用原生指针" class="headerlink" title="解引用原生指针"></a>解引用原生指针</h3><p>Rust提供了<em>const和</em>mut两种指针类型，因为这两种指针和C语言中的指针十分相近，所以叫其原生指针。原生指针的特点如下：</p>
+<ul>
+<li>并不能保证指向合法的内存；</li>
+<li>不能像智能指针一样自动清理内存；</li>
+<li>没有生命周期的概念，也就是编译器不会提供借用检查；</li>
+<li>不能保证线程安全；<br>创建裸指针不会触发任何未定义行为，不需要放到unafe块中操作。由于裸指针不是引用，可以同实现出现对一个变量的不可变裸指针和可变裸指针。</li>
+</ul>
+<h2 id="FFI"><a href="#FFI" class="headerlink" title="FFI"></a>FFI</h2><p>编程语言之间通过FFI技术进行交互。FFI（Foreign Function Interface，外部函数接口）由Common Lisp语言规范中首次提出，用于规范语言间调用的语言特征。</p>
+<p>FFI技术的主要功能就是将一种编程语言的语言和调用约定与另一种编程语言的语义和调用约定相匹配。不管是哪种编程语言，无论是编译执行还是解释执行，最终都会到达处理器指令这个环节。在这个环节所处的层面上，编程语言之间的语法、数据类型等语义差异均以消除，只需要匹配调用约定，这就给编程语言之间的相互调用带来了可能。</p>
+<h4 id="应用程序二进制接口"><a href="#应用程序二进制接口" class="headerlink" title="应用程序二进制接口"></a>应用程序二进制接口</h4><p>调用约定的匹配，与应用程序二进制接口（ABI）高度相关。</p>
+<p>ABI是一个规范，主要涵盖以下内容：</p>
+<ul>
+<li>调用约定。函数调用过程中的参数、函数、返回值传递方式。编译器按照调用规则去编译，把数据放到相应的堆栈中，函数的调用方和被调用方都需要遵循这个统一的约定；</li>
+<li>内存布局。规定了大小和对齐方式；</li>
+<li>处理器指令集。不同平台的处理器指令集不同；</li>
+<li>目标文件和库的二进制格式；<br>ABI规范由编译器、操作平台、硬件厂商等共同制定。ABI是二进制层面程序兼容的契约，只有拥有相同的ABI，来自不同编译器之间的库才可以相互链接和调用，否则将无法链接，或者无法正确运行。</li>
+</ul>
+<p>不同的体系结构、操作系统、编程语言、每种编程语言的不同编译器实现基本都有自己规定或者遵循的ABI和调用规范。目前只能通过FFI技术遵循C语言ABI才可以做到编程语言的相互调用。C语言ABI是唯一通用的稳定的标准ABI。Rust提供了FFI技术，允许开发者通过稳定的C-ABI和其他语言进行交互。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/rxLIic6e5g8Rm28ESywVCPWbIiaFUg9x8bFDEJxZ4rEH6OVIhiaSwwGYMu6jh7bLOvGP0f19ricuH8hsr0E4Uxjr2A/640?wx_fmt=jpeg">在Rust中使用FFI非常简单，只需要通过extern关键字和extern块对FFI接口进行标注即可。在编译时会由LLVM默认生成C-ABI。</p>
+<h4 id="链接与Crate-Type"><a href="#链接与Crate-Type" class="headerlink" title="链接与Crate Type"></a>链接与Crate Type</h4><p>有了统一的ABI之后，还需要经过链接才能实现最终的相互调用。链接是将编译单元产生的目标文件按照特定的约定组合在一起，最终生成可执行文件、静态库或动态库。C&#x2F;C++语言中每个文件都是一个编译单元，编译之后就能产生一个目标文件。Rust和C&#x2F;C++不同，它以包（crate）为编译单元。在一个Rust包中通过extern crate声明来引入其他包之后，编译器支持各种方法可以将包链接在一起，生成指定的可执行文件、动态库或静态库。</p>
+<p>从概念上看，库可以分为两种：静态库和动态库。静态库，可以在链接时引用的代码和数据复制到引用该库的程序中；在格式上，他只是普通目标文件的集合，只是一种简单的拼接。静态库使用简单，原理上容易理解，但是它容易浪费空间。动态库和静态库差异比较大。动态库可以把链接这个过程延迟到运行时进行，比如重定位发生在运行时而非编译时。动态库更加节省空间。除可执行文件外，Rust一共支持四种库，如下图所示：</p>
+<ul>
+<li>–crate-type&#x3D;bin，表示将生成一个可执行文件，程序中必须包含一个main函数；</li>
+<li>–crate-type&#x3D;lib，表示将生成一个Rust库，这里的lib是对Rust库的统称，具体生成什么库，由编译器自行决定，一般情况下，默认产生rlib静态库；</li>
+<li>–crate-type&#x3D;rlib，静态Rust库，由Rust编译器使用；</li>
+<li>–crate-type&#x3D;dylib，动态Rust库，由Rust编译器使用；</li>
+<li>–crate-type&#x3D;staticlib，生成静态系统库。Rust编译器不会链接该类型库，主要用于和C语言进行链接，达成和其他语言交互的目的；</li>
+<li>–crate-type&#x3D;cdylib，生成动态系统库。生成C接口，和其他语言交互<br>只要ABI统一，两个库就可以相互链接。在链接之后，就可以实现相互调用。所以，Rust要和其他语言交互，可以通过导出为C-ABI接口的静态库或动态库，然后其他语言链接该库，就可以实现语言之间的相互调用。</li>
+</ul>
+<h4 id="extern语法"><a href="#extern语法" class="headerlink" title="extern语法"></a>extern语法</h4><p>Rust提供了extern语法使得FFI便于使用。</p>
+<ul>
+<li>extern关键字。通过extern关键字声明的函数，可以在Rust和C语言中自由使用。</li>
+<li>extern块。如果在Rust库中调用C代码，则可以使用extern块，将外部的C函数进行逐个标记，以供Rust内部调用。<br>编译器会根据extern语法自动在Rust-ABI和C-ABI之间切换。</li>
+</ul>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/37a25295/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">评估游戏机制的深度</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/8936a97a/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">浅谈JS函数式编程</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

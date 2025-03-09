@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>preact 介绍 - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="preact 介绍 - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/81174ae/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2022-10-21T04:33:58.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">preact 介绍</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>October</span>
+            <span>21,</span>
+            <span>2022</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <h2 id="preact-是什么"><a href="#preact-是什么" class="headerlink" title="preact 是什么"></a>preact 是什么</h2><blockquote>
+<p>Fast 3kB alternative to React with the same modern API</p>
+<p>我的理解: preact 是一个精简(无论是体积还是整体设计)版的 react</p>
+</blockquote>
+<p>官方文档: <a target="_blank" rel="noopener" href="https://preactjs.com/">https://preactjs.com/</a></p>
+<h2 id="preact-和-react-的关系"><a href="#preact-和-react-的关系" class="headerlink" title="preact 和 react 的关系"></a>preact 和 react 的关系</h2><p>他和 react 是两个团队做的，两个侧重点不同的库</p>
+<p>react 是一个大而全的库，他在性能优化、社区建设等方向有着巨大的领先优势但是 preact 走的是极简路线，虽然他性能上没 react 好，边界情况没 react 考虑周全，但是他真的太小了，所以有了两个优势：</p>
+<ol>
+<li>引入代价极小，只有 3kb 大小</li>
+<li>学习成本更低，react 源码没有人指导根本看不懂，preact 不一样，每个文件都小小的，逻辑清晰，一看就会<br><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8RJNDfRbv186KxFj5sTLzvSDTsCRhUkoPVynBY9MJayDXLy1viaAnmbicouwhibKOVr0Ts8ndEOw7iaXQ/640?wx_fmt=png">react_linecreact 核心模块代码量 👆</li>
+</ol>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8RJNDfRbv186KxFj5sTLzvS2rK5ibK1EnwFpqV6UKMiaNrsayTzkn34OHsqs8fVaS5GzYibW8ibhf6Uiaw/640?wx_fmt=png">preact_linecpreact 核心模块代码量 👆</p>
+<p>所以学习 preact 一个很重要的点是方便我们理解 react 的核心思想，即常说的 虚拟 dom、dom diff、hook 等但是从 react 16 起的一些新特性，诸如 fiber、suspense mode、concurrent mode 等，preact 出于简洁考虑就没有支持，所以 除了通过 preact 学习上述共通部分，还需要自己了解 react 16 之后的新特性</p>
+<h3 id="二者的区别"><a href="#二者的区别" class="headerlink" title="二者的区别"></a>二者的区别</h3><p>上文说到两个库有共通部分，这里指出一些差别，避免误导大家</p>
+<table>
+<thead>
+<tr>
+<th>功能点</th>
+<th>preact</th>
+<th>react</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>dom diff</td>
+<td>对 key 的处理较为粗糙</td>
+<td>考虑了更多边界情况</td>
+</tr>
+<tr>
+<td>点击事件</td>
+<td>对齐原生</td>
+<td>使用合成事件、事件代理</td>
+</tr>
+<tr>
+<td>hook</td>
+<td>数组</td>
+<td>链表</td>
+</tr>
+</tbody></table>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8RJNDfRbv186KxFj5sTLzvSaZ4E6ibMQSSLSibP2wF22a1UHMjme2ujcNlJMYu9VrAdxXRrtSsuMcuA/640?wx_fmt=png">react_hook_listreact hook 模块代码 👆</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8RJNDfRbv186KxFj5sTLzvSmHM4YkRnvZG7gJg4HK3nqknJ3Jql58xb63OMCKLgN8ib9zag1dyaWbw/640?wx_fmt=png">preact_hook_listpreact hook 模块代码 👆</p>
+<h3 id="preact-有而-react-没有的"><a href="#preact-有而-react-没有的" class="headerlink" title="preact 有而 react 没有的"></a>preact 有而 react 没有的</h3><h4 id="signals"><a href="#signals" class="headerlink" title="signals"></a>signals</h4><p>文档：<a target="_blank" rel="noopener" href="https://preactjs.com/guide/v10/signals">https://preactjs.com/guide/v10/signals</a></p>
+<p>signal 是一个独立于 preact 的库，他的写法类似 vue 里的 reactive 模块， 而且二者都是独立于框架的，也就是你可以在 react 里用 signal，在 preact 里用 vue&#x2F;reactive。值得学习的是他的思想</p>
+<p>react hook 的写法写个计数器👇</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import  from <span class="string">&quot;react&quot;</span>;<span class="keyword">function</span> <span class="title">Counter</span>()   <span class="keyword">return</span> <span class="type">(</span>          Count: </span><br><span class="line"></span><br><span class="line">      click me      );&#125;</span><br></pre></td></tr></table></figure>
+<p>preact signal 的写法写个计数器👇</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import  <span class="selector-tag">from</span> &quot;<span class="keyword">@preact</span>/signals&quot;;// Create <span class="selector-tag">a</span> signal that can be subscribed <span class="selector-tag">to</span>:const count = <span class="built_in">signal</span>(<span class="number">0</span>);function Counter()   return (          Count: </span><br><span class="line"></span><br><span class="line">      click me      );&#125;</span><br></pre></td></tr></table></figure>
+<p>虽然这样看两种写法差的不多，但是你想想，最主要的区别在哪里？useState hook 只能在 react 组件内用，不能库组件传输数据 （如果要这么做得依赖别的方法，比如提升到父组件再传下去等等），但是 signal 可以不在组件内！直接实现了跨组件传输数据！</p>
+<p>我们知道，调用 setState 可以触发 react 重新渲染，但是为啥count.value++;就可以触发界面更新呢？这里的主要点在于 对 value 熟悉的 set 操作做拦截</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8RJNDfRbv186KxFj5sTLzvSqFvKicZTC9DmO8PicbficuaFyAZ6raLcSymnutBGyibiazD4CiatwhxtibbPw/640?wx_fmt=png">preact_signal_setValue具体细节感兴趣可以自己找文章看看，这里不赘述</p>
+<p>此外，preact 为了支持 signal 也蛮拼的，支持 preact 倒是好说，preact 暴露了一些全局的钩子配置，可以很方便的侵入渲染逻辑</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8RJNDfRbv186KxFj5sTLzvSmaMvVlQ3662ZJsTCXqx1qZVJV4pDfe9Cicq65nFPh94xzibtmBrLbRNw/640?wx_fmt=png">preact_hook_preact但是 react 没有对外提供直接的接口，想修改他的渲染逻辑只能…</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8RJNDfRbv186KxFj5sTLzvSNLoXRH1uGJBNe72Xs3SykgKFxzP8cU9qCEwCPnSuOic9zcAk5SQmKbQ/640?wx_fmt=png">preact_hook_react#### web component</p>
+<p>由于没有使用 react 那样的合成事件，preact 和原生贴合的做法让他直接就能支持 web component，这里不多说明，贴个官方文档：<a target="_blank" rel="noopener" href="https://preactjs.com/guide/v10/web-components">https://preactjs.com/guide/v10/web-components</a></p>
+<h2 id="补充一些-tips"><a href="#补充一些-tips" class="headerlink" title="补充一些 tips"></a>补充一些 tips</h2><ul>
+<li>看对比文章的时候看最新的。网上搜 react preact 对比，有很多 17 年的文章就别看了</li>
+<li>学习 react 源码可以先看 preact。react 源码结构过于复杂，你根本找不到从哪里开始看</li>
+<li>看文档最好看源语言文档。翻译的文档存在滞后的问题（如写本文的前几天 preact 官方文档的中文版本还没有对 signal 的介绍。不是没翻译，是压根没有）</li>
+</ul>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/ccaa3ab5/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">APP弹窗设计</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/9c3aeb23/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">面包店和产品思维</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

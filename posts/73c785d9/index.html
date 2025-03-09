@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>不要胡乱取名 - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="不要胡乱取名 - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/73c785d9/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2023-12-10T02:20:49.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">不要胡乱取名</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>December</span>
+            <span>10,</span>
+            <span>2023</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <p>谢师傅觉得一行一行地在命令行里写一些重复的命令实在是太恼人了，但是一想到每次写新脚本需要新建一个脚本文件，写新脚本，保存并添加执行权限，在.profile 中添加source xx.sh后手动再source ~&#x2F;.profile 一遍谢师傅就觉得麻烦。</p>
+<h1 id="脚本加载器"><a href="#脚本加载器" class="headerlink" title="脚本加载器"></a>脚本加载器</h1><p>但这次谢师傅有些忍受不了了，谢师傅灵机一动，创建一个 .scripts 文件夹，然后通过某种手段应用其中的所有脚本，所以谢师傅打算先写一个 loader.sh</p>
+<p>如此简单的需求谢师傅决定交给 GPT 快速帮他写一个（并不是因为谢师傅不会写 Shell Script）</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#<span class="operator">!/</span>bin<span class="regexp">/sh# 获取当前脚本所在的文件夹路径script_folder=&quot;$HOME/</span>.scripts<span class="string">&quot;# 定义一个数组来存储需要排除的脚本名称exclude_scripts=(&quot;</span>loader.sh<span class="string">&quot;)# 遍历文件夹中的所有脚本文件，排除指定的脚本for script_file in &quot;</span><span class="variable">$script_folder</span><span class="string">&quot;/*.sh; do    # 获取脚本文件的基本名称    script_name=&quot;</span>$(basename <span class="string">&quot;$script_file&quot;</span>)<span class="string">&quot;    # 检查脚本名称是否在排除列表中    if [[ ! &quot;</span> $ <span class="string">&quot; =~ &quot;</span> $ <span class="string">&quot; ]]; then        # 检查文件是否存在并且可执行        if [ -f &quot;</span><span class="variable">$script_file</span><span class="string">&quot; ] &amp;&amp; [ -x &quot;</span><span class="variable">$script_file</span><span class="string">&quot; ]; then            echo &quot;</span>执行脚本: <span class="variable">$script_file</span><span class="string">&quot;            # 执行脚本            source &quot;</span><span class="variable">$script_file</span><span class="string">&quot;        else            echo &quot;</span>跳过非可执行文件: <span class="variable">$script_file</span><span class="string">&quot;        fi    fidone</span></span><br></pre></td></tr></table></figure>
+<p>谢师傅聪明的让 GPT 给他写了一个可以排除哪些文件不加载的列表，防止 loader.sh 把自己也给应用一遍导致死循环。</p>
+<p>谢师傅将 source ~&#x2F;.scripts&#x2F;loader.sh 写进了 .profile ，考虑到以后会频繁重新加载脚本，谢师傅决定实现的第一个函数就是重新加载函数 rld(reload)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh# .scripts/fast-source.shrld() </span></span><br></pre></td></tr></table></figure>
+<p>很简单的内容，谢师傅甚至可以用alias一行搞定，但谢师傅当时也许是有别的考虑，并未选择这种方式。不过第一次还是需要手动 source 一次，以后就能通过 rld 快速的重新加载了</p>
+<h1 id="目录书签"><a href="#目录书签" class="headerlink" title="目录书签"></a>目录书签</h1><p>谢师傅眼看搭好了环境，以后能够愉快地写脚本了，立马写了个标记书签与切换目录的功能（GPT 代劳）</p>
+<p>谢师傅快速运行测试了一遍，一切都工作的很好，但是没有自动补全，于是谢师傅再次让 GPT 代劳写了一个自动补全函数</p>
+<p>这下更加完美了。</p>
+<p>唯一不完美的是偶然地一天，谢师傅的 Sonoma 寄了，在多次救援无果后，谢师傅不得不滚回 Ventura ，好在之前谢师傅已经将其 push 到 Github，贴心的谢师傅在此之前还写了一个一键安装脚本 install.sh</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash# 定义仓库地址# 根据环境变量 SHELLOVE_TYPE 决定仓库地址# 提示用户输入远程仓库地址，同时提供默认值read -p <span class="string">&quot;请输入远程仓库地址(https://github.com/ThankRain/shellove.git): &quot;</span> user_input# 如果用户输入为空，则使用默认仓库地址<span class="number">1</span><span class="keyword">if</span> [ -z <span class="string">&quot;<span class="subst">$user_input</span>&quot;</span> ]; then  repository_url=<span class="string">&quot;https://github.com/ThankRain/shellove.git&quot;</span># 如果用户输入为<span class="string">&quot;ssh&quot;</span>，则使用仓库地址<span class="number">2</span>elif [ <span class="string">&quot;<span class="subst">$user_input</span>&quot;</span> = <span class="string">&quot;ssh&quot;</span> ]; then  repository_url=<span class="string">&quot;git@github.com:ThankRain/shellove.git&quot;</span><span class="keyword">else</span>  repository_url=<span class="string">&quot;<span class="subst">$user_input</span>&quot;</span>fi# 输出最终选择的仓库地址echo <span class="string">&quot;选择的远程仓库地址是：<span class="subst">$repository_url</span>&quot;</span># 检查是否已经安装过脚本<span class="keyword">if</span> [ -d <span class="string">&quot;<span class="subst">$HOME</span>/.scripts&quot;</span> ]; then    echo <span class="string">&quot;已经安装了脚本，跳过安装步骤。&quot;</span><span class="keyword">else</span>    # 克隆仓库到 $HOME/.scripts 文件夹    git clone <span class="string">&quot;<span class="subst">$repository_url</span>&quot;</span> <span class="string">&quot;<span class="subst">$HOME</span>/.scripts&quot;</span>    # 检查是否成功克隆仓库    <span class="keyword">if</span> [ $? -eq <span class="number">0</span> ]; then        echo <span class="string">&quot;脚本成功安装到 <span class="subst">$HOME</span>/.scripts 文件夹。&quot;</span>    <span class="keyword">else</span>        echo <span class="string">&quot;安装脚本失败，请检查仓库地址和网络连接。&quot;</span>        exit <span class="number">1</span>    fifi# 检查是否已经在 .profile 中添加了 source 命令<span class="keyword">if</span> ! grep -q <span class="string">&quot;~/.scripts/loader.sh&quot;</span> <span class="string">&quot;<span class="subst">$HOME</span>/.profile&quot;</span>; then    # 将 source 命令追加到 .profile    echo <span class="string">&quot;source ~/.scripts/loader.sh&quot;</span> &gt;&gt; <span class="string">&quot;<span class="subst">$HOME</span>/.profile&quot;</span>    echo <span class="string">&quot;.profile 中添加了 source 命令。&quot;</span><span class="keyword">else</span>    echo <span class="string">&quot;.profile 中已经存在 source 命令，跳过添加步骤。&quot;</span>fisource ~/.scripts/loader.sh</span><br></pre></td></tr></table></figure>
+<p>谢师傅虽然对于痛失 Sonoma 感到难受，但是对于自己（GPT）搭建的脚本工作流十分满意，正当谢师傅满意的使用 cdm 切换时，他看到了一个奇怪的提示</p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_png/EkhJTM5kB9fXF6PaFRG9lyZhwialCHsJPdIUAucuRXtz1lricac1wicjxKR5hApSQpC6qia5uuOeXAUyibrYoDs2RfA/640?wx_fmt=png&from=appmsg">他看了一遍自己的 cdm 函数，cat 只有第 8 行有使用，</p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_png/EkhJTM5kB9fXF6PaFRG9lyZhwialCHsJPS5ar3o3nNvSfRAsXic8o3ibhQlTQA0MMKq8CfibfzBI38OrL7D4zuVDDA/640?wx_fmt=png&from=appmsg">屑师傅百思不得其解，他使用了逐行注释调试法，最终发现注释掉 cd “$path” 后不再报错，于是屑师傅果断怀疑是因为 cd 内部实现使用了 cat 才导致的该报错（实际上屑师傅是在很久以后才意识到的）,那么为什么会导致找不到 cat 呢？屑师傅盯着短短的两行代码看了许久…….</p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_png/EkhJTM5kB9fXF6PaFRG9lyZhwialCHsJPicKLhTQo5FGsqcJaHmsovbagKSb4SSBAaHuFzMtbJntibu1k0fzTB2QQ/640?wx_fmt=png&from=appmsg">…….. 突然屑师傅想到 shell 中可执行文件是通过环境变量 PATH 中指定路径去寻找的，如果找不到说明很可能 PATH 变量被修改了……</p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_png/EkhJTM5kB9fXF6PaFRG9lyZhwialCHsJPfiapmibBRov4DKC9eq6XhlhvBYH4zmbUYzUyJMvfgsXOPwKXqTYrN58w/640?wx_fmt=png&from=appmsg">但是哪里会把 PATH 给改了呢？这里只有个 path，而且还是局部变量，怎么想都不可能…等一下，sHeLl 是不是不区分大小写来着？</p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_png/EkhJTM5kB9fXF6PaFRG9lyZhwialCHsJPquhAIeEuWfgUAPMwlfN8g5PvHicmgU5rYjKjwSx8iboiaUBx6Y40z57VA/640?wx_fmt=png&from=appmsg">不对啊，这明明是区分大小写的，屑师傅迷惑了，但他还是准备试下另外的变量</p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_png/EkhJTM5kB9fXF6PaFRG9lyZhwialCHsJP6WzoribJQf13XrtIulbuJ3uwvt86wqnHCqbBpfZdCKW3IJsefeGiaXsw/640?wx_fmt=png&from=appmsg">path 和 PATH 是一样的！于是屑师傅将 path 改成了 p，错误消失！</p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_png/EkhJTM5kB9fXF6PaFRG9lyZhwialCHsJPQ593XtVFJWOzntibIWOzTjDI92pEMxSFj6aYLUa4zYtPh2ZP7Ja03Ag/640?wx_fmt=png&from=appmsg">屑师傅释怀的笑了，至于为什么同样的代码在 Sonoma 上不会出现问题，也许是 zsh 版本不一样修改了实现啥的，但是屑师傅已经不关心了</p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_png/EkhJTM5kB9fXF6PaFRG9lyZhwialCHsJPEib5SE1ywAgWGFwvZ9pK84ibibllkFYyHHuWTT6ZpZ9LJL4JObSzHqNWA/640?wx_fmt=png&from=appmsg"></p>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/423d54e2/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">怎么用产品思维开一家实体店</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/fdc3cbdd/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">何谓“更纯粹”的卡牌游戏杂谈</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

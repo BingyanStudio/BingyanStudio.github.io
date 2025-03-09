@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>数据分析指标 - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="数据分析指标 - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/f9b90b5a/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2023-11-03T21:55:34.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">数据分析指标</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>November</span>
+            <span>3,</span>
+            <span>2023</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <p>该文章是对《精益数据分析》第一章部分内容的总结。由于翻译和行文思路的关系，该书的后续内容推荐大家去看主讲人的视频。</p>
+<p>一、为什么需要数据分析？</p>
+<p>对产品来说，改进方案的产生需要直觉和数据。其中，直觉需要数据分析进行验证，直觉的产生需要数据分析作为前提。常见的改进路径是：数据分析&#x2F;直觉产生——专人接待式最小可行化产品——数据分析——改进</p>
+<p>二、常见的比较性指标</p>
+<p>①定性指标与量化指标</p>
+<p>在一开始缺少用户的情境下，更多的采用的是定性指标。</p>
+<p>定性数据是杂乱的、主观的、不精确的。如果定量数据回答的是“什么”和“多少”这样的问题，那定性数据回答的就是“为什么”。定量数据排斥主观因素；定性数据吸纳主观因素。</p>
+<p>②虚荣指标与可付诸行动的指标</p>
+<p>如果一个数据不知如何根据它采取行动，该数据就仅仅是一个虚荣指标。可能只是招商的工具。每当看到一个指标，就应该下意识地问自己：“依据这个指标，我将如何改变当前的商业行为？”</p>
+<p>下面列举一些典型的虚荣数据指标：点击量、页面浏览量（PV值）、访问量、独立访客数、网站停留时间（time on site）&#x2F;浏览页数（number of pages）、下载量。</p>
+<p>所以对数据分析来说，埋点就显得非常重要。一个反面例子就是这次的ARG，由于时间比较紧张没有埋点，最后显示的数据虽然比较好看，但对下一批产品改进的帮助不是很大。</p>
+<p>③先见性指标与后见性指标</p>
+<p>先见性指标（或称先见性指示剂）可用于预测未来。比如，透过“销售漏斗”中现有的潜在客户数，你能大致预测将来所能获得的新客户数。</p>
+<p>后见性指标能提示问题的存在，比如用户流失（即某一时间段内离开某产品或服务的客户量。</p>
+<p>在一个公司中，某一团队的后见性指标有时是另一个团队的先见性指标。例如，季度订单量对于销售团队而言是一个后见性指标（合同已经签订了），但对于财务部门来说，它是一个可以指示营收预期的先见性指标（因为客户还没有支付合同金）。</p>
+<p>④相关性指标与因果性指标</p>
+<p>在两个数据指标之间发现相关性不是一件坏事，发现相关性可以帮助你预测未来，而发现因果关系意味着你可以改变未来。</p>
+<p>比如，对ARG来说，QQ群内的活跃人数和游玩网站的人数既是正相关，也有可能是因果关系。在分析数据时，要关注这种综合体的关系。</p>
+<p>三、理想指标的改变</p>
+<p>你在早期所选定的目标往往是尝试性的，不是板上钉钉。你追逐的是一个移动的目标，因为此时你根本无法定义何为成功。在创业过程中，调整目标和关键数据指标都是可行的。</p>
+<p>最初版产品（最小可行化产品）面市之初，你甚至不知道他们会用你的产品来做什么。有时用户对你的产品的真实用法会和你的假设大相径庭。</p>
+<p>你可能以为大家愿意玩你的多媒体游戏，结果却发现他们只把你当成了一个照片上传服务。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8QbkYT3TiboRG6fH6dN9qvuN0pWes9wZTt5fqawv3gqGfns4tkg2pjuFmGSkFhT9bHj4yvXibKjRicFg/640?wx_fmt=png"></p>
+<p>四、数据圈套</p>
+<p>假设数据没有噪声。为获取的数据去噪是很耗时的一道工序，而回报通常是巨大的，往往简单的一步去噪就可能揭示重要的规律。</p>
+<p>一些常见的数据噪声：忘记归一化、排除异常点、包括异常点、忽视季节性、抛开基数侈谈增长、关注噪音。</p>
+<p>“人类与生俱来的模式识别能力，容易使我们误以为无规律的事物是有规律的，”莫尼卡提醒创业者，“把虚荣指标放在一边，退后一步，站在更高的角度看问题。”</p>
+<p>以上是这次分享的全部内容，希望在数据采集、数据清洗、数据分析上对你有所启发。</p>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/faa823fe/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">你怎么知道我找到妹子了？</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/9cddee5/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">浅谈 markdown-it 原理</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

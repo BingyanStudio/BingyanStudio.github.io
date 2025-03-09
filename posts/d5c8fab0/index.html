@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>浅谈明日方舟肉鸽 - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="浅谈明日方舟肉鸽 - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/d5c8fab0/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2022-11-07T05:08:30.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">浅谈明日方舟肉鸽</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>November</span>
+            <span>7,</span>
+            <span>2022</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <p>观前提示</p>
+<p>本期分享较为个人向与粉丝向，对于一些从来没有接触相关内容的读者来说或许会感到疑惑，但笔者会尽力讲清楚这次的分享内容，希望给大家带来良好的阅读体验</p>
+<p>引言</p>
+<p>首先简单的介绍一下何为“肉鸽”，“肉鸽”即“rougelike”音译过来后的简称。Rogue-like 这个游戏类型始于1980年的经典之作 Rogue，有三大独立的典型要素：永久死亡，随机关卡与回合制战斗。而”Roguelite”游戏经常把“Roguelike”中非常硬核的“永久死亡”机制（不可挽回性）删掉，好玩的“随机生成地图”则保留，从而减轻了死亡带来的惩罚。</p>
+<p>因此我们可以认为，roguelike更倾于硬核，而roguelite相对来说更为容易一些，但是现在一般不将两者进行区分，统一以前缀“肉鸽”来称呼。我们所熟知的《以撒的结合》，《死亡细胞》，《hades》以及《noita》均是热门的肉鸽游戏。</p>
+<p>以上便是对于“肉鸽”的简单解释，那么接下来，让我们进入今天的主题——明日方舟的肉鸽模式。</p>
+<p>简述游戏模式——初认知</p>
+<p>《明日方舟》的肉鸽模式最早起源于2020.8.25与活动“密林悍将归来”同期出现的集成战略#1玩法，并于2022.1.05与2022.9.27推出了集成战略#2,#3。（下为三次集成战略的宣传图）</p>
+<p>《明日方舟》的集成战略，相比我们熟知的一些肉鸽游戏，其最大的特点是，你在游戏中所能使用的阵容，基本建立在你游戏中现有的box基础上，所以对于新手和老玩家而言，两者的体验会有相当大的区别。不过我们应当清楚的知道，在集成战略玩法之外，《明日方舟》本质上还是一款二次元养成手游，因此这样的设计，反而能够成为一部分玩家养成的动力。</p>
+<p>在游戏流程方面，三次集成战略的基础货币均为两种，源石锭——用于购买物品；希望——用于招募干员与进阶，星级越高的干员，招募与进阶所需希望相应更多。而玩家的相应属性有血量与经验，经验的增加能够带来等级提升，从而增加希望，而血量则是通过事件以及藏品来提升。</p>
+<p>流程内增幅主要包括干员的招募与进阶，还有获得藏品，而流程外的提升主要为一些基础属性的加成，所有玩家都可以通过多次游玩将流程外的增益升至满级。</p>
+<p>游戏开始阶段，你可以选择不同的分队开局（不同的分队能带来不同的增益），再从四种招募方案中选择一种。在流程内，节点有战斗，事件，商店等等，与多数肉鸽游戏基本一致。战斗与事件均可获得招募券用于招募干员，初次招募的干员会被限制等级上限，再次招募时进阶从而解除上限。而战斗还可以获得经验与源石锭，概率出现藏品；不同的事件会带来不同的结果。</p>
+<p>（关内流程一览，有些类似杀戮尖塔的布局）以上便是对于游玩流程的浅要讲解，接下来让我们进入主题——分析《明日方舟》的集成战略模式。</p>
+<p>为什么要做肉鸽</p>
+<p>对于三期集成战略而言，其设计目的均存在差别。《刻俄柏的灰蔁迷境》作为第一期集成战略，以一种新的玩法出现的它，给玩家带来了很大的新鲜感。与此同时，集成战略模式作为危机合约之外的又一崭新的游戏模式出现，其“肉鸽”玩法的存在给方舟未来的发展提供了一条新的路线，是一次对如何保持游戏生命力的探索。</p>
+<p>前一次肉鸽的良好反馈，既是给鹰角（明日方舟的制作公司）的一个信号，也让一些体验过一期肉鸽的玩家和新玩家充满了对于下一期集成战略的期待。</p>
+<p>《傀影与猩红血钻》，作为时隔接近一年半的全新肉鸽，引来了无数玩家的期待。新的肉鸽引起了玩家们的强烈期待，再一次点燃玩家的游玩热情，由于肉鸽玩法的特殊性，玩家会游玩相比平时更多的时间，使游戏在新年期间能有更强的竞争力。新的集成战略的出现，解决了一些玩家在完成每日任务之后无事可做的问题，而这次作为常驻玩法出现，让玩家在长草期也能有值得游玩的点，拉长了玩家们的日均在线时间。</p>
+<p>在前两次肉鸽的基础上，鹰角在半年之后再次推出了新的主题肉鸽——《水月与深蓝之树》。此次肉鸽除了在基础机制上面进行了改变，同时在关卡方面与前两次有着十分明显的差别，这样一个全新的肉鸽能给玩家带来更强的新鲜感，同时由于关卡的创新，初体验的玩家们可能要面对各种各样的初见杀，这也让体验完整的通关流程所需的时间更长。本次肉鸽在关底BOSS战中达成一定条件之后，能够解锁有关if线的相关剧情，这让很多的剧情党玩家为了发掘新的剧情多次尝试挑战关底，同时由于不同解锁条件的设计，也是对关底难度的变相调整</p>
+<p>从上面这些，我们不难看出集成战略的出现均有着其在不同时期的对应目的，但是想要达成这些目的，光推出这些内容并不够，玩家喜不喜欢，爱不爱玩才是关键，所以接下来，让我们看看“集成战略”为何能够受到玩家的欢迎与喜爱。</p>
+<p>集成战略为什么吸引玩家</p>
+<p>① 首先是新鲜感相较于日常推关之间的毫无联系，肉鸽玩法带来了一种关内养成的体验，玩家能直观感受到实力的变化② 再就是一种爽快感纵使在日常推图中，玩家通过“上拐”的操作能够增幅干员属性，但是其数值远没有肉鸽的各类藏品给的夸张，通过各类增幅道具堆叠产生的这种“爽”是驱动玩家游玩的最大动力③ 还有部分是因为积压的感情得到释放（1,2期之间尤为明显）不少玩家在第一次肉鸽时，由于练度等原因并没有完整体验，没有体验到肉鸽带来的快乐。已经体验过的玩家想要再次游玩，而未体验的玩家更是充满期待，期待被满足产生了十分强大的正反馈。</p>
+<p>④ 最后是肉鸽玩法本身的随机性带来的不同体验明日方舟的集成战略其实更倾向于roguelite，每次游玩后提供少许帮助的同时保留有足够的随机性，每次生成的关卡以及路线，还有游玩过程中得到的干员与藏品均有较强的随机性，而这种随机性可以给游戏带来很多的惊喜（也可能是惊吓）。当然，出于《明日方舟》养成游戏的本质，干员的随机性基本取决于玩家本身的box，这或许是遗憾之一吧。</p>
+<p>集成战略的关卡设计</p>
+<p>当然，一个好的“肉鸽”当然离不开出色的关卡，或者说是出色的“房间”设计，所以下面我们要讲的，就是集成战略模式的关卡设计。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8TOpiaiaMcLWyNUERxQibFDDD4MBlzib3ibNKfkAfmFVGkicABInCGm06dAk43kvE0aibHeg6w4KA6kjZAlw/640?wx_fmt=png"><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8TOpiaiaMcLWyNUERxQibFDDD4Ib91efwBdQ4czqDEYshzStQdQk7SNDyf0WZDesMIDUNhUEU9sm5bhw/640?wx_fmt=png">（上为关卡兽群，下为关卡驯兽小屋）乍一看，这两关几乎一模一样，但是在实际进入关卡后，我们会发现后者在高台的左3或者右3位置多出了一个源石祭坛（无差别对敌我造成伤害），这看似是一个双向buff，但是源石祭坛的出现直接限制了干员的摆放区域，由于其造成的伤害，没有治疗的情况下几乎等于ban掉了9个格子，包括5个高台位，但是后者的怪物强度又胜于前者，这让失去的高台位显得弥足珍贵。仅通过一个关卡机关的增加，便对玩家造成了一定的限制，一定程度上影响了玩家的通关思路，这样的设计我认为是十分巧妙的。很显然，本关无论是从地图设计还是名字上，都致敬了经典游戏——太空军校生。在敌人设计上，本关的敌人——萨卡兹穿刺手，是一群会随着奔跑距离提升速度，进而提高伤害的家伙，他们将会像弹球一样对你的防线造成毁灭性打击。而在地图上，本关只有6个为数不多的高台位，而且彼此相隔较远，这让玩家很难提前处理敌人，而地面单位几乎都会遭到敌人的冲击。所以本质上，这关是对你的火力或者坦度的考验，要么直接硬碰硬挡下伤害，要么直接用饱和式火力覆盖解决敌人。<img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8TOpiaiaMcLWyNUERxQibFDDD4voibsQXxU8WKM9smGkyaE91tP1SGYxOBZG2u0sAApHs3tmQiboeHxic5g/640?wx_fmt=png">（关卡荒野军校生\永无尽头）很显然，本关无论是从地图设计还是名字上，都致敬了经典游戏——太空军校生。在敌人设计上，本关的敌人——萨卡兹穿刺手，是一群会随着奔跑距离提升速度，进而提高伤害的家伙，他们将会像弹球一样对你的防线造成毁灭性打击。而在地图上，本关只有6个为数不多的高台位，而且彼此相隔较远，这让玩家很难提前处理敌人，而地面单位几乎都会遭到敌人的冲击。所以本质上，这关是对你的火力或者坦度的考验，要么直接硬碰硬挡下伤害，要么直接用饱和式火力覆盖解决敌人。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8TOpiaiaMcLWyNUERxQibFDDD4QU7FUkNTV6ia9kZymFl0Kl8VSYKErM3R6yiawwl6asmQzkJct0aGGepg/640?wx_fmt=png"><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8TOpiaiaMcLWyNUERxQibFDDD4lvPp1pVb95lLib9AicRjbmWuN2Fzr5iaqibfbxwkNC2uaR4xmGZWictfV1g/640?wx_fmt=png">（前者为射手部队，后者为病症）作为第三期肉鸽的新关卡，这两关似乎在地图上又是一模一样，但是同样是一个源石祭坛的存在限制了干员的摆放位置。除此之外，两者在敌人的配置上也不一样：前者下路主要为数量较多的源石虫，而上路是具有隐匿（不被阻挡无法被攻击）的弓手，开局会有一个能造成眩晕（眩晕后无法阻挡）的弓箭手；而后者因为源石祭坛的存在使得周围一圈都不好下人，其次本关畸变生物（死亡后分裂）与特工（攻击后使被攻击单位阻挡减一）的配合，使得玩家在不知不觉间漏怪。</p>
+<p>这样一看，两关其实都不是通过击倒干员来撕破玩家的防线，而是通过各项机制的配合，前者是隐匿与眩晕的搭配，后者是减阻挡与分裂的搭配，不一样的机制组合，却都给玩家带来了漏怪的烦恼。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8TOpiaiaMcLWyNUERxQibFDDD4R8AXich66HubqfKbJMQlygnTlxwlbVtJsPnvS8wics25M7e8D7pCcichQ/640?wx_fmt=png">（狂徒围攻\协议牢笼）首先，本关的设计在事件页面便给玩家们下了套。<img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8TOpiaiaMcLWyNUERxQibFDDD4Y3duibkgXLvJ9ZZa73XiaV4szMvteqeMXhF9OdibzPzpU9c72aa7lB8vQ/640?wx_fmt=png"><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8TOpiaiaMcLWyNUERxQibFDDD4xgw1y8h4Y3424FbaVJAAndiahZLE7X0Osly9HQYoN0WyvTOqlfVomFA/640?wx_fmt=png">（前者：兔娘的大白腿 后者：对冲果仁特攻的白毛红眼）在事件页面，熟知人心的设计师便通过玩家的lsp心理引诱玩家进入关卡，而玩家在猝不及防间进入战斗后，关卡中开局便出现的8个大怪往往会让初次经历的玩家手忙脚乱，可远程攻击的大怪加上其站位，使得干员很难站住脚，导致漏怪。（设计师属于是把玩家的心理活动整明白了）</p>
+<p>小结</p>
+<p>上面这些基本上就是本次分享的全部内容了。可能在一些玩家的眼中，集成战略这种需要box作为基础的肉鸽模式比较恼人，以及一些关卡的设计似乎本身就不想让选择某种打法的玩家通关，但是还是我上面有提到过的，在“肉鸽”之前，《明日方舟》本身是一个养成游戏，因此我们不可避免的不能绕过养成这个环节。</p>
+<p>集成战略的出现，本身就是鼓励玩家进行多方面的养成，因为要针对不同的关卡，自然养成也要多样，它让不少玩家提升一些日常中可能用不到的技能，只为在肉鸽中能够面对不同的关卡，或者是达成特定的组合。或许将集成战略单独拎出来并不能算是一个十分优秀的肉鸽游戏，但是从其作为养成游戏的附加玩法来看，我认为集成战略的存在是相当成功的。</p>
+<p>当然，一千个读者眼中有一千个哈姆雷特，一个玩法肯定不能让所有的人都感到满意，但是只要它能让大部分的人都满意，那它的目的其实已经达到了，我本人作为一名《明日方舟》的玩家，我也希望鹰角能在日后继续推出新的集成战略，给玩家带来惊喜与快乐</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8TOpiaiaMcLWyNUERxQibFDDD4bHBC1yfVDqMga9EVDxyX5wmTaDQKfO8Tn6jM9KuuJ3dmXFnHjNQj0g/640?wx_fmt=png"></p>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/4f4fcc8b/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">Kotlin中Lambda表达式及其简化</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/f8099eed/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">利用Spine制作简单2D骨骼动画</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

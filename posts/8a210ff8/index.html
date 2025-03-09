@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>node 包管理工具全面分析 - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="node 包管理工具全面分析 - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/8a210ff8/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2022-04-15T05:25:06.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">node 包管理工具全面分析</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>April</span>
+            <span>15,</span>
+            <span>2022</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <p>js&#x2F;node 生态如此繁荣，包管理工具功不可没，最早的包管理工具是 npm（Node Package Manager）。2010 年 npm 正式发布，并被 node 支持，其主要贡献有三：</p>
+<ol>
+<li>提供统一的开发者社区</li>
+<li>提供网站来托管包</li>
+<li>提供 cli 供开发者使用<br>可以说是功不可没了</li>
+</ol>
+<p>但是！但是在前端变得如此复杂且追求极致的环境下，npm 的一些缺点逐一显现，出现了更高效更好用的包管理工具，本文将对 npm &#x2F; yarn &#x2F; pnpm 展开客观公正的分析</p>
+<h2 id="npm"><a href="#npm" class="headerlink" title="npm"></a>npm</h2><p>主要就是说说 npm 的不足 ;P</p>
+<h3 id="npm-2：缓慢的下载速度，可能存在的文件名过长-bug"><a href="#npm-2：缓慢的下载速度，可能存在的文件名过长-bug" class="headerlink" title="npm 2：缓慢的下载速度，可能存在的文件名过长 bug"></a>npm 2：缓慢的下载速度，可能存在的文件名过长 bug</h3><p>说到 npm 就不得不说那个大名鼎鼎的 node_modules 文件夹：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/rxLIic6e5g8S2x2UdfGr426icBj6r1iattWCIjFFhOa3HBsjQUgjnexk9To0RSw17CCmCGebQNdYKAibsNnTFq6dtg/640?wx_fmt=jpeg">node_modules-meme<img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8S2x2UdfGr426icBj6r1iattWVEWV2OZ8PiayFQiciaP9DjRF7ZgakBbZxUicUiajyKW6UfU7ericeUrxPMYw/640?wx_fmt=png">node_modules&gt; 我真没刻意往里面放什么大文件，他真的就是这么大 那么问题来了，node_modules 为啥这么大呢？</p>
+<blockquote>
+<p>其实这个问题也可以理解，毕竟依赖是层层嵌套的，你依赖了 react，react 又会递归的依赖别的包，一层层套下去呈树状结构。npm（npm 2 及以前版本） 读到 package.json 中的依赖项后就会去下载依赖，并根据其树结构组织文件夹：</p>
+</blockquote>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8S2x2UdfGr426icBj6r1iattWmSNIW7ZEoMNRcSSiczPbjnnHaibU7Lma8ibuZiavOqScb9l4SZtMdWSdPQ/640?wx_fmt=png">tree-struct可以看到， vue 和 react 依赖的 foo 版本有较大出入，不能复用，但是 bar 的版本只有小版本的不同，npm 却还是把 bar 下载&amp;存储 了两遍，因此带来了存储和下载时间的双重负担不仅于此，嵌套的树结构导致文件路径名称可能变得非常长，以至于超出一些处理程序的上线（主要见于 windows 系统）</p>
+<h3 id="npm-3：长时间的依赖计算，不安全的依赖"><a href="#npm-3：长时间的依赖计算，不安全的依赖" class="headerlink" title="npm 3：长时间的依赖计算，不安全的依赖"></a>npm 3：长时间的依赖计算，不安全的依赖</h3><p>npm 3 及以后版本采用了不一样的思路：使用扁平化存储结构</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8S2x2UdfGr426icBj6r1iattW5p3ibqKtaic0l4wsgkyQstRPcOjqYYlXprIbYAoRSZ77NFNvTERUAGYg/640?wx_fmt=png">flatten诶，但是这样两个包依赖的 foo 的大版本不同，在扁平化之后却依赖了同一个版本，这样不会有问题吗？确实，这就是 npm 使用扁平化后带来的安全问题，尽管 npm 会根据语义化版本依赖尽力计算出满足尽可能多要求的最合适版本，但这只是尽力而为，不能保证每个依赖的版本都满足要求，也不能保证不同机器上安装的依赖是一样的除了安全问题，这个计算版本的过程本身也是相当耗时的，是 npm 安装速度慢的一个很重要的原因</p>
+<p>除了安全问题，扁平化还带来了幽灵包的问题：现在当依赖 import 一个子依赖，他会从 node_modules 文件夹下查找，但是由于扁平化的处理，node_modules 文件夹下还有很多别的包的依赖，这样一来，一个依赖 import 未声明在自己的 package.json 下、却已经被别的依赖安装好的子依赖 是不合逻辑但实际可行的</p>
+<p>缓解这个问题的方法是，npm shrinkwrap 指令，该指令会生成 npm-shrinkwrap.json 文件来在不同机器上统一依赖版本，同时简化依赖计算的工作量</p>
+<h3 id="npm-5：仍存在问题"><a href="#npm-5：仍存在问题" class="headerlink" title="npm 5：仍存在问题"></a>npm 5：仍存在问题</h3><p>npm 5 将锁定依赖版本的 package-lock.json 设为默认行为（其功能和上文提到的 npm-shrinkwrap.json 相同npm 5 还增加了 security vulnerabilities checks，会检查可能存在版本问题的依赖项并提醒你可能存在的问题（让你知道自己怎么死的 bushi），npm 6 很贴心的增加了 npm audit 命令来主动统计易损的依赖，并有nom audit fix 命令来尝试修复之（听起来也不那么可靠…）</p>
+<h3 id="npm-总结"><a href="#npm-总结" class="headerlink" title="npm 总结"></a>npm 总结</h3><p>总结一下就是，即使是现在最新版的 npm 也存在以下问题：</p>
+<ol>
+<li>不安全的依赖</li>
+<li>下载+分析速度慢</li>
+<li>node_modules 庞大</li>
+</ol>
+<h2 id="yarn"><a href="#yarn" class="headerlink" title="yarn"></a>yarn</h2><p>yarn 是 2016 年推出的新一代包管理工具，其主要改进点在于使用了并行下载（相比而言 npm 是串行依次下载的），提升了下载速度</p>
+<p>网上文章说了不少 yarn 的优点，但是其实 npm 也有在吸取其优点，现在这些差距已经被抹平了，不吹不黑的话，现在（2022&#x2F;2&#x2F;22）yarn 主要的优势就在于并行下载了</p>
+<p>此外，yarn 还有一个神奇的 feature：PnP（Plug and Play）</p>
+<h3 id="PnP"><a href="#PnP" class="headerlink" title="PnP"></a>PnP</h3><p>从 node_modules 里查找依赖是整个 node 生态的默认行为，当你引入一个包，node 会一层层往父目录的 mode_modules 文件夹下查找这个包，直到找到它或者找到根目录都没找到而报错…似乎整个生态都默认了 node，一定要有 node_modules</p>
+<p>但是 yarn pnp 不这么认为，首先我们认识到，使用 node_modules 文件夹存储依赖会有以下问题：</p>
+<ol>
+<li>node_modules 太大了！将文件写入其中的 IO 开销巨大</li>
+<li>上述查找包的过程也涉及多次文件夹读取和文件查找，同样有很大开销</li>
+<li>对下载的依赖去重会很复杂（采用扁平结构和树状结构都有弊端）<br>yarn pnp 采用了全新的包管理策略：PnP，用一个 .pnp.js 文件代替整个 node_modules 文件夹！</li>
+</ol>
+<p>我们试试这个 pnp 模式：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn <span class="keyword">init</span> -yyarn <span class="keyword">add</span> foo --pnp</span><br></pre></td></tr></table></figure>
+<p>生成了 package.json、.pnp.js，而没有 node_modules！</p>
+<p>.pnp.js文件是个几千行大小的 js 文件，其中和依赖包相关部分为：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8S2x2UdfGr426icBj6r1iattWxUhwlL1aLsLgPicZLCzqZO9Un4bNcoowb7GtiaUBhMbHNgYmaUKfkymA/640?wx_fmt=png">pnp.js要运行项目必须使用 yarn xxx 命令来运行，yarn 会自动执行.pnp.js文件来处理依赖，而不用开发者下载，开箱即用（即 Plug and Play）</p>
+<h3 id="yarn-总结"><a href="#yarn-总结" class="headerlink" title="yarn 总结"></a>yarn 总结</h3><ol>
+<li>yarn 的并行下载解决了 npm 下载缓慢的问题</li>
+<li>和 npm 一样都有 lock 文件来锁定版本</li>
+<li>和 npm 一样有依赖不安全的问题，同时 node_modules 的大小还是很大</li>
+<li>yarn PnP 解决了第 3 点问题，但是引入的问题在于这个模式太反常规了，存在兼容性问题，一些包在 pnp 模式下出现依赖错误，目前接受度不高<blockquote>
+<p>小 tip：为了让开发者更平滑的迁移到 yarn，yarn 提供 yarn import 指令来将 package-lock.json 转化成 yarn.lock 文件这何尝不是一种 ntr</p>
+<h2 id="pnpm"><a href="#pnpm" class="headerlink" title="pnpm"></a>pnpm</h2></blockquote>
+</li>
+</ol>
+<blockquote>
+<p>performant npm，重头戏来了 对于 npm 的种种弊端，pnpm 采取了神奇的解决思路：将每个项目的所有依赖下载在统一的目录下，而在项目的 node_modules 中放上指向那个统一目录的硬链接（可以近似理解为快捷方式）：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/rxLIic6e5g8S2x2UdfGr426icBj6r1iattWCXJCSlLEUsvr1ARKwyD5MNqQ8Jml2oWEiblMheVn78bDfnpcepgr6pQ/640?wx_fmt=jpeg">pnpm-store这样带来的好处是：</p>
+</blockquote>
+<ol>
+<li>尽可能的复用包，避免了在多个项目中反复下载&amp;存储同一份包，降低了存储占用</li>
+<li>install 的时候只是创建硬链接而不是复制文件，大大提高下载速度</li>
+<li>使用树状结构而不是扁平结构，带来了依赖的安全性</li>
+<li>如何避免过长路径的问题？pnpm 会对一些包进行提升，让他不在那么深的位置<br>个人使用经验是，我将电脑上 10 余个项目全部迁至 pnpm， c 盘的存储空间增加了 20 多 G，同时 pnpm 下载速度快到飞起，越往后越快（能复用的包越多）</li>
+</ol>
+<p>此外，pnpm 还有以下优点 😎：</p>
+<ol>
+<li>他有 95% 翻译度的中文官网</li>
+<li>官网支持深色模式</li>
+<li>官网 UI 还挺好看</li>
+<li>官网还有响应式布局<blockquote>
+<p>读者：好了你憋说了，知道你喜欢 pnpm 了 有人说 pnpm 几个字打起来不顺手？</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"> 这何尝不是一种 ntralias npm=<span class="string">&quot;pnpm&quot;</span>;<span class="built_in">alias</span> yarn=<span class="string">&quot;pnpm&quot;</span>;<span class="built_in">alias</span> whatever_U_like=<span class="string">&quot;pnpm&quot;</span>;</span></span><br></pre></td></tr></table></figure></blockquote>
+</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><table>
+<thead>
+<tr>
+<th>指标</th>
+<th>npm</th>
+<th>yarn</th>
+<th>pnpm</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>速度</td>
+<td>base line</td>
+<td>多线程</td>
+<td>硬链接而非复制文件</td>
+</tr>
+<tr>
+<td>安全性</td>
+<td>靠 lock 文件，不可靠</td>
+<td>靠 lock 文件，不可靠</td>
+<td>安全</td>
+</tr>
+<tr>
+<td>存储</td>
+<td>node_modules 散落在各项目，存储占用大</td>
+<td>node_modules 散落在各项目，存储占用大</td>
+<td>只有一份 node_modules</td>
+</tr>
+</tbody></table>
+<p>个人感觉是 pnpm &gt; yarn &gt; npm</p>
+<p>附上这个库做的各个包管理器下载速度比较：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8S2x2UdfGr426icBj6r1iattWjkgABgibYh4Xs5qTBAZENdybicBNYTkvTKVL7m0mZbTSAic408AkrRTSw/640?wx_fmt=png">benchmark可见 pnpm 速度雀食快！</p>
+<h2 id="还等什么，npm-i-g-pnpm-呀！"><a href="#还等什么，npm-i-g-pnpm-呀！" class="headerlink" title="还等什么，npm i -g pnpm 呀！"></a>还等什么，npm i -g pnpm 呀！</h2><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li>Yarn vs npm: Everything You Need to Know</li>
+<li>State of Yarn 2 (Berry) in 2021</li>
+<li>为什么现在我更推荐 pnpm 而不是 npm&#x2F;yarn?</li>
+<li>一文看懂 npm、yarn、pnpm 之间的区别</li>
+</ul>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/189fec9a/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">写实人物渲染的秘密</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/9d63b362/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">产品游戏化方法论</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>Android 消息机制（Java层) - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="Android 消息机制（Java层) - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/c55071d/index.html" />
+  
+  <meta property="og:image" content="/img/cover.png" />
+  
+  <meta property="og:article:published_time" content="2022-10-16T07:16:52.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        <h1 class="title">Android 消息机制（Java层)</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">冰岩作坊</span>
+            
+            <span>October</span>
+            <span>16,</span>
+            <span>2022</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <p><img src="https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8RImZC9gWQicbNE9dG9mOfpqNRa1JkXvXgnv0ZgO759Hr6Zkicp9BYA4XHRgxna37XibQjt6tTRmDFlA/640?wx_fmt=png">## ThreadLocal</p>
+<p><code>ThreadLocal</code>与同步机制相反，用于保证多线程情况下各个线程数据的独立性，那么这是如何实现的呢？观察<code>ThreadLocal</code>的<code>set</code>方法：&#96;&#96;&#96;<br>public void set(T value) </p>
+<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">会发现在这个方法中首先会得到当前的线程，然后获取到`ThreadLocalMap`对象，如果这个对象不为空，就将数据保存到这个`map`中，否则就重新创建一个`map`对象，并将数据保存到这个`map`中，这个`ThreadLocalMap`相当于一个`HashMap`，用于保存这个线程中的数据。然后再看它的`get`方法：```</span><br><span class="line">public T get()     &#125;    <span class="keyword">return</span> setInitialValue()<span class="comment">;&#125;</span></span><br></pre></td></tr></table></figure>
+<p>这个方法跟<code>set</code>方法相同，也是先获取到这个线程的<code>ThreadLocalMap</code>对象，并判断是否为空，如果为空就返回初始值并保存初始值，否则就返回之前存放的数据。其中<code>setInitialValue</code>就是获取初始值并保存的方法可以通过<code>remove</code>方法来移除<code>ThreadLocal</code>对应的值查看<code>Thread</code>的源码发现每一个<code>Thread</code>对象都有一个<code>ThreadLocalMap</code>对象用于保存当前线程的数据，这就保证了多线程之间不会相互影响。下面再来看一下<code>ThreadLocalMap</code>,先来看一下构造方法：&#96;&#96;&#96;<br>ThreadLocalMap(ThreadLocal firstKey, Object firstValue) </p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">在构造方法中先创建了一个数组，并将第一次的数据存储到这个数组中。```</span><br><span class="line">// 初始容量，必须是 <span class="number">2</span> 的幂<span class="keyword">private</span> static <span class="keyword">final</span> <span class="built_in">int</span> INITIAL_CAPACITY = <span class="number">16</span>;// 存储数据的哈希表<span class="keyword">private</span> <span class="built_in">Entry</span>[] table;// table 中已存储的条目数<span class="keyword">private</span> <span class="built_in">int</span> <span class="built_in">size</span> = <span class="number">0</span>;// 表示一个阈值，当 table 中存储的对象达到该值时就会扩容<span class="keyword">private</span> <span class="built_in">int</span> threshold;// 设置 threshold 的值<span class="keyword">private</span> void setThreshold(<span class="built_in">int</span> len) </span><br></pre></td></tr></table></figure>
+<p>其中<code>Entry</code>是<code>ThreadLocalMap</code>中的一个内部类&#96;&#96;&#96;<br>static class Entry extends WeakReference<ThreadLocal> }</p>
+<figure class="highlight sas"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">下面看一下`ThreadLocalMap`的`<span class="keyword">set</span>`方法：```</span><br><span class="line">private void <span class="keyword">set</span>(ThreadLocal <span class="keyword">key</span>, Object value)         // 若索引位置的 Entry 的 <span class="keyword">key</span> 为 <span class="keyword">null</span>（<span class="keyword">key</span> 已经被回收了），表示该位置的 Entry 已经无效，用要保存的键值替换该位置上的 Entry        <span class="keyword">if</span> (k == <span class="keyword">null</span>)     &#125;    // 要存放的索引位置没有 Entry，将当前键值作为一个 Entry 保存在该位置    tab[i] = new Entry(<span class="keyword">key</span>, value);    // 增加 <span class="keyword">table</span> 存储的条目数    int sz = ++size;    // 清除一些无效的条目并判断 <span class="keyword">table</span> 中的条目数是否已经超出阈值    <span class="keyword">if</span> (!cleanSomeSlots(i, sz) <span class="variable">&amp;&amp;</span> sz &gt;= threshold)        rehash(); // 调整 <span class="keyword">table</span> 的容量，并重新摆放 <span class="keyword">table</span> 中的 Entry&#125;</span><br></pre></td></tr></table></figure>
+<p>在这个方法中首先用当前<code>ThreadLocal</code>的<code>threadLocalHashCode</code>来计算索引值（每创建一个<code>ThreadLocal</code>都会生成一个相应的<code>threadLocalHashCode</code>值&#96;&#96;&#96;<br>private final int threadLocalHashCode &#x3D; nextHashCode();private static AtomicInteger nextHashCode &#x3D;    new AtomicInteger();&#x2F;&#x2F; 每次创建 ThreadLocal 对象是 HashCode 的增量private static final int HASH_INCREMENT &#x3D; 0x61c88647;&#x2F;&#x2F; 计算 ThreadLocal 对象的 HashCodeprivate static int nextHashCode() </p>
+<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">注意使用了`AtomicInteger`来保证不同线程状态下的同步在保存数据时，如果索引的位置有`Entry`且`Entry`的`key`为`null`由于`Entry`保存数据的方式是用的弱引用，就会将`Entry`进行回收，下面是获取`Entry`：```</span><br><span class="line">private Entry getEntry(ThreadLocal key) </span><br></pre></td></tr></table></figure>
+<p>因为可能存在哈希冲突，所以可能需要调用<code>getEntryAfterMiss</code>来获取&#96;&#96;&#96;<br>private Entry getEntryAfterMiss(ThreadLocal key, int i, Entry e)     return null;}</p>
+<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">## 一些准备工作</span><br><span class="line"></span><br><span class="line">首先看一下`Handler`的构造器，`Handler`的构造器有很多，下面看最关键的一个```</span><br><span class="line">public Handler(Callback callback, boolean async)     mQueue = mLooper.mQueue<span class="comment">;    mCallback = callback;    mAsynchronous = async;&#125;</span></span><br></pre></td></tr></table></figure>
+<p>会发现先获取<code>looper</code>对象，然后判断是否为空，也就是说在使用这个构造器的时候必须先调用<code>Looper.prepare</code>这个方法，否则就会抛出异常接着再看一下<code>Looper</code>的构造方法&#96;&#96;&#96;<br>private Looper(boolean quitAllowed) </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">发现这是一个私有方法，接着再来看一下他是在哪调用的呢？```</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">prepare</span><span class="params">()</span> <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">prepare</span><span class="params">(<span class="type">boolean</span> quitAllowed)</span>     sThreadLocal.set(<span class="keyword">new</span> <span class="title class_">Looper</span>(quitAllowed));&#125;</span><br></pre></td></tr></table></figure>
+<p>从这里就可以看出来为什么要在一个线程中构造<code>Handler</code>之前必须调用<code>prepare</code>方法了，并且这个<code>Looper</code>对象放在了当前线程的私有内存中，主线程中初始化<code>Looper</code>对象的逻辑基本相同&#96;&#96;&#96;<br>public static void prepareMainLooper()         sMainLooper &#x3D; myLooper();    }}</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">并且系统已经帮我们在`ActivityThread`类的`main`方法中调用了这个方法```</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="type">static</span> <span class="type">void</span> <span class="title">main</span><span class="params">(<span class="type">String</span>[] args)</span>     ...    Looper.<span class="title">loop</span><span class="params">()</span></span>;    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">RuntimeException</span>(<span class="string">&quot;Main thread loop unexpectedly exited&quot;</span>);&#125;</span><br></pre></td></tr></table></figure>
+<p>这里面的<code>loop</code>方法是一个死循环，会一直调用<code>MessageQueue</code>的<code>next</code>方法获取<code>Message</code>，然后交由<code>Hander</code>处理初始化工作就这些，下面就是发送消息的环节## 发送消息</p>
+<p>下面先看一下<code>send</code>方法&#96;&#96;&#96;<br>&#x2F;&#x2F;最终会调用sendMessageDelayedpublic final boolean sendMessage(Message msg)public final boolean sendMessageDelayed(Message msg, long delayMillis)    &#x2F;&#x2F;注意对应的执行时间    return sendMessageAtTime(msg, SystemClock.uptimeMillis() + delayMillis);}&#x2F;&#x2F;最终会调用sendEmptyMessageDelayedpublic final boolean sendEmptyMessage(int what)public final boolean sendEmptyMessageDelayed(int what, long delayMillis) </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">会发现`sendEmptyMessage`其实仍然是包装成了一个`Message`对象,下面再看一下`post`的一系列方法```</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="type">boolean</span> <span class="title function_">post</span><span class="params">(Runnable r)</span><span class="keyword">public</span> <span class="keyword">final</span> <span class="type">boolean</span> <span class="title function_">postDelayed</span><span class="params">(Runnable r, <span class="type">long</span> delayMillis)</span><span class="comment">// 将Runnable转为Messageprivate static Message getPostMessage(Runnable r) </span></span><br></pre></td></tr></table></figure>
+<p>会发现最终这些<code>send</code>和<code>post</code>方法都会指向<code>sendMessageAtTime</code>这个方法，下面来看一下这个方法&#96;&#96;&#96;<br>public boolean sendMessageAtTime(Message msg, long uptimeMillis)     return enqueueMessage(queue, msg, uptimeMillis);}</p>
+<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">在这个方法中首先会判断`MessageQueue`对象是否为空，不为空的话就会调用`enqueueMessage`方法```</span><br><span class="line">private boolean enqueueMessage(MessageQueue queue, Message msg, long uptimeMillis)     // MessageQueue的消息入队    <span class="keyword">return</span> queue.enqueueMessage(msg, uptimeMillis)<span class="comment">;&#125;</span></span><br></pre></td></tr></table></figure>
+<p>这里会将<code>message</code>对象的<code>target</code>设置为当前的<code>Handler</code>对象，并且执行消息入队操作## 消息入队</p>
+<figure class="highlight vhdl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">boolean</span> enqueueMessage(Message msg, long <span class="keyword">when</span>)  <span class="keyword">else</span>                 <span class="keyword">if</span> (needWake &amp;&amp; p.isAsynchronous())             &#125;            msg.<span class="keyword">next</span> = p; // invariant: p == prev.<span class="keyword">next</span>            prev.<span class="keyword">next</span> = msg;        &#125;        // We can <span class="keyword">assume</span> mPtr != <span class="number">0</span> because mQuitting <span class="keyword">is</span> <span class="literal">false</span>.        // mPtr是native层的MessageQueue的引用地址，是在MessageQueue的构造方法里初始化的        // 这样便可以将native层和java层的对象关联起来        <span class="keyword">if</span> (needWake)     &#125;    <span class="keyword">return</span> <span class="literal">true</span>;&#125;</span><br></pre></td></tr></table></figure>
+<p>这个方法会根据<code>Message</code>对象的<code>when</code>来找到<code>message</code>的位置并插入到队列中，这个队列其实是一个单向链表### 同步屏障</p>
+<p>它的主要作用就是及时的更新UI，如果主线程中消息队列中除更新UI外还有其他的消息，那么就会先执行更新UI的操作&#96;&#96;&#96;<br>public int postSyncBarrier() private int postSyncBarrier(long when)         }        if (prev !&#x3D; null)  else         return token;    }}</p>
+<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">发现也是根据`message`的`when`来进行消息的入队，但是并没有给这个`message`对象设置`target`同步屏障的作用就是屏蔽消息队列中该同步屏障之后的所有同步消息，只处理异步消息，保证异步消息优先执行,可以调用`message`的`setAsynchronous`来设置同步或异步消息，也可以通过`handler`构造函数中的参数`async`来设置，主要应用于UI的绘制## Looper循环和消息出队</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>public static void loop()     final MessageQueue queue &#x3D; me.mQueue;    …    for (;;)         …        try  finally         }        …                &#x2F;&#x2F; Message回收        msg.recycleUnchecked();    }}</p>
+<figure class="highlight vhdl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">开启一个死循环，在这个循环中获取消息队列中的消息，并进行消息的处理，下面看一下`<span class="keyword">next</span>`方法```</span><br><span class="line">Message <span class="keyword">next</span>()     // 用于统计当前闲置Handler数量    int pendingIdleHandlerCount = -<span class="number">1</span>; // -<span class="number">1</span> only during first iteration    // 阻塞的时长    int nextPollTimeoutMillis = <span class="number">0</span>;    <span class="keyword">for</span> (;;)         // 实现阻塞，阻塞时长为nextPollTimeoutMillis，Looper.<span class="keyword">loop</span>()方法中的might <span class="keyword">block</span>就是来自这里        nativePollOnce(ptr, nextPollTimeoutMillis);        synchronized (this)  <span class="keyword">while</span> (msg != <span class="keyword">null</span> &amp;&amp; !msg.isAsynchronous());            &#125;            <span class="keyword">if</span> (msg != <span class="keyword">null</span>)  <span class="keyword">else</span>  <span class="keyword">else</span>                     msg.<span class="keyword">next</span> = <span class="keyword">null</span>;                    <span class="keyword">if</span> (DEBUG) Log.v(TAG, <span class="string">&quot;Returning message: &quot;</span> + msg);                    msg.markInUse();                    <span class="keyword">return</span> msg;                &#125;            &#125; <span class="keyword">else</span>             // <span class="keyword">Process</span> the quit message now that <span class="keyword">all</span> pending messages have been handled.            <span class="keyword">if</span> (mQuitting)             // 消息队列为空或Message未到执行时间时，则开始处理IdleHandler            // <span class="keyword">If</span> first <span class="built_in">time</span> idle, <span class="keyword">then</span> get the number <span class="keyword">of</span> idlers <span class="keyword">to</span> run.            // Idle handles only run <span class="keyword">if</span> the queue <span class="keyword">is</span> empty <span class="keyword">or</span> <span class="keyword">if</span> the first message            // <span class="keyword">in</span> the queue (possibly a barrier) <span class="keyword">is</span> due <span class="keyword">to</span> be handled <span class="keyword">in</span> the future.            <span class="keyword">if</span> (pendingIdleHandlerCount &lt; <span class="number">0</span>                    &amp;&amp; (mMessages == <span class="keyword">null</span> || now &lt; mMessages.<span class="keyword">when</span>))             <span class="keyword">if</span> (pendingIdleHandlerCount &lt;= <span class="number">0</span>)             <span class="keyword">if</span> (mPendingIdleHandlers == <span class="keyword">null</span>)             mPendingIdleHandlers = mIdleHandlers.toArray(mPendingIdleHandlers);        &#125;        ...        // Reset the idle handler count <span class="keyword">to</span> <span class="number">0</span> so we do <span class="keyword">not</span> run them again.        pendingIdleHandlerCount = <span class="number">0</span>;        // <span class="keyword">While</span> calling an idle handler, a <span class="keyword">new</span> message could have been delivered        // so go back <span class="keyword">and</span> look again <span class="keyword">for</span> a pending message without waiting.        nextPollTimeoutMillis = <span class="number">0</span>;    &#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>这个方法也是一个死循环，会进行各种判断，如果消息执行时间还没到，就会设置阻塞时长，另外会判断是否消息屏障，并执行相应的操作## 消息处理</p>
+<p>观察<code>handler</code>的&#96;dispatchMessage&#96;&#96;&#96;&#96;<br>public void dispatchMessage(Message msg)  else         }        handleMessage(msg);    }}private static void handleCallback(Message message) </p>
+<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">其中`msg.callback`是在`post`系列方法中设置的，而`mCallBack`是在构造器中传入的，其中的`handleMessage`默认实现为空如果返回`true`的话表示消息处理结束，不会再继续分发消息，否则会分发给`handler`的`handleMessage`处理然后结束## 移除消息</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>public final void removeMessages(int what) &#x2F;&#x2F; MessageQueue.javavoid removeMessages(Handler h, int what, Object object)     synchronized (this)         &#x2F;&#x2F; Remove all messages after front.        while (p !&#x3D; null)             }            p &#x3D; n;        }    }}</p>
+<pre><code>这利用了两个`while`循环，前面用来移除从队列头开始移除满足条件了`message`之后用来移除之后的`message`![](https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8TtibyNyK6KN8b7BSic0H9SajiaeNxUcawUSmAwSZ4CAI8jh7vnplqNYLHeBXBuV2jiblMQQySyz4iaN3w/640?wx_fmt=png)
+</code></pre>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/posts/9c3aeb23/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">面包店和产品思维</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/posts/44d2fb57/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">什么是MVCC | 数据库</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>
