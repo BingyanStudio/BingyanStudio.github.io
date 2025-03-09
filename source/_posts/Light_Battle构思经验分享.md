@@ -1,0 +1,691 @@
+---
+title: Light Battle构思经验分享
+cover_image: /img/cover.png
+abbrlink: 95172c0e
+date: 2022-11-18 15:49:36
+---
+
+![](https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8R4ticsmLzITbOciccQPib5Ja1ZesjvCZTrtibMib6vdgsg3YdbibEcy3dYuHiagG36ibk69HW3sM7Cv4MSbw/640?wx_fmt=png)Light Battle //
+
+在这篇文章里，笔者会回忆并分析在今年的冰岩作坊hackweek中即将诞生的游戏——Light Battle（中文名：光芒之战/轻装决斗）是如何被构思出来的。
+
+笔者来自产品组，期待能够收到诸位游戏前辈和游戏玩家的建议。
+
+文章将按先后顺序：游戏定位构思以及游戏内容构思两方面来进行讲述。
+
+Part.1
+
+游戏定位构思
+
+游戏定位构思是本游戏从无到有的第一步（很多游戏是玩法为第一步，但很遗憾灵感在最初没有光顾笔者的大脑），它决定着后续构思的方向，笔者结合客观因素进行游戏定位的构思。
+
+首先，需要有游戏制作的动机：
+
+● 对游戏的热爱（游戏是笔者生命的重要组成部分）
+
+● hackweek的现实需要
+
+有了动机，接着，是对客观因素的分析：
+
+● 由于经验较少以及hackweek一个月的时间限制，注定了本游戏只能是一款小游戏
+
+● 既然要做小游戏，由于H5小游戏只需一个网址即可访问，若做成手机端，则更具有易传播的优势，并且团队对H5小游戏有一定开发经验，所以初步确定了H5小游戏的方向
+
+● 结论：从客观因素中有了H5小游戏的游戏方向。
+
+有了游戏方向，接下来是对用户群体的分析：
+
+● 对于小游戏，由于玩法相对简单，为了有更多的玩家，游戏受众应尽可能扩大，应下到小朋友，上到喜欢尝试新事物的中老年人
+
+● 结论：这屏蔽掉了受众较小的小游戏类型，且要求我们尽量不套模板，需要创新简单游戏模式以吸引玩家。
+
+有了创新的要求，接下来是对大脑进行检索，产生点子：
+
+首先笔者想到，对于成功的小型游戏而言，笔者相信他们的制作人对自己的大部分作品总是满意的，但往往只有少数作品获得了成功。织围巾最初的针法急不得，过于在意自己或他人以往的成功经验，以及持有暴发户心态——先构思运营传播变现手段想要一蹴而就，都是不可取的。
+
+# 思考至此，联机游戏的概念突然撞进了笔者的脑袋。
+
+游戏行业不断发展，喜欢玩游戏的人群一定处于上升趋势。既然游戏玩家越来越多，那么越来越多的游戏爱好者会把游戏作为共同语言，笔者大胆推测可联机的游戏将越来越受欢迎。
+
+再看现在的游戏市场中，可以联机的越来越多，如moba类、沙盒类、开放世界类、枪战类以及rougelike类等等中的很多作品，虽然笔者拿不到行业内部数据，但从表象上也可以大胆推断“可联机的游戏将越来越受欢迎”是可以指导实践的。
+
+一点就开的H5小游戏如果可以联机，将会是一件很棒的事情。不必追求让用户长时间游玩，能够消磨用户的碎片时间即可，如在玩其他联机游戏的闲暇期，或是大学生的课间，亦或是和好友排核酸队伍时的时间，场景有很多。
+
+不考虑一个朋友是多高的配置，那么就做一款H5联机小游戏吧！接下来，我们需要一个战斗系统。
+
+Part.2
+
+游戏内容构思
+
+寻找战斗系统
+
+长时间思考后，死去的记忆突然攻击我。
+
+在笔者小学和高中的时候，在同学之间有一种博弈类游戏非常流行：两人面对面同频拍手打出节奏，每拍两次手，到第三次的时候，玩家不拍手，改为同时用手势和口令表示自己做出行动——运（蓄力）、激（攻击，消耗蓄力）、上/下（移动）、轰（攻击上/下方），被打到一下就游戏结束。在这种游戏中，玩家可以有多种操作，同时猜测对手的想法。
+
+灵感来临后，经过逢人便问的地毯式调查后，笔者发现有很多来自不同省份的同学都了解过这种游戏，具体规则各有不同。战斗系统魅力至此，这勾起了笔者的极大兴趣，或许经过修改，这个系统可以发挥更大潜力。
+
+一个标签为线上、双人、回合制、博弈的游戏呼之欲出。
+
+进行具体内容扩展
+
+加亿点点细节
+
+一切以发掘此系统可玩性为前提，在反复纸笔模拟后，笔者增加了以下几点，并惊喜于此系统的可玩性。
+
+● 不同技能（主动/被动）的角色（见后文）
+
+●角色拥有不同台词，主动选择以发出（博弈游戏台词也是武器）
+
+● 一个日志框，用于记录战斗以及台词文本
+
+● 隐晦的世界观（通过机制、角色形象和台词展示）
+
+● 规划具体内容（包括基本数值和机制）：
+
+@Light Battle
+
+具体内容
+
+1
+
+双方在三层平台上进行战斗（demo界面如下，角色出生在中间平台），每回合行动选择完毕后，系统判定并播放战斗动画，完毕之后进入下一回合。
+
+![](https://mmbiz.qpic.cn/mmbiz_jpg/rxLIic6e5g8R4ticsmLzITbOciccQPib5Ja1S1zQlmeukR0UDqj2nnMdribJIPFe5wYFloQJjuSDYASaHRJVLCCcNKQ/640?wx_fmt=jpeg)样图，膜拜设计同学
+
+2
+
+行动共有以下几种：蓄力（获得费用）、攻击、上、下、攻击上方、攻击下方、防御、技能（部分角色）
+
+3
+
+非同层伤害减半（若角色无描述则向下取整，最低为一）
+
+4
+
+连续防御有1/3几率失败（防止有按住防御不松手的玩家）
+
+5
+
+互相攻击不会抵消，分别计算伤害（限制躲避攻击的手段）
+
+6
+
+一般而言角色血量为五，攻击力为二，一般情况只有攻击手段会消耗费用
+
+7
+
+下打上有1/3几率不命中（借鉴dota机制）
+
+8
+
+最上层和最下层不能互相攻击（对手抢上层可以躲在下层应对）
+
+9
+
+优先级：防御＞蓄力＞移动（包括天使）＞攻击＞技能效果（大部分）
+
+10
+
+费用上限为三，蓄力增加一费（费用系统，加上限有利于设计角色）
+
+11
+
+费用满的时候蓄力相当于空过，日志框会显示一句角色台词（给予玩家空过权利，文本见下文）
+
+12
+
+由于角色互相有克制关系，开局需要在三个角色中进行选择，同时能看到对方的备选，demo选人界面如下，采用战斗页面，左方为己方备选：
+
+![](https://mmbiz.qpic.cn/mmbiz_jpg/rxLIic6e5g8R4ticsmLzITbOciccQPib5Ja1ZZG1UZD7WksKJKR6NhrZ87Lk4IicoiaiaDlia5ewGJDnnahQod4iakEnibMg/640?wx_fmt=jpeg)13
+
+所有其他页面，形成流程闭环
+
+![](https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8R4ticsmLzITbOciccQPib5Ja1q5Uaeb5Htlic6KjaB6z64hwqkVlTXaRYwv5FrYiaZXuatEdGIvtBf0ww/640?wx_fmt=png)14
+
+为了展示此战斗系统的生命力，我在下面放上了全部角色的技能与台词详情以及部分角色的战斗模型：
+
+角色详情
+
+点此查看-盗贼
+
+盗贼
+
+![](https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8R4ticsmLzITbOciccQPib5Ja1XV9siaWiasoibwJpku8pa8we2wnlLiaq5bCcgIes22bILoJxoH5zfWs5Xg/640?wx_fmt=png)● 被动技能：
+
+在最下层蓄力将会跃至最上层。
+
+盗贼的普通攻击不论是否同层，固定造成一点伤害，可以被防御，下打上会未命中（主动技能机制相当于三次普通攻击）。
+
+● 主动技能：
+
+消耗两费，投掷三发匕首，每发固定为一点伤害，可以被防御，每发匕首单独判定命中。
+
+● 当在蓝量已满时蓄力：
+
+如此之多的能量已经足够！
+
+● 开场白：来抓我呀
+
+● 感谢：谢谢你！
+
+● 称赞：玩得不错
+
+● 问候：哈喽哈喽
+
+● 抱歉：抱歉！
+
+● 失误：哦，糟糕
+
+● 威胁：你完蛋啦，下流的蠢货！
+
+● 认输：我认输啦
+
+![](https://mmbiz.qpic.cn/mmbiz_svg/Xmnun9Io49R2APibiaF3zHnleNAE5Zzic8qPLJZKJCzicK0NicL2uE8FsRgbHicW10fChLnIe2CSssH6MlQcJ7qIn9B6cbGIvQQDCG/640?wx_fmt=svg)角色详情
+
+点此查看-士兵
+
+士兵
+
+●HP：5  MP：0  ATK：2 
+
+● 被动技能：
+
+攻击有1/3概率暴击。
+
+对同层暴击时，在原有伤害结算上多造成一点伤害，无视防御。
+
+对邻层暴击时，有1/2概率在原有伤害结算上多造成一点伤害，但不无视防御；有1/2概率会固定造成一点伤害，无视防御和减伤。
+
+● 当在蓝量已满时蓄力：
+
+三发子弹够把你打烂了
+
+● 开场白：速战速决
+
+● 感谢：grazie
+
+● 称赞：玩得不错
+
+● 问候：你好啊，小不点
+
+● 抱歉：我可不想为此道歉
+
+● 失误：哦我的上帝呀
+
+● 威胁：觉得我是在虚张声势吗
+
+● 认输：我可还没输呢
+
+![](https://mmbiz.qpic.cn/mmbiz_svg/Xmnun9Io49R2APibiaF3zHnleNAE5Zzic8qPLJZKJCzicK0NicL2uE8FsRgbHicW10fChLnIe2CSssH6MlQcJ7qIn9B6cbGIvQQDCG/640?wx_fmt=svg)角色详情
+
+点此查看-大理石
+
+大理石
+
+![](https://mmbiz.qpic.cn/mmbiz_jpg/rxLIic6e5g8R4ticsmLzITbOciccQPib5Ja1hRRmpQqNL2XvvTR5xEJ4ia4Rcaj8pFvHAQcF1nTiabPvYJK0J803q1rg/640?wx_fmt=jpeg)●HP：8  MP：0  ATK：2
+
+● 被动技能：
+
+受击时多承受一点伤害，但蓄力时受到伤害减一。（如：炮台、盗贼均造成两点伤害，蓄力时则均造成一点伤害）
+
+● 主动技能：
+
+在最上层时，可以直接移动至最下层，这样做时恢复两点血量。（靠着肉厚直接摔下来）
+
+● 当在蓝量已满时蓄力：
+
+我还要吃更多！
+
+● 开场白：猜猜我的肉是从哪里来的？
+
+● 感谢：非常感谢
+
+● 称赞：玩得不错
+
+● 问候：鹅鹅鹅！
+
+● 抱歉：非常抱歉
+
+● 失误：我需要吃点东西来弥补这个错误
+
+● 威胁：我要把你大卸八块
+
+● 认输：你击倒了我
+
+![](https://mmbiz.qpic.cn/mmbiz_svg/Xmnun9Io49R2APibiaF3zHnleNAE5Zzic8qPLJZKJCzicK0NicL2uE8FsRgbHicW10fChLnIe2CSssH6MlQcJ7qIn9B6cbGIvQQDCG/640?wx_fmt=svg)角色详情
+
+点此查看-乌龟炮手
+
+乌龟炮手
+
+![](https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8R4ticsmLzITbOciccQPib5Ja1Q6du1KO5DFZTxntViaj3BA2oOzGf1KJKDL18LxuZPI6IlrQon2diaZ1A/640?wx_fmt=png)●HP：5  MP：0  ATK：2
+
+● 被动技能：
+
+换层不能躲开乌龟炮手的攻击。（包括大理石和盗贼的换层）
+
+对非同层的伤害为一点，不会未命中。
+
+● 当在蓝量已满时蓄力：
+
+我们应该尽早行动
+
+● 开场白：使命必达
+
+● 感谢：谢谢你
+
+● 称赞：向你致敬
+
+● 问候：你好吗
+
+● 抱歉：我对此感到抱歉
+
+● 失误：决策失误
+
+● 威胁：你将无处遁形
+
+● 认输：看来我踏上了一条不归路
+
+![](https://mmbiz.qpic.cn/mmbiz_svg/Xmnun9Io49R2APibiaF3zHnleNAE5Zzic8qX1VwGGmzOJISgj6PcOrES6vYZl7qun2H1PHH0iaxiczzgQErUWo0jicU3yJwqNxSshN/640?wx_fmt=svg)角色详情
+
+点此查看-黑魔法师
+
+黑魔法师
+
+![](https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8R4ticsmLzITbOciccQPib5Ja1z6gH53Xv4tyDFPvweISYjSa8LWKQFMeKTJ4yl7owJicUzGhAmWX8iavw/640?wx_fmt=png)● HP：5  MP：0  ATK：2
+
+● 被动技能：
+
+可同时攻击同层和邻层，（如，在中间层可攻击中间层以及上层或下层）对邻层的伤害为一。
+
+● 当在蓝量已满时蓄力：
+
+魔法的力量正在涌动！
+
+● 开场白：所有人都有不能说的秘密
+
+● 感谢：我代表黑暗感谢你
+
+● 称赞：你是可敬的对手
+
+● 问候：你好
+
+● 抱歉：我感到抱歉
+
+● 失误：我失误了
+
+● 威胁：不要逼我使用分解射线
+
+● 认输：胜利属于你
+
+![](https://mmbiz.qpic.cn/mmbiz_svg/Xmnun9Io49R2APibiaF3zHnleNAE5Zzic8qX1VwGGmzOJISgj6PcOrES6vYZl7qun2H1PHH0iaxiczzgQErUWo0jicU3yJwqNxSshN/640?wx_fmt=svg)角色详情
+
+点此查看-吸血鬼
+
+吸血鬼
+
+●HP：3/5  MP：0  ATK：2 
+
+● 被动技能：
+
+攻击不防御的同层敌人后，会使其一回合内无法移动。
+
+吸血鬼回复与造成伤害等量的血量。
+
+若同层敌人防御，吸血鬼仍会造成一点伤害。
+
+● 当在蓝量已满时蓄力：
+
+我要把力量转换成血液
+
+● 开场白：你看起来很美味
+
+● 感谢：谢谢你
+
+● 称赞：玩得不错
+
+● 问候：greetings~
+
+● 抱歉：真是抱歉
+
+● 失误：该死！
+
+● 威胁：等下我会多咬你几口
+
+● 认输：我输了，真是遗憾
+
+![](https://mmbiz.qpic.cn/mmbiz_svg/Xmnun9Io49R2APibiaF3zHnleNAE5Zzic8qX1VwGGmzOJISgj6PcOrES6vYZl7qun2H1PHH0iaxiczzgQErUWo0jicU3yJwqNxSshN/640?wx_fmt=svg)角色详情
+
+点此查看-机械师
+
+机械师
+
+●HP：5  MP：0  ATK：2 
+
+● 主动技能：
+
+消耗两费在本层放置一个炮台，放置后，炮台从本回合开始每回合对同层敌人造成一点伤害，炮台具有两点血量，相当于一个独立单位，每层最多只能放置一座炮台。
+
+炮台受击机制举例：机械师和炮台在同一格时，机械师受到攻击，炮台收到攻击，机械师防御成功则都不扣血，对于同层乌龟炮手的攻击，机械师移动后受到一点伤害，炮台因仍在同层直接被摧毁。炮台不能被吸血鬼吸血，但是会中气球的衰竭。
+
+● 当在蓝量已满时蓄力：
+
+快点放个炮台吧~我快等不及啦
+
+● 开场白：炮台使我快乐
+
+● 感谢：致以真诚的问候
+
+● 称赞：玩得不错
+
+● 问候：见到你很高兴
+
+● 抱歉：代表炮台向你致歉
+
+● 失误：不，我刚刚点错了
+
+● 威胁：准备被打成蜂窝吧，傻瓜
+
+● 认输：再多点炮台就能赢了
+
+![](https://mmbiz.qpic.cn/mmbiz_svg/Xmnun9Io49R2APibiaF3zHnleNAE5Zzic8qX1VwGGmzOJISgj6PcOrES6vYZl7qun2H1PHH0iaxiczzgQErUWo0jicU3yJwqNxSshN/640?wx_fmt=svg)角色详情
+
+点此查看-铜镜
+
+铜镜
+
+●HP：5  MP：0  ATK：2
+
+● 被动技能：
+
+防御成功可以向攻击者所在层反射一点伤害（机械师炮台也会受到反伤），连续防御成功概率上升至1/2。
+
+● 当在蓝量已满时蓄力：
+
+旁白：铜镜激烈地颤动
+
+● 开场白：旁白：铜镜闪耀！
+
+● 感谢：旁白：铜镜致谢
+
+● 称赞：旁白：铜镜觉得你很行
+
+● 问候：旁白：铜镜向你问好
+
+● 抱歉：旁白：铜镜很抱歉
+
+● 失误：旁白：铜镜摇了摇头，这一定是操作者的问题！
+
+● 威胁：旁白：铜镜发出威武的光芒！
+
+● 认输：旁白：铜镜认输了
+
+![](https://mmbiz.qpic.cn/mmbiz_svg/Xmnun9Io49R2APibiaF3zHnleNAE5Zzic8qX1VwGGmzOJISgj6PcOrES6vYZl7qun2H1PHH0iaxiczzgQErUWo0jicU3yJwqNxSshN/640?wx_fmt=svg)角色详情
+
+点此查看-忍者
+
+忍者
+
+●HP：5  MP：0  ATK：2 
+
+● 主动技能：
+
+隐身四回合，角色、血量和费用栏将不可见，只能使用一次。
+
+● 当在蓝量已满时蓄力：
+
+这不是忍道
+
+● 开场白：我将遁入烟雾之中
+
+● 感谢：感谢
+
+● 称赞：玩得不错
+
+● 问候：我没有问候的经验
+
+● 抱歉：对不起
+
+● 失误：失误
+
+● 威胁：小心背后
+
+● 认输：意料之外
+
+![](https://mmbiz.qpic.cn/mmbiz_svg/Xmnun9Io49R2APibiaF3zHnleNAE5Zzic8qPLJZKJCzicK0NicL2uE8FsRgbHicW10fChLnIe2CSssH6MlQcJ7qIn9B6cbGIvQQDCG/640?wx_fmt=svg)角色详情
+
+点此查看-天使-炽天使-堕天使
+
+天使-炽天使-堕天使
+
+![](https://mmbiz.qpic.cn/mmbiz_jpg/rxLIic6e5g8R4ticsmLzITbOciccQPib5Ja1zg8wHePN2KHdpdAYjR4DILFSz9Xf7I69WcQJ4Qjhaibj1zIdiath9fVA/640?wx_fmt=jpeg)●HP：5  MP：0  ATK：2 
+
+● 天使：
+
+初始状态，蓄力同时会下降一层。有三费之后升格为大天使，升至最上层；在最后一层蓄力或被引力战士攻击会变为堕天使，升至居中。
+
+● 炽天使：
+
+保留天使状态费用。变身后下回合无敌，血量若低于三，回复至三点，攻击方式变为消耗一费，直接秒杀，无法被防御。
+
+● 堕天使：
+
+保留天使状态费用。回复两点血量，不能再变为大天使。
+
+● 当在蓝量已满时蓄力：
+
+炽天使：你的结局已经注定！
+
+堕天使：浪费是一种堕落
+
+● 开场白：
+
+天使：我背负着巨大使命！
+
+炽天使：旁白：随着一个洪亮的声音响起，天使成为了执剑人！
+
+堕天使：旁白：哦不，她坠进了地狱！
+
+● 感谢：上帝与你同在
+
+● 称赞：玩得不错
+
+● 问候：你好
+
+● 抱歉：抱歉
+
+● 失误：一次失误
+
+● 威胁：以眼还眼，以牙还牙！
+
+● 认输：我已遭受失败
+
+![](https://mmbiz.qpic.cn/mmbiz_svg/Xmnun9Io49R2APibiaF3zHnleNAE5Zzic8qPLJZKJCzicK0NicL2uE8FsRgbHicW10fChLnIe2CSssH6MlQcJ7qIn9B6cbGIvQQDCG/640?wx_fmt=svg)角色详情
+
+点此查看-气球
+
+气球
+
+![](https://mmbiz.qpic.cn/mmbiz_jpg/rxLIic6e5g8R4ticsmLzITbOciccQPib5Ja1MB2lWQnkFq4rPsUQxh4jZT3e1CWVnVOmrwOeSrySkP5R1OF1bHrQcA/640?wx_fmt=jpeg)●HP：5  MP：0  ATK：2 
+
+● 被动技能：
+
+同层攻击不造成直接伤害，改为施加衰竭buff：从这一回合开始，每回合造成一点伤害，持续三回合。
+
+● 当在蓝量已满时蓄力：
+
+旁白：气球已经胀满
+
+● 开场白：旁白：快看，一个圆滚滚的气球
+
+● 感谢：旁白：气球前滚致谢
+
+● 称赞：旁白：气球前滚称赞
+
+● 问候：旁白：气球吹泡泡问候
+
+● 抱歉：旁白：气球低头致歉，如果它有头的话
+
+● 失误：旁白：气球失误了
+
+● 威胁：旁白：气球不会手下留情！
+
+● 认输：旁白：快看，气球好像认输啦
+
+![](https://mmbiz.qpic.cn/mmbiz_svg/Xmnun9Io49R2APibiaF3zHnleNAE5Zzic8qPLJZKJCzicK0NicL2uE8FsRgbHicW10fChLnIe2CSssH6MlQcJ7qIn9B6cbGIvQQDCG/640?wx_fmt=svg)角色详情
+
+点此查看-傲慢者
+
+傲慢者
+
+●HP：5  MP：0 /5 ATK：2
+
+● 被动技能：
+
+从上方攻击下方时伤害不减少，一旦开始攻击就会失去蓄力和防御能力，攻击力在每次攻击后加一，且无视防御，费用用完后若对手没死则自身死亡。
+
+● 当在蓝量已满时蓄力：
+
+再等一下又如何！
+
+● 开场白：我甚至不想看你一眼
+
+● 感谢：谢谢你如此单纯
+
+● 称赞：呵呵，不值一提的操作
+
+● 问候：你是谁？
+
+● 抱歉：对不起，但与你无关
+
+● 失误：那只是一次小小的忍让
+
+● 威胁：你会被我碾成碎片！
+
+● 认输：你的运气比较好罢了
+
+![](https://mmbiz.qpic.cn/mmbiz_svg/Xmnun9Io49R2APibiaF3zHnleNAE5Zzic8qPLJZKJCzicK0NicL2uE8FsRgbHicW10fChLnIe2CSssH6MlQcJ7qIn9B6cbGIvQQDCG/640?wx_fmt=svg)角色详情
+
+点此查看-赌徒
+
+赌徒
+
+![](https://mmbiz.qpic.cn/mmbiz_jpg/rxLIic6e5g8R4ticsmLzITbOciccQPib5Ja1VFylqKcJlugiaUGFFaJhPobYfibaSkFIVuDqBziccnib87xgk11VvSv0hg/640?wx_fmt=jpeg)●HP：5  MP：0  ATK：2
+
+● 被动技能：
+
+双方有人血量为零时，双方血量平均分配，原先血多的人获得更多的一点血量，赌徒下打上时必定命中。
+
+● 当在蓝量已满时蓄力：
+
+我的秘密可不在于此
+
+● 开场白：愿意奉陪
+
+● 感谢：谢谢大款，没错就是你
+
+● 称赞：你的牌打得也太好了
+
+● 问候：你好，我是一个赌徒
+
+● 抱歉：抱歉，其实我没认真玩
+
+● 失误：我可不能失误
+
+● 威胁：你要被我赢光光啦
+
+● 认输：十赌九输...
+
+![](https://mmbiz.qpic.cn/mmbiz_svg/Xmnun9Io49R2APibiaF3zHnleNAE5Zzic8qPLJZKJCzicK0NicL2uE8FsRgbHicW10fChLnIe2CSssH6MlQcJ7qIn9B6cbGIvQQDCG/640?wx_fmt=svg)角色详情
+
+点此查看-引力战士
+
+引力战士
+
+●HP：5  MP：0  ATK：2
+
+● 被动技能：
+
+攻击命中会使敌人下降一层，对最后一层敌人多造成一点伤害。
+
+● 当在蓝量已满时蓄力：
+
+等待时机
+
+● 开场白：不要问我何以至此
+
+● 感谢：谢谢你，但是不会放过你
+
+● 称赞：玩得不错
+
+● 问候：你...你好
+
+● 抱歉：哼，不好意思
+
+● 失误：一个可以被原谅的失误
+
+● 威胁：你会被送入地狱
+
+● 认输：你只是打败了我
+
+![](https://mmbiz.qpic.cn/mmbiz_svg/Xmnun9Io49R2APibiaF3zHnleNAE5Zzic8qPLJZKJCzicK0NicL2uE8FsRgbHicW10fChLnIe2CSssH6MlQcJ7qIn9B6cbGIvQQDCG/640?wx_fmt=svg)角色详情
+
+点此查看-武士
+
+武士
+
+![](https://mmbiz.qpic.cn/mmbiz_jpg/rxLIic6e5g8R4ticsmLzITbOciccQPib5Ja1oVTJmY9YLaoyY7RzzQu8np7JJ0ql0Bd3XEFBYsDySdibQdFDvT1BKibQ/640?wx_fmt=jpeg)●HP：5  MP：0  ATK：2
+
+● 被动技能：
+
+第一次攻击伤害为3。（居合）
+
+进行攻击时，有2/3的概率同时进行防御。（相当于本回合又防御又攻击，下回合防御成功概率降低）
+
+● 当在蓝量已满时蓄力：
+
+要步步为营
+
+● 开场白：那就来吧
+
+● 感谢：：）
+
+● 称赞：你是强手
+
+● 问候：加油
+
+● 抱歉：别那么生气
+
+● 失误：只有一次机会
+
+● 威胁：不杀你，不能平复我心中之火
+
+● 认输：在那之后，不要伤及无辜
+
+![](https://mmbiz.qpic.cn/mmbiz_svg/Xmnun9Io49R2APibiaF3zHnleNAE5Zzic8qPLJZKJCzicK0NicL2uE8FsRgbHicW10fChLnIe2CSssH6MlQcJ7qIn9B6cbGIvQQDCG/640?wx_fmt=svg)角色详情
+
+点此查看-泥帕菈
+
+泥帕菈
+
+●（丢陷阱的猫）
+
+● 待构思，欢迎投稿
+
+![](https://mmbiz.qpic.cn/mmbiz_svg/Xmnun9Io49R2APibiaF3zHnleNAE5Zzic8qPLJZKJCzicK0NicL2uE8FsRgbHicW10fChLnIe2CSssH6MlQcJ7qIn9B6cbGIvQQDCG/640?wx_fmt=svg)角色详情
+
+点此查看-光之使者
+
+光之使者
+
+●（不能移动的大树）
+
+● 待构思，欢迎投稿
+
+![](https://mmbiz.qpic.cn/mmbiz_svg/Xmnun9Io49R2APibiaF3zHnleNAE5Zzic8qPLJZKJCzicK0NicL2uE8FsRgbHicW10fChLnIe2CSssH6MlQcJ7qIn9B6cbGIvQQDCG/640?wx_fmt=svg)![](https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8R4ticsmLzITbOciccQPib5Ja10GbxblkAU4icaHCtvXibTRTy7rgELAaPrvFRr6AcMs7EdVw2E5LpE7Jw/640?wx_fmt=png)结语//
+
+以上便是Light Battle的主要构思经验，非常高兴能有这样一次分享（打广告）的机会，感谢您的阅读！
+
+![](https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8R4ticsmLzITbOciccQPib5Ja1vAUuAribHuicBbATLmvvnZXFhaFH9dXE22EXIw9ibRIaxs7Up8lSNEX9g/640?wx_fmt=png)
+

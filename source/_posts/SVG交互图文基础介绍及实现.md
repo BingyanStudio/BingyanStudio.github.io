@@ -1,0 +1,11 @@
+---
+title: SVG交互图文基础介绍及实现
+cover_image: /img/cover.png
+abbrlink: c31688a8
+date: 2022-04-22 14:55:05
+---
+
+![](https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8RxYuTAAUbOK3CvBff0icaMsQicIiaMIAUDiatMNia3Libsnp9yNqOwcJHiayVrsYusxG19nibXSicIbZoicBvQ/640?wx_fmt=png)各位晚上好。今天我想分享SVG交互图文的基本介绍及实现。  **为什么要学习SVG交互图文？******首先，作为运营，为什么我需要去学习SVG交互图文的制作？ 近几年，在各种短内容信息流和短视频的侵袭下，枯燥的文字和静态图片已无法满足品牌传播的需要，公众号阅读量不断下滑。 而SVG交互图文因其媲美H5，提高粉丝参与度，提升趣味性，带来了实质性的数据增长。 学会简单的SVG交互图文能够在节省开发资源的前提下，**为我们的内容生产中增加亮点，同时丰富想法实现的多种可能。**   **SVG交互图文是什么？** SVG交互图文是在微信公众号限制的Web技术环境内，以HTML为基础，以SVG为核心，主要依靠创造性地使用SVG SMIL animation和部分CSS style样式，使用户可以通过主动点击、触摸、滑动、长按或自动等常见的人机交互操作，触发一些丰富多彩、令人惊奇的动态效果。其本质还是基于SVG SMIL animation，配合SVG的click事件，实现非常简单的交互。 首先我们需要了解SVG交互式排版的样式，分为三个部分：SVG互动样式、触发方式以及逻辑结构。 在了解「SVG互动样式」后，通过更改「触发方式」与「逻辑结构」就可以最终实现惊艳的SVG互动效果。 **SVG互动样式主要分为八种：**（以下列出的样式可进行叠加，以组合成复杂的最终效果） ①点击显示/消失②直线移动③曲线移动④缩放⑤点击弹图⑥音频类：如音频播放器美化⑦滑动类：顶层滑动/底层滑动⑧伸长样式 而**触发方式**可以划分为：点击、长按、滑动。逻辑结构即：或、且、随机。 下面我们来看一个简单案例：![](https://mmbiz.qpic.cn/mmbiz_gif/rxLIic6e5g8RxYuTAAUbOK3CvBff0icaMsMMnSJ9Sx9prCDB8iaw8WQI9fsOcUlnljBOyibLN86cPibs5mBk66TATcw/640?wx_fmt=gif)分析一下这其中运用到的比较巧妙的SVG小技术：「点击」预设定好的热区“手表”位置，出现手表信息图，「再次点击」右下的关闭回到上一页面，形成一个循环。同时手表旁边的闪烁，可以通过缩放以及路径变更完成。   **如何制作？** 进入到正式的SVG交互排版环节之前，**需要先确定素材。** 制作完长图并定稿后，为了可以上传公众号进行排版，会**将长图切割成多段**，不同交互对素材的要求也会有所不同，需要图片进行更细致的切图处理。 收到切分的素材后，就可以开始进行最终的排版。 大多数的基础SVG编辑器没有办法实现自由的点击嵌套，仅有固定的模板可以套用。当然这些固定的模板可以满足一部分需求，但想要更自由的视觉呈现，就需要用到一些更专业的编辑器，或者进行SVG语法的学习，用专业的代码写。 SVG 代码以  元素开始，包括开启标签  和关闭标签  。这是根元素。width 和 height 属性可设置此 SVG 文档的宽度和高度。version 属性可定义所使用的 SVG 版本，xmlns 属性可定义 SVG 命名空间。 更多的SVG标签可以在浏览器上搜索查看，理解了SVG的标签，基本上也就学会了如何运用。 ![](https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8RxYuTAAUbOK3CvBff0icaMs7OAKy9cKKjGqHr0OgtjicswvcVBukph4YvqibmyyXNdSjeS0MzxycrSA/640?wx_fmt=png)部分SVG标签 当然，如果你不是专业的程序员，且对代码的理解能力有限，大多数时候，可以选择专业的SVG编辑器进行排版。 （首先声明，这不是广告）我会比较推荐E2黑科技编辑器和ipaiban pro编辑器。 ![](https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8RxYuTAAUbOK3CvBff0icaMsqnRHjsFZpzFZCJC8fQmkyWqUWmJP0MkHxXmDicxNAG9Baic9arMLOaTA/640?wx_fmt=png)E2黑科技编辑器的编辑页面 各种组件间可以无限嵌套每个组件的编辑，也不像秀米、壹伴等编辑器里的模板那么固定，是一个很好的SVG编辑工具。 更多详细的学习资料也可以戳它们的公众号、视频号或者b站号。 ![](https://mmbiz.qpic.cn/mmbiz_png/rxLIic6e5g8RxYuTAAUbOK3CvBff0icaMsTq1DqkFx0cygWCiaXhxWOdaYOrAOqHCRp2YC47DlE38ibUHkNonML0icw/640?wx_fmt=png)**最后** anyway，SVG交互图文制作的逻辑并不复杂，更重要的还是内容想法，希望这期分享能够给你带来排版新思路~  
+---
+案例实现戳：****知乎 (smartapps.cn)深入代码学习戳：SVG 详解（二）基本概念_青岑lw的博客-CSDN博客_svg是什么格式
+
