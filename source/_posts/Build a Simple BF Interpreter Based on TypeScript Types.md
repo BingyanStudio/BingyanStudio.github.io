@@ -1,10 +1,10 @@
 ---
 title: Build a Simple BF Interpreter Based on TypeScript Types
-cover_image: https://image-public.bingyan.net/blog/img/82b54a8d-ba2c-4163-9c5d-b72c2ca3bbf5.jpeg
-date: 2025-04-05 22:06
+cover_image: https://image-public.bingyan.net/blog/img/567aaf4e-da04-4754-98d4-1e6ecb13d479.jpeg
+date: 2025-04-05 23:08
 categories: 前端
-author: 饭团
-abbrlink: 144ac74f-25d5
+author: 主教
+abbrlink: 143307b1-f5da
 ---
 
 
@@ -277,11 +277,11 @@ const TsfuckTest: Test<[
 
 复杂一点，算斐波那契数列：
 
-![](https://image-public.bingyan.net/blog/img/UMKMbUeWBoNnm7xZ2WbcxgPlndb.jpeg)
+![](https://image-public.bingyan.net/blog/img/JTH4b3gy3owiKIxamRvcvQQInM5.jpeg)
 
 再有趣一点，自举！下面是一个运行在 Tsfuck 上的 Brainfuck 写成的 Brainfuck 解析器运行成功了一段 Brainfuck 程序（我用 TS 写了 BF，再用 BF 实现了 BF）：
 
-![](https://image-public.bingyan.net/blog/img/Y31HbrejloH3zIxF2tRcNDNYnqg.jpeg)
+![](https://image-public.bingyan.net/blog/img/HBMlb6jFhoBDzUx04LOc6ulSncc.jpeg)
 
 ## 一个小细节
 
