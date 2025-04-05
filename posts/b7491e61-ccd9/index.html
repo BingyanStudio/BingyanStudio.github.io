@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>Build a Simple BF Interpreter Based on TypeScript Types - Bingyan Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="Build a Simple BF Interpreter Based on TypeScript Types - Bingyan Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://blog.bingyan.net/posts/b7491e61-ccd9/index.html" />
+  
+  <meta property="og:image" content="https://image-public.bingyan.net/blog/img/8d43e3d6-eb49-4bc6-b296-793718fe5182.jpeg" />
+  
+  <meta property="og:article:published_time" content="2025-04-05T15:32:00.000Z" />
+  
+  <meta property="og:article:author" content="冰岩作坊" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<!-- hexo injector head_end start --><script async defer data-website-id="ed36351e-98f5-4a34-b535-a06e8e31f608" src="https://umami.bingyan.net/script.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-config-root="/"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/"><img src="/theme-img/nav-logo.svg"></a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/categories">Categories</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About Us</a>
+            
+            
+            
+            <a class="nav-item" target="_blank" rel="noopener" href="https://www.bingyan.net">Official Site</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/BingyanStudio" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/前端/"><span data-group="前端">前端</span></a>
+        
+        </div>
+        
+
+        <h1 class="title">Build a Simple BF Interpreter Based on TypeScript Types</h1>
+
+        <div class="date" id="date">
+            
+            <span class="author">主教</span>
+            
+            <span>April</span>
+            <span>5,</span>
+            <span>2025</span>
+            
+        </div>
+
+    </div>
+
+    <div class="content">
+        <p>TypeScript 的类型系统是图灵完备的（<a target="_blank" rel="noopener" href="https://github.com/microsoft/TypeScript/issues/14833">#14833</a>）。因此我尝试用 TypeScript 的类型系统来实现一个 Brainfxxk 的解释器。</p>
+<h2 id="什么是-Brainfxxk？"><a href="#什么是-Brainfxxk？" class="headerlink" title="什么是 Brainfxxk？"></a>什么是 Brainfxxk？</h2><p>BF 实际上就是一个图灵机（Turing Machine）。以防万一，我贴上 BF 的指令表。</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="quote">&gt; 指针右移</span></span><br><span class="line">&lt; 指针左移 </span><br><span class="line">. 输入</span><br><span class="line">, 输出</span><br><span class="line"><span class="bullet">+</span> 当前位置的值加一</span><br><span class="line"><span class="bullet">-</span> 当前位置的值减一</span><br><span class="line">[ 如果当前位是0，则直接跳至对应的 ] 处</span><br><span class="line">] 如果当前位是0，则直接跳回对应的 [ 处</span><br></pre></td></tr></table></figure>
+
+<p>下面是一段简单的 BF 程序：</p>
+<figure class="highlight bnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;++[<span class="attribute">&lt;++++&gt;</span>-]<span class="attribute">&lt;[&gt;</span>&gt;++++[<span class="attribute">&lt;++&gt;</span>-]<span class="attribute">&lt;&lt;-]&gt;</span>. // Output: &#x27;A&#x27;</span><br></pre></td></tr></table></figure>
+
+<h2 id="TypeScript-必要的类型体操"><a href="#TypeScript-必要的类型体操" class="headerlink" title="TypeScript 必要的类型体操"></a>TypeScript 必要的类型体操</h2><p>分支判断：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">IsNumber</span>&lt;T&gt; = T <span class="keyword">extends</span> <span class="title class_">Number</span> ? <span class="literal">true</span> : <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<p><code>infer</code> 语法，让我们优雅地、非递归地取出我们想要的值：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">ArrayRest</span>&lt;T&gt;   = T <span class="keyword">extends</span> [<span class="built_in">any</span>, ...infer <span class="title class_">Rest</span>] ? <span class="title class_">Rest</span> : <span class="built_in">never</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">ArrayFirst</span>&lt;T&gt;  = T <span class="keyword">extends</span> [infer <span class="title class_">First</span>, ...<span class="built_in">any</span>[]] ? <span class="title class_">First</span> : <span class="built_in">never</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">StringRest</span>&lt;T&gt;  = T <span class="keyword">extends</span> <span class="string">`<span class="subst">$&#123;<span class="built_in">string</span>&#125;</span><span class="subst">$&#123;infer Rest&#125;</span>`</span> ? <span class="title class_">Rest</span> : <span class="built_in">never</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">StringFirst</span>&lt;T&gt; = T <span class="keyword">extends</span> <span class="string">`<span class="subst">$&#123;infer First&#125;</span><span class="subst">$&#123;<span class="built_in">string</span>&#125;</span>`</span> ? <span class="title class_">First</span> : <span class="built_in">never</span></span><br></pre></td></tr></table></figure>
+
+<p>数组 <code>[&#39;length&#39;]</code> 属性：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">LiteralNum4</span> = [<span class="built_in">any</span>, <span class="built_in">any</span>, <span class="built_in">any</span>, <span class="built_in">any</span>][<span class="string">&#x27;length&#x27;</span>] <span class="comment">// ✅ extends 4</span></span><br></pre></td></tr></table></figure>
+
+<p>我们发现，可以声明一个 <code>any[]</code> 类型作为 <code>MyNum</code>，用其长度代表数值，实现计数：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">MyNum</span> = <span class="built_in">any</span>[]</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">AddOne</span>&lt;<span class="title class_">MyNum</span>&gt; = [<span class="built_in">any</span>, ...<span class="title class_">MyNum</span>]  <span class="comment">// [&#x27;length&#x27;] += 1</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">SubOne</span>&lt;<span class="title class_">MyNum</span>&gt; = <span class="title class_">ArrayRest</span>&lt;<span class="title class_">MyNum</span>&gt; <span class="comment">// [&#x27;length&#x27;] -= 1</span></span><br></pre></td></tr></table></figure>
+
+<p><code>[&#39;length&#39;]</code> 结合 <code>extends</code> 的分支，<strong>理论上</strong>我们可以用递归表示任何自然数：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">MyNum</span>&lt;</span><br><span class="line">        N <span class="keyword">extends</span> <span class="title class_">Number</span> = <span class="number">0</span>,</span><br><span class="line">        <span class="title class_">Temp</span> <span class="keyword">extends</span> <span class="built_in">any</span>[] = []</span><br><span class="line">&gt; = <span class="title class_">Temp</span>[<span class="string">&#x27;length&#x27;</span>] <span class="keyword">extends</span> N</span><br><span class="line">    ? <span class="title class_">Temp</span></span><br><span class="line">    : <span class="title class_">MyNum</span>&lt;N, [<span class="built_in">any</span>, ...<span class="title class_">Temp</span>]&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Tests</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Test0</span> = <span class="title class_">MyNum</span>[<span class="string">&#x27;length&#x27;</span>] <span class="keyword">extends</span> <span class="number">0</span>    <span class="comment">// ✅</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Test1</span> = <span class="title class_">MyNum</span>&lt;<span class="number">1</span>&gt;[<span class="string">&#x27;length&#x27;</span>] <span class="keyword">extends</span> <span class="number">1</span> <span class="comment">// ✅</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Test8</span> = <span class="title class_">MyNum</span>&lt;<span class="number">8</span>&gt;[<span class="string">&#x27;length&#x27;</span>] <span class="keyword">extends</span> <span class="number">8</span> <span class="comment">// ✅</span></span><br></pre></td></tr></table></figure>
+
+<p>但是 <code>[&#39;length&#39;]</code> 计数有一个缺点：不能表示负数。为此我也实现了一个 <code>type Int</code>，用数组模拟内存，使用补码位运算实现任意加减：<a target="_blank" rel="noopener" href="https://github.com/HomeArchbishop/tsfuck/blob/main/src/number.ts">tsfuck&#x2F;src&#x2F;number.ts (GitHub)</a>。</p>
+<h2 id="开始写-Tsfuck-吧"><a href="#开始写-Tsfuck-吧" class="headerlink" title="开始写 Tsfuck 吧"></a>开始写 Tsfuck 吧</h2><p>我们设想一下，如果用 JS 或者 TS（非类型系统）实现 BF，思路通常是什么样的。</p>
+<ul>
+<li>输入 <code>Program: string</code> 和 <code>Input: string</code>，将 <code>Input</code> 逐字符转化为 Ascii 码（<code>number</code> 类型）供图灵机读取，以适用加减指令。最后将图灵机输出的每个 Ascii <code>number</code> 转化并拼接为 <code>Output: string</code>。</li>
+<li>面向对象设计，实现 <code>class TuringMachine</code>。简单的原型如下</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TuringMachine</span> &#123;</span><br><span class="line">        <span class="title class_">Tape</span>:     <span class="built_in">number</span>[] <span class="comment">// 或称 Memory，图灵机「纸带」</span></span><br><span class="line">        <span class="title class_">Capacity</span>: <span class="built_in">number</span>   <span class="comment">// 「纸带」容量</span></span><br><span class="line">        <span class="title class_">Ptr</span>:      <span class="built_in">number</span>   <span class="comment">// 图灵机「指针」</span></span><br><span class="line"></span><br><span class="line">        <span class="title class_">GetTape</span>()     : <span class="built_in">number</span>[]</span><br><span class="line">        <span class="title class_">GetCapacity</span>() : <span class="built_in">number</span></span><br><span class="line">        <span class="title class_">GetPtr</span>()      : <span class="built_in">number</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>对 <code>Program</code> 逐字符<strong>迭代</strong>，修改图灵机实例，得到输出。</li>
+</ul>
+<p>尝试将这套想法等价翻译进 TS 类型系统，是不是就可以了呢？</p>
+<h3 id="Step-1-出入输出-Char-Int"><a href="#Step-1-出入输出-Char-Int" class="headerlink" title="Step 1 出入输出 Char &amp; Int"></a>Step 1 出入输出 Char &amp; Int</h3><p>这个很容易实现。在 BF 中，只有加一减一，且 ascii 码都是非负的。因此直接使用 <code>\00</code> 到 <code>\ff</code> 构建加减映射表。不用将 <code>Input: string</code> 再转化为 <code>Int</code> 再加减，直接查表就行了。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Good:</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">AsciiIncreaseMap</span> &#123;</span><br><span class="line">  <span class="string">&#x27;\x00&#x27;</span>: <span class="string">&#x27;\x01&#x27;</span></span><br><span class="line">  <span class="string">&#x27;\x01&#x27;</span>: <span class="string">&#x27;\x02&#x27;</span></span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line">  <span class="string">&#x27;\xff&#x27;</span>: <span class="string">&#x27;\x00&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">AsciiDecreaseMap</span> &#123;</span><br><span class="line">  <span class="string">&#x27;\x00&#x27;</span>: <span class="string">&#x27;\xff&#x27;</span></span><br><span class="line">  <span class="string">&#x27;\x01&#x27;</span>: <span class="string">&#x27;\x00&#x27;</span></span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  <span class="string">&#x27;\xff&#x27;</span>: <span class="string">&#x27;\xfe&#x27;</span></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Step-2-实现图灵机"><a href="#Step-2-实现图灵机" class="headerlink" title="Step 2 实现图灵机"></a>Step 2 实现图灵机</h3><p>值得注意的是，TS 的类型系统是一个非常典型的 <strong>函数式编程（FP）</strong> 系统。应当充分发挥其 <strong>Data-in &amp; Data-out</strong> 和 <strong>声明即实现</strong> 的特点，设计以下的图灵机：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Tape</span>&lt;infer A, infer B, infer C&gt; = [A, B, C]</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">TuringMachine</span>&lt;</span><br><span class="line">  A <span class="keyword">extends</span> <span class="built_in">string</span> = <span class="built_in">any</span>, B <span class="keyword">extends</span> <span class="title class_">Char</span> = <span class="built_in">any</span>, C <span class="keyword">extends</span> <span class="built_in">string</span> = <span class="built_in">any</span></span><br><span class="line">&gt;= <span class="title class_">Tape</span>&lt;A, B, C&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;&#x27;&#x27;<span class="punctuation">,</span>     &#x27;\x00&#x27;<span class="punctuation">,</span>         &#x27;&#x27;&gt; <span class="comment">// Initial</span></span><br><span class="line">&lt;&#x27;&#x27;<span class="punctuation">,</span>     &#x27;\x00&#x27;<span class="punctuation">,</span>     &#x27;\x00&#x27;&gt; <span class="comment">// After &lt;</span></span><br><span class="line">&lt;&#x27;&#x27;<span class="punctuation">,</span>     &#x27;\x01&#x27;<span class="punctuation">,</span>     &#x27;\x00&#x27;&gt; <span class="comment">// After +</span></span><br><span class="line">&lt;&#x27;&#x27;<span class="punctuation">,</span>     &#x27;\x00&#x27;<span class="punctuation">,</span> &#x27;\x01\x00&#x27;&gt; <span class="comment">// After &lt;</span></span><br><span class="line">&lt;&#x27;\x00&#x27;<span class="punctuation">,</span> &#x27;\x01&#x27;<span class="punctuation">,</span>     &#x27;\x00&#x27;&gt; <span class="comment">// After &gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这里补充一下，如果使用类 OOP 的思维，用 Array+Ptr 和 Getter 来写，也是可以实现的。<code>TM</code> 作为状态输入，每一个泛型运算确实是 pure function。但是实际使用起来，会出现大量的  <code>TM&lt;GetXX&lt;TM&lt;...&gt;&gt;&gt;</code>  嵌套，并没有发挥出函数式编程的优势。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Not good...</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">TuringMachine</span> = [<span class="title class_">IntLength</span>, <span class="title class_">IntType</span>[], <span class="title class_">IntType</span>, <span class="title class_">IntType</span>]</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">GetL</span>   &lt;<span class="variable constant_">TM</span> <span class="keyword">extends</span> <span class="title class_">TuringMachine</span>&gt; = <span class="variable constant_">TM</span>[<span class="number">0</span>]</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">GetTape</span>&lt;<span class="variable constant_">TM</span> <span class="keyword">extends</span> <span class="title class_">TuringMachine</span>&gt; = <span class="variable constant_">TM</span>[<span class="number">1</span>]</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">GetCap</span> &lt;<span class="variable constant_">TM</span> <span class="keyword">extends</span> <span class="title class_">TuringMachine</span>&gt; = <span class="variable constant_">TM</span>[<span class="number">2</span>]</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">GetPtr</span> &lt;<span class="variable constant_">TM</span> <span class="keyword">extends</span> <span class="title class_">TuringMachine</span>&gt; = <span class="variable constant_">TM</span>[<span class="number">3</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="逐字符解析"><a href="#逐字符解析" class="headerlink" title="逐字符解析"></a>逐字符解析</h3><p>TS 类型系统无法使用<strong>迭代</strong>，所以用<strong>递归</strong>代替。伪代码表示为：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Excute</span>&lt;</span><br><span class="line">        P <span class="keyword">extends</span> <span class="title class_">Program</span>,</span><br><span class="line">        I <span class="keyword">extends</span> <span class="title class_">Input</span>,</span><br><span class="line">        <span class="variable constant_">TM</span> <span class="keyword">extends</span> <span class="title class_">TuringMachine</span></span><br><span class="line">&gt; = <span class="title class_">Excute</span>&lt;<span class="title class_">RestP</span>&lt;P&gt;, <span class="title class_">RestI</span>&lt;I&gt;, <span class="title class_">NextTM</span>&lt;<span class="variable constant_">TM</span>&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>对上面的每个模块作单元测试，确保运算正确。最终测试如下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Test1</span> = <span class="title class_">Tsfuck</span>&lt;<span class="string">&#x27;+++&gt;++++.&#x27;</span>, <span class="string">&#x27;&#x27;</span>&gt;   <span class="comment">// ✅ extends &#x27;\x04&#x27;</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Test2</span> = <span class="title class_">Tsfuck</span>&lt;<span class="string">&#x27;+[&gt;+++&lt;-]&gt;.&#x27;</span>, <span class="string">&#x27;&#x27;</span>&gt; <span class="comment">// ✅ extends &#x27;\x03&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>Looks nice! 我们实现了正确的 Brainfuck 解析器！ 那上点强度呢？</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Test3</span> = <span class="title class_">Tsfuck</span>&lt;<span class="string">&#x27;++[&gt;+&lt;-]&gt;.&#x27;</span>, <span class="string">&#x27;&#x27;</span>&gt;</span><br><span class="line"><span class="comment">// 😥 Type instantiation is excessively deep and possibly infinite.</span></span><br></pre></td></tr></table></figure>
+
+<p>Oops… 提示递归层级过深了。怎么办呢？</p>
+<h2 id="解决递归过深的问题！"><a href="#解决递归过深的问题！" class="headerlink" title="解决递归过深的问题！"></a>解决递归过深的问题！</h2><p>什么是递归过深？以上面 <code>MyNum</code> 为例：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">MyNum</span>&lt;</span><br><span class="line">        N <span class="keyword">extends</span> <span class="title class_">Number</span> = <span class="number">0</span>,</span><br><span class="line">        <span class="title class_">Temp</span> <span class="keyword">extends</span> <span class="built_in">any</span>[] = []</span><br><span class="line">&gt; = <span class="title class_">Temp</span>[<span class="string">&#x27;length&#x27;</span>] <span class="keyword">extends</span> N</span><br><span class="line">    ? <span class="title class_">Temp</span></span><br><span class="line">    : <span class="title class_">MyNum</span>&lt;N, [<span class="built_in">any</span>, ...<span class="title class_">Temp</span>]&gt;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Num</span> = <span class="title class_">MyNum</span>&lt;<span class="number">4</span>&gt;    <span class="comment">// ✅ fine</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Num</span> = <span class="title class_">MyNum</span>&lt;<span class="number">999</span>&gt;  <span class="comment">// ✅ fine</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Num</span> = <span class="title class_">MyNum</span>&lt;<span class="number">1000</span>&gt; <span class="comment">// ❎ too deep</span></span><br></pre></td></tr></table></figure>
+
+<p>不难看出，在 N 过大时，类型递归的展开层数超出了编译器允许的最大递归深度，TS 罢工了。</p>
+<p>当然我们可以通过修改 TypeScript 的 <code>lib/_tsc.js</code> 代码突破限制，但这是不优雅的（不过这很有意思，挖个坑之后分享）。这里给出一种解决方案（Ref：<a target="_blank" rel="noopener" href="https://susisu.hatenablog.com/entry/2020/09/12/214343">TypeScript の型の再帰上限を突破する裏技</a>）：</p>
+<p>首先我们小改一下 <code>MyNum</code> 的声明：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">MyNum</span>&lt;</span><br><span class="line">        N <span class="keyword">extends</span> <span class="title class_">Number</span> = <span class="number">0</span>,</span><br><span class="line">        <span class="title class_">Temp</span> <span class="keyword">extends</span> <span class="built_in">any</span>[] = []</span><br><span class="line">&gt; = <span class="title class_">Temp</span>[<span class="string">&#x27;length&#x27;</span>] <span class="keyword">extends</span> N</span><br><span class="line">    ? <span class="title class_">Temp</span></span><br><span class="line">    : &#123; <span class="attr">_</span>: <span class="title class_">MyNum</span>&lt;N, [<span class="built_in">any</span>, ...<span class="title class_">Temp</span>]&gt; &#125;</span><br></pre></td></tr></table></figure>
+
+<p>取代了裸奔的 <code>any[]</code>，递归生成的类型结构如下所示：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">        <span class="attr">_</span>: &#123;</span><br><span class="line">                <span class="attr">_</span>: &#123;</span><br><span class="line">                        <span class="attr">_</span>: [<span class="built_in">any</span>, <span class="built_in">any</span>, <span class="built_in">any</span>]</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>非常奇妙的是，<strong>这个结构是惰性解析的</strong>，因此可以通过递归构造出<strong>任意长度</strong>的 <code>any[]</code> 数组（Source：<a target="_blank" rel="noopener" href="https://devblogs.microsoft.com/typescript/announcing-typescript-3-7/#(more)-recursive-type-aliases">Announcing TypeScript 3.7 - (more)-recursive-type-aliases</a>）。然而，如何从该结构中提取出最终生成的 <code>any[]</code> 呢？</p>
+<p><strong>只能再递归</strong>。我们考虑定义一个 <code>RecurseSub</code> 将值剥开，再用 <code>Recurse</code> 朴素地递归，可以吗？</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">RecurseSub</span>&lt;T&gt; = T[<span class="string">&#x27;_&#x27;</span>]</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Recurse</span>&lt;T&gt; = T <span class="keyword">extends</span> &#123; <span class="attr">_</span>: <span class="built_in">unknown</span> &#125; ? <span class="title class_">Recurse</span>&lt;<span class="title class_">RecurseSub</span>&lt;T&gt;&gt; : T</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="variable constant_">NNN</span> = <span class="title class_">Recurse</span>&lt;<span class="title class_">MyNum</span>&lt;<span class="number">1000</span>&gt;&gt; <span class="comment">// ❎ too deep</span></span><br></pre></td></tr></table></figure>
+
+<p>显而易见，这种递归又回到了 999 层限制。正确的做法是，同样利用<strong>惰性解析</strong>的特性来削减层数。使用 <code>infer</code> 推断，将<strong>每两层</strong>结构简化成一层结构，保证它仍然是一个 <code>&#123; _: obj &#125;</code>。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">RecurseSub</span>&lt;T&gt; = </span><br><span class="line">    T <span class="keyword">extends</span> &#123; <span class="attr">_</span>: <span class="built_in">never</span> &#125; </span><br><span class="line">                ? <span class="built_in">never</span></span><br><span class="line">            : T <span class="keyword">extends</span> &#123; <span class="attr">_</span>: &#123; <span class="attr">_</span>: infer U &#125; &#125;</span><br><span class="line">                    ? &#123; <span class="attr">_</span>: <span class="title class_">RecurseSub</span>&lt;U&gt; &#125;</span><br><span class="line">                : T <span class="keyword">extends</span> &#123; <span class="attr">_</span>: infer U &#125;</span><br><span class="line">                        ? U</span><br><span class="line">                    : T</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Recurse</span>&lt;T&gt; = T <span class="keyword">extends</span> &#123; <span class="attr">_</span>: <span class="built_in">unknown</span> &#125; ? <span class="title class_">Recurse</span>&lt;<span class="title class_">RecurseSub</span>&lt;T&gt;&gt; : T</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// fine-tests.ts</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Num</span> = <span class="title class_">Recurse</span>&lt;<span class="title class_">MyNum</span>&lt;<span class="number">1000</span>&gt;&gt; <span class="comment">// ✅ fine</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Num</span> = <span class="title class_">Recurse</span>&lt;<span class="title class_">MyNum</span>&lt;<span class="number">3141</span>&gt;&gt; <span class="comment">// ✅ fine</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// bad-tests.ts</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Num</span> = <span class="title class_">Recurse</span>&lt;<span class="title class_">MyNum</span>&lt;<span class="number">3142</span>&gt;&gt; <span class="comment">// ❎ too deep</span></span><br></pre></td></tr></table></figure>
+
+<p>上限提升到了 3141。但是，按照刚才的分析，<code>MyNum</code> 的理论上限是 2^999，这里为什么只有 3141 呢？<strong>这也是一个很有意思的问题</strong>，再挖个坑，以后单独讨论。</p>
+<h2 id="Tsfuck2"><a href="#Tsfuck2" class="headerlink" title="Tsfuck2"></a>Tsfuck2</h2><p>基于上面的想法，我实现了新版：<a target="_blank" rel="noopener" href="https://github.com/HomeArchbishop/tsfuck2">Tsfuck2 (GitHub)</a>。测试显示，它运行得正确且轻松。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title class_">TsfuckTest</span>: <span class="title class_">Test</span>&lt;[</span><br><span class="line">        <span class="title class_">IsExtends</span>&lt;<span class="title class_">Tsfuck</span>&lt;<span class="string">&#x27;++[&gt;+++[&gt;+&lt;-]+&lt;-]&gt;.&gt;.&#x27;</span>, <span class="string">&#x27;&#x27;</span>&gt;, <span class="string">&#x27;\x01\x07&#x27;</span>&gt;</span><br><span class="line">        <span class="title class_">IsExtends</span>&lt;<span class="title class_">Tsfuck</span>&lt;<span class="string">&#x27;&gt;++[&lt;++++&gt;-]&lt;[&gt;&gt;++++[&lt;++&gt;-]&lt;&lt;-]&gt;.&#x27;</span>, <span class="string">&#x27;&#x27;</span>&gt;, <span class="string">&#x27;a&#x27;</span>&gt;</span><br><span class="line">    <span class="title class_">IsExtends</span>&lt;<span class="title class_">Tsfuck</span>&lt;<span class="string">&#x27;++++++++++[&gt;+++++++&gt;++++++++++&gt;+++&gt;+&lt;&lt;&lt;&lt;-]&gt;++.&gt;+.+++++++..+++.&gt;++.&lt;&lt;+++++++++++++++.&gt;.+++.------.--------.&gt;+.&gt;.&#x27;</span>, <span class="string">&#x27;&#x27;</span>&gt;, <span class="string">&#x27;Hello World!\n&#x27;</span>&gt;</span><br><span class="line">] <span class="comment">// ✅ Passed</span></span><br></pre></td></tr></table></figure>
+
+<p>复杂一点，算斐波那契数列：</p>
+<p><img src="https://image-public.bingyan.net/blog/img/JTH4b3gy3owiKIxamRvcvQQInM5.jpeg"></p>
+<p>再有趣一点，自举！下面是一个运行在 Tsfuck 上的 Brainfuck 写成的 Brainfuck 解析器运行成功了一段 Brainfuck 程序（我用 TS 写了 BF，再用 BF 实现了 BF）：</p>
+<p><img src="https://image-public.bingyan.net/blog/img/HBMlb6jFhoBDzUx04LOc6ulSncc.jpeg"></p>
+<h2 id="一个小细节"><a href="#一个小细节" class="headerlink" title="一个小细节"></a>一个小细节</h2><p>如何获得字符串的的第一个字符？ <strong>StringFirst<S></strong><strong> or </strong><strong>S[0]</strong>？ 我使用了 <code>StringFirst&lt;S&gt;</code> ，而没有简单地使用 <code>S[0]</code>。原因在于 <code>S</code> 可能是一个空串，<code>S[0]</code> 是 <code>Char|undefined</code>，而 <code>StringFirst&lt;S&gt;</code> 是 <code>Char</code>。因此，尽管在实际使用中都必须保证 <code>S</code> 不为空，但只有 <code>StringFirst&lt;S&gt;</code>  通过类型检查。</p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>TS 类型系统作为一个函数式编程系统，完全具备函数式编程的特性。更多地，例如函数组合，结果缓存的优点，在 TS 中亦有体现。关于这个，或许以后可以另行讨论。</p>
+<h2 id="Repo"><a href="#Repo" class="headerlink" title="Repo"></a>Repo</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/HomeArchbishop/tsfuck">GitHub - HomeArchbishop&#x2F;tsfuck</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/HomeArchbishop/tsfuck2">GitHub - HomeArchbishop&#x2F;tsfuck2</a></li>
+</ul>
+<h2 id="Ref"><a href="#Ref" class="headerlink" title="Ref"></a>Ref</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://brainfuck.org/">some brainfuck fluff</a></li>
+<li><a target="_blank" rel="noopener" href="https://susisu.hatenablog.com/entry/2020/09/12/214343">TypeScript の型の再帰上限を突破する裏技</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/susisu/typefuck">GitHub - susisu&#x2F;typefuck</a></li>
+<li><a target="_blank" rel="noopener" href="https://devblogs.microsoft.com/typescript/announcing-typescript-3-7/#(more)-recursive-type-aliases">Announcing TypeScript 3.7 - TypeScript</a></li>
+</ul>
+<h2 id="Also-Read"><a href="#Also-Read" class="headerlink" title="Also Read"></a>Also Read</h2><ul>
+<li><ul>
+<li><a target="_blank" rel="noopener" href="https://aartaka.me/brainfuck-lessons.html">What Writing 2K+ Lines of Brainfuck Taught Me</a></li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://saketupadhyay.medium.com/how-to-code-in-brainf-ck-without-losing-your-mind-6a8fd67b36b4">How to code in BrainF*ck without Losing Your Mind… - by Saket Upadhyay | Medium</a></li>
+<li><a target="_blank" rel="noopener" href="https://codingchallenges.fyi/challenges/challenge-brainfuck/">Build Your Own Brainfuck Interpreter | Coding Challenges</a></li>
+<li><a target="_blank" rel="noopener" href="https://qiita.com/kgtkr/items/eff20225e4bf9b159110">TypeScript の型で遊ぶ時、再帰制限を無効化する - Qiita</a></li>
+<li><a target="_blank" rel="noopener" href="https://medium.com/havelsan/a-practical-guide-to-functional-programming-dfdda6c35c0f">A Practical Guide to Functional Programming | by Hakan Apohan | HAVELSAN | Medium</a></li>
+</ul>
+
+    </div>
+
+    
+    <div class="about">
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        <a class="next"></a>
+        
+        <a href="/posts/09ae0211-3bb8/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">github 盒人小技巧</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">主页</a>
+                
+                <a href="/archives" class="item">归档</a>
+                
+                <a href="/categories" class="item">主题</a>
+                
+                <a href="/about" class="item">关于我们</a>
+                
+                <a href="/search" class="item">搜索</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Links</h2>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.net" class="item">官网</a>
+                
+                <a target="_blank" rel="noopener" href="https://bingyan.itch.io" class="item">游戏组官网</a>
+                
+                <a href="" class="item">微信公众号</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/BingyanStudio" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/by_bingyan" class="item">知乎</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Contact Us</h2>
+                
+                <a href="mailto:contact@bingyan.net" class="item">contact@bingyan.net</a>
+                
+            </div>
+            
+        </div>
+        <!-- <span>&copy; 2025 冰岩作坊<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span> -->
+        <!-- 
+        <br> -->
+        <span class="footer-extra-description">2024 © Powered by Bingyan Studio & Hexo. All Rights Reserved.</span>
+        <!--  -->
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>
