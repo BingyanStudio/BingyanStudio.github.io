@@ -1,10 +1,10 @@
 ---
 title: Build a Simple BF Interpreter Based on TypeScript Types
-cover_image: https://image-public.bingyan.net/blog/img/8d43e3d6-eb49-4bc6-b296-793718fe5182.jpeg
-date: 2025-04-05 23:32
+cover_image: https://image-public.bingyan.net/blog/img/f4699d1f-9b46-47ab-bfd4-e366c3f0c0e4.jpeg
+date: 2025-04-05 23:35
 categories: 前端
 author: 主教
-abbrlink: b7491e61-ccd9
+abbrlink: 2809c895-6a59
 ---
 
 
@@ -285,7 +285,7 @@ const TsfuckTest: Test<[
 
 ## 一个小细节
 
-如何获得字符串的的第一个字符？ <strong>StringFirst<S></strong><strong> or </strong><strong>S[0]</strong>？ 我使用了 `StringFirst<S>` ，而没有简单地使用 `S[0]`。原因在于 `S` 可能是一个空串，`S[0]` 是 `Char|undefined`，而 `StringFirst<S>` 是 `Char`。因此，尽管在实际使用中都必须保证 `S` 不为空，但只有 `StringFirst<S>`  通过类型检查。
+如何获得字符串的的第一个字符？ `StringFirst<S>` or `S[0]`？ 我使用了 `StringFirst<S>` ，而没有简单地使用 `S[0]`。原因在于 `S` 可能是一个空串，`S[0]` 是 `Char|undefined`，而 `StringFirst<S>` 是 `Char`。因此，尽管在实际使用中都必须保证 `S` 不为空，但只有 `StringFirst<S>`  通过类型检查。
 
 ## 后记
 
