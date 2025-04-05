@@ -1,10 +1,10 @@
 ---
 title: Build a Simple BF Interpreter Based on TypeScript Types
-cover_image: https://image-public.bingyan.net/blog/img/a55ab356-a02b-44b5-9e36-c690e8ec548c.jpeg
-date: 2025-04-05 23:25
+cover_image: https://image-public.bingyan.net/blog/img/15e63a1a-36d8-465c-bbf3-9ce5ff9d1287.jpeg
+date: 2025-04-05 23:28
 categories: 前端
 author: 主教
-abbrlink: 0c8e17c9-73d1
+abbrlink: 012ffc5e-41f3
 ---
 
 
